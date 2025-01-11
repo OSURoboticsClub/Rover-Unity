@@ -13,13 +13,15 @@ public class StartAutonomous : MonoBehaviour
     private ROS2Node ros2Node;
     private IPublisher<std_msgs.msg.String> chatter_pub;
     private int i;
+    public static StartAutonomous instance;
 
     void Start()
     {
         ros2Unity = GetComponent<ROS2UnityComponent>();
+        instance = this;
     }
 
-public void Send(){
+public void Send(GpsLocation coordinateData){
 	if (ros2Unity.Ok())
         {
             if (ros2Node == null)
@@ -30,7 +32,8 @@ public void Send(){
 
             i++;
             std_msgs.msg.String msg = new std_msgs.msg.String();
-            msg.Data = "Start";
+            string latAndLong = "(" + coordinateData.lat.text + ", " + coordinateData.lon.text + ")";
+            msg.Data = "Go to " + latAndLong;
             chatter_pub.Publish(msg);
             Debug.Log(msg.Data);
         }
