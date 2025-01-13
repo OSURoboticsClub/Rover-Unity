@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace ROS2
@@ -29,6 +30,11 @@ public class ROS2ListenerExample : MonoBehaviour
 
     void Start()
     {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            enabled = false;
+            return;
+        }
         ros2Unity = GetComponent<ROS2UnityComponent>();
     }
 

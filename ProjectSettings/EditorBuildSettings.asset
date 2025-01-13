@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Pure Pursuit Test/Pure Pursuit.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Control Interface App/Application.unity
+    guid: 0c3229bafb8c8656eba79363ee1021fc
   m_configObjects: {}

@@ -23,6 +23,7 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] Transform roverIcon;
     [SerializeField] Transform destIcon;
     [SerializeField] float iconScale = 1f;
+    [SerializeField] Transform iconsParent;
 
 
     void Update()
@@ -44,8 +45,10 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
             secondCamera.transform.position -= diff;
 
             float height = 2f * secondCamera.orthographicSize;
-            roverIcon.transform.localScale = height * iconScale * Vector3.one;
-            destIcon.transform.localScale = height * iconScale * Vector3.one;
+            foreach(Transform child in iconsParent)
+            {
+                child.localScale = height * iconScale * Vector3.one;
+            }
         }
     }
 

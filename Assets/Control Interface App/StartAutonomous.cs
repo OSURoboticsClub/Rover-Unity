@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace ROS2
@@ -17,8 +18,13 @@ public class StartAutonomous : MonoBehaviour
 
     void Start()
     {
-        ros2Unity = GetComponent<ROS2UnityComponent>();
         instance = this;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            enabled = false;
+            return;
+        }
+        ros2Unity = GetComponent<ROS2UnityComponent>();
     }
 
 public void Send(GpsLocation coordinateData){

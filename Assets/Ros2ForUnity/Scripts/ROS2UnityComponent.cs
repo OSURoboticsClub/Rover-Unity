@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using ROS2;
+using System.Runtime.InteropServices;
 
 namespace ROS2
 {
@@ -67,6 +68,11 @@ public class ROS2UnityComponent : MonoBehaviour
 
     void Start()
     {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            enabled = false;
+            return;
+        }
         LazyConstruct();
     }
 
@@ -156,6 +162,7 @@ public class ROS2UnityComponent : MonoBehaviour
 
     void OnApplicationQuit()
     {
+        if (!enabled) return;
         quitting = true;
         ros2forUnity.DestroyROS2ForUnity();
     }
