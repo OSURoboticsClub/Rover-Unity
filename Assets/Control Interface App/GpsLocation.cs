@@ -17,6 +17,7 @@ public class GpsLocation : MonoBehaviour
 
     [SerializeField] Image goBtn;
     [SerializeField] TextMeshProUGUI goTxt;
+    public GameObject iconObject;
 
     public void UpdateLabels()
     {
