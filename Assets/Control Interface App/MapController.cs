@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MapController : MonoBehaviour
@@ -17,6 +18,10 @@ public class MapController : MonoBehaviour
 
     [SerializeField] GameObject icon;
     [SerializeField] Transform iconsParent;
+    [SerializeField] GameObject newListingMenu;
+    [SerializeField] TMP_InputField descText;
+    [SerializeField] TMP_InputField latText;
+    [SerializeField] TMP_InputField longText;
     // Start is called before the first frame update
     void Awake()
     {
@@ -33,12 +38,24 @@ public class MapController : MonoBehaviour
         //AddCoordinate(44.565631d, -123.276036d);
     }
 
+    public void AddCoordinateFromUIMenu()
+    {
+        bool succLat = double.TryParse(latText.text, out double lat);
+        bool succlon = double.TryParse(longText.text, out double lon);
+        if (!succLat || !succlon) return;
+        AddCoordinate(lat, lon, descText.text);
+        newListingMenu.SetActive(false);
+    }
 
-    public void AddCoordinate(double lat, double lon){
+    public void AddCoordinate(double lat, double lon, string desc){
         Vector2 position = GetWorldPosition(lat, lon);
         Transform parent = iconsParent;
         GameObject newObject = Instantiate(icon, position, Quaternion.identity);
         newObject.transform.SetParent(parent, true);  // 'true' keeps the current world position
+        PreloadedIcon script = newObject.GetComponent<PreloadedIcon>();
+        script.latitude = lat;
+        script.longitude = lon;
+        script.description = desc;
     }
 
     public void MoveIcon(Transform obj, double lat, double lon)

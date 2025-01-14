@@ -11,5 +11,6 @@ public class PreloadedIcon : MonoBehaviour
     public void Start()
     {
         MapController.instance.MoveIcon(transform, latitude, longitude);
+        LocationsListController.inst.CreateNewListing(this);
     }
 }

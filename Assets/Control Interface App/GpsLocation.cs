@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class GpsLocation : MonoBehaviour
 {
     public string description;
-    public decimal latitude;
-    public decimal longitude;
+    public double latitude;
+    public double longitude;
     public bool isActive;
 
     public TextMeshProUGUI desc;
@@ -54,6 +54,7 @@ public class GpsLocation : MonoBehaviour
 
     public void Delete()
     {
+        Destroy(iconObject);
         Destroy(gameObject);
     }
 }
