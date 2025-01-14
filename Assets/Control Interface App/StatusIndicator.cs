@@ -6,7 +6,9 @@ using TMPro;
 
 public enum Status {
     Activated,
-    NotActivated
+    NotActivated,
+    Arrived,
+    Error
 }
 
 public class StatusIndicator : MonoBehaviour
@@ -16,6 +18,7 @@ public class StatusIndicator : MonoBehaviour
     [SerializeField] Color red;
     [SerializeField] Color green;
     [SerializeField] TextMeshProUGUI text;
+    GpsLocation destination;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +30,7 @@ public class StatusIndicator : MonoBehaviour
         if(status == Status.Activated){
             bg.color = red;
             text.text = "GOING TO " + location.desc.text;
+            destination = location;
         }
         else if(status == Status.NotActivated){
             bg.color = green;

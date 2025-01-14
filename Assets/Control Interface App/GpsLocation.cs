@@ -37,6 +37,7 @@ public class GpsLocation : MonoBehaviour
             goTxt.text = "Stop";
             ROS2.StartAutonomous.instance.Send(this); //call the script that sends the command over a topic
             StatusIndicator.instance.SetIndicator(Status.Activated, this);
+            MapController.instance.SetLinePosition(iconObject.transform.position);
         }
         else
         {
@@ -44,6 +45,7 @@ public class GpsLocation : MonoBehaviour
             goBtn.color = new Color(143 / 255f, 1f, 143 / 255f);
             goTxt.text = "Go";
             StatusIndicator.instance.SetIndicator(Status.NotActivated, this);
+            MapController.instance.TurnOffLine();
         }
     }
 

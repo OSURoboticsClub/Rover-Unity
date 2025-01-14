@@ -6,7 +6,8 @@ using UnityEngine;
 public class MapController : MonoBehaviour
 {
     public static MapController instance;
-    [SerializeField] SpriteRenderer sprite;
+    [SerializeField] SpriteRenderer mapSprite;
+    [SerializeField] Transform roverIcon;
     [SerializeField] double bottomLeftCornerLat;
     [SerializeField] double bottomLeftCornerLong;
     [SerializeField] double topRightCornerLat;
@@ -22,13 +23,14 @@ public class MapController : MonoBehaviour
     [SerializeField] TMP_InputField descText;
     [SerializeField] TMP_InputField latText;
     [SerializeField] TMP_InputField longText;
+    [SerializeField] LineRenderer lineRenderer;
     // Start is called before the first frame update
     void Awake()
     {
         instance = this;
 
-        width = sprite.bounds.size.x;
-        height = sprite.bounds.size.y;
+        width = mapSprite.bounds.size.x;
+        height = mapSprite.bounds.size.y;
 
         double widthInDegrees = topRightCornerLong - bottomLeftCornerLong;
         scaleX = (double)width / widthInDegrees;
@@ -75,5 +77,26 @@ public class MapController : MonoBehaviour
         float worldUnitsX = xFromBLCornerInM - width / 2f;
         float worldUnitsY = yFromBLCornerInM - height / 2f;
         return new Vector2(worldUnitsX, worldUnitsY);
+    }
+
+    public void SetLinePosition(Vector3 target)
+    {
+        lineRenderer.enabled = true;
+        target.z = 0.5f;
+        Vector3 roverPos = roverIcon.position;
+        roverPos.z = 0.5f;
+
+        lineRenderer.SetPosition(0, target);
+        lineRenderer.SetPosition(1, roverPos);
+    }
+
+    public void SetLineScale(float scale)
+    {
+        lineRenderer.widthMultiplier = scale;
+    }
+
+    public void TurnOffLine()
+    {
+        lineRenderer.enabled = false;
     }
 }

@@ -24,6 +24,7 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] Transform destIcon;
     [SerializeField] float iconScale = 1f;
     [SerializeField] Transform iconsParent;
+    [SerializeField] float lineScale = 1f;
 
 
     void Update()
@@ -49,6 +50,7 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
             {
                 child.localScale = height * iconScale * Vector3.one;
             }
+            MapController.instance.SetLineScale(height * lineScale);
         }
     }
 
