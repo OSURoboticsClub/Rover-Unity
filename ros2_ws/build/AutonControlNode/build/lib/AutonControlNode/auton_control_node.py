@@ -1,6 +1,8 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String  # Use appropriate message type
+from AutonControlNode.msg import MyCustomMessage
+
 
 class AutonomousControlNode(Node):
     def __init__(self):
@@ -14,15 +16,19 @@ class AutonomousControlNode(Node):
         )
         self.subscription  # prevent unused variable warning
 
-        self.publisher = self.create_publisher(String, 'ReplyTopic', 10)
+        # self.publisher = self.create_publisher(String, 'ReplyTopic', 10)
+        self.publisher = self.create_publisher(MyCustomMessage, 'ReplyTopic', 10)
 
     def listener_callback(self, msg):
         self.get_logger().info(f'Received: "{msg.data}" on AutonomousControl')
 
-        reply_msg = String()
+        # reply_msg = String()
+        reply_msg = MyCustomMessage()
+        reply_msg.id = 33
+        reply_msg.name = f'Yo whaddup'
         reply_msg.data = f'Starting Autonomous'
         self.publisher.publish(reply_msg)
-        self.get_logger().info(f'Published: "{reply_msg.data}" to ReplyTopic')
+        self.get_logger().info(f'Published: "{reply_msg.id}" to ReplyTopic')
 
 def main(args=None):
     rclpy.init(args=args)

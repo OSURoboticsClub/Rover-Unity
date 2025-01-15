@@ -10,6 +10,7 @@ setup.py
 ../../build/AutonControlNode/AutonControlNode.egg-info/zip-safe
 AutonControlNode/__init__.py
 AutonControlNode/auton_control_node.py
+msg/MyCustomMessage.msg
 resource/AutonControlNode
 test/test_copyright.py
 test/test_flake8.py

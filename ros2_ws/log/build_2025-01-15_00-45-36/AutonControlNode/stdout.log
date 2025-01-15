@@ -1,0 +1,25 @@
+running egg_info
+writing ../../build/AutonControlNode/AutonControlNode.egg-info/PKG-INFO
+writing dependency_links to ../../build/AutonControlNode/AutonControlNode.egg-info/dependency_links.txt
+writing entry points to ../../build/AutonControlNode/AutonControlNode.egg-info/entry_points.txt
+writing requirements to ../../build/AutonControlNode/AutonControlNode.egg-info/requires.txt
+writing top-level names to ../../build/AutonControlNode/AutonControlNode.egg-info/top_level.txt
+reading manifest file '../../build/AutonControlNode/AutonControlNode.egg-info/SOURCES.txt'
+writing manifest file '../../build/AutonControlNode/AutonControlNode.egg-info/SOURCES.txt'
+running build
+running build_py
+copying AutonControlNode/auton_control_node.py -> /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/AutonControlNode/build/lib/AutonControlNode
+running install
+running install_lib
+copying /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/AutonControlNode/build/lib/AutonControlNode/auton_control_node.py -> /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode/lib/python3.10/site-packages/AutonControlNode
+byte-compiling /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode/lib/python3.10/site-packages/AutonControlNode/auton_control_node.py to auton_control_node.cpython-310.pyc
+running install_data
+copying package.xml -> /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode/share/AutonControlNode
+creating /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode/share/AutonControlNode/msg
+copying msg/MyCustomMessage.msg -> /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode/share/AutonControlNode/msg
+running install_egg_info
+removing '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode/lib/python3.10/site-packages/AutonControlNode-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/AutonControlNode/AutonControlNode.egg-info to /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode/lib/python3.10/site-packages/AutonControlNode-0.0.0-py3.10.egg-info
+running install_scripts
+Installing auton_control_node script to /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode/lib/AutonControlNode
+writing list of installed files to '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/AutonControlNode/install.log'
