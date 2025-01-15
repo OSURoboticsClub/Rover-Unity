@@ -1,0 +1,3 @@
+[console_scripts]
+auton_control_node = AutonControlNode.auton_control_node:main
+
