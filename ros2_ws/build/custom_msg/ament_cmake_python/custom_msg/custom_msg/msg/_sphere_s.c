@@ -16,10 +16,13 @@
 #include "custom_msg/msg/detail/sphere__struct.h"
 #include "custom_msg/msg/detail/sphere__functions.h"
 
+<<<<<<< HEAD
+=======
 ROSIDL_GENERATOR_C_IMPORT
 bool geometry_msgs__msg__point__convert_from_py(PyObject * _pymsg, void * _ros_message);
 ROSIDL_GENERATOR_C_IMPORT
 PyObject * geometry_msgs__msg__point__convert_to_py(void * raw_ros_message);
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 
 ROSIDL_GENERATOR_C_EXPORT
 bool custom_msg__msg__sphere__convert_from_py(PyObject * _pymsg, void * _ros_message)
@@ -59,10 +62,15 @@ bool custom_msg__msg__sphere__convert_from_py(PyObject * _pymsg, void * _ros_mes
     if (!field) {
       return false;
     }
+<<<<<<< HEAD
+    assert(PyLong_Check(field));
+    ros_message->center = PyLong_AsLongLong(field);
+=======
     if (!geometry_msgs__msg__point__convert_from_py(field, &ros_message->center)) {
       Py_DECREF(field);
       return false;
     }
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
     Py_DECREF(field);
   }
   {  // radius
@@ -98,10 +106,14 @@ PyObject * custom_msg__msg__sphere__convert_to_py(void * raw_ros_message)
   custom_msg__msg__Sphere * ros_message = (custom_msg__msg__Sphere *)raw_ros_message;
   {  // center
     PyObject * field = NULL;
+<<<<<<< HEAD
+    field = PyLong_FromLongLong(ros_message->center);
+=======
     field = geometry_msgs__msg__point__convert_to_py(&ros_message->center);
     if (!field) {
       return NULL;
     }
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
     {
       int rc = PyObject_SetAttrString(_pymessage, "center", field);
       Py_DECREF(field);

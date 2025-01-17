@@ -183,9 +183,8 @@ CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fast
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc /usr/include/malloc.h \
  /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg/rosidl_generator_c/custom_msg/msg/detail/sphere__struct.h \
- /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.h \
+ /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/string.h \
  /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg/rosidl_generator_c/custom_msg/msg/detail/sphere__functions.h \
  /usr/include/c++/11/stdlib.h \
  /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg/rosidl_generator_c/custom_msg/msg/rosidl_generator_c__visibility_control.h \
- /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__functions.h \
- /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/rosidl_generator_c__visibility_control.h
+ /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/string_functions.h

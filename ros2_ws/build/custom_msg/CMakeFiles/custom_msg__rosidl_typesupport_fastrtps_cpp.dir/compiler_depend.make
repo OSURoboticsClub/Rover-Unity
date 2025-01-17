@@ -439,7 +439,10 @@ CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fa
   /usr/include/c++/11/stdexcept \
   /opt/ros/humble/include/rosidl_runtime_cpp/rosidl_runtime_cpp/message_initialization.hpp \
   /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/message_initialization.h \
+<<<<<<< HEAD
+=======
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.hpp \
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
   /opt/ros/humble/include/fastcdr/fastcdr/Cdr.h \
   /opt/ros/humble/include/fastcdr/fastcdr/fastcdr_dll.h \
   /opt/ros/humble/include/fastcdr/fastcdr/config.h \
@@ -824,8 +827,11 @@ CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fa
 
 /opt/ros/humble/include/rcutils/rcutils/snprintf.h:
 
+<<<<<<< HEAD
+=======
 /opt/ros/humble/include/rcutils/rcutils/error_handling.h:
 
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 /usr/include/x86_64-linux-gnu/bits/types/FILE.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
@@ -1008,6 +1014,11 @@ rosidl_generator_cpp/custom_msg/msg/detail/num__struct.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
+<<<<<<< HEAD
+/opt/ros/humble/include/rcutils/rcutils/error_handling.h:
+
+=======
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 /usr/include/x86_64-linux-gnu/bits/wordsize.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
@@ -1028,8 +1039,11 @@ rosidl_generator_cpp/custom_msg/msg/detail/num__struct.hpp:
 
 /usr/include/features-time64.h:
 
+<<<<<<< HEAD
+=======
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.hpp:
 
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 rosidl_typesupport_fastrtps_cpp/custom_msg/msg/detail/num__rosidl_typesupport_fastrtps_cpp.hpp:
 
 /usr/include/c++/11/bits/hash_bytes.h:

@@ -1,0 +1,385 @@
+[0.000000] (-) TimerEvent: {}
+[0.000508] (-) JobUnselected: {'identifier': 'AutonControlNode'}
+[0.000581] (-) JobUnselected: {'identifier': 'py_pubsub'}
+[0.000606] (custom_msg) JobQueued: {'identifier': 'custom_msg', 'dependencies': OrderedDict()}
+[0.000634] (custom_msg) JobStarted: {'identifier': 'custom_msg'}
+[0.004835] (custom_msg) JobProgress: {'identifier': 'custom_msg', 'progress': 'cmake'}
+[0.016134] (custom_msg) JobProgress: {'identifier': 'custom_msg', 'progress': 'build'}
+[0.016564] (custom_msg) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg', '--', '-j20', '-l20'], 'cwd': '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'matt'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/matt'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('DBUS_STARTER_BUS_TYPE', 'session'), ('SYSTEMD_EXEC_PID', '1533'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus,guid=089966ec204b6e1eb6700c2d6789c9b9'), ('COLORTERM', 'truecolor'), ('COLCON_PREFIX_PATH', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'matt'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'matt'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/matt-desktop:@/tmp/.ICE-unix/1533,unix/matt-desktop:/tmp/.ICE-unix/1533'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/e699a521_564b_4da1_8261_c05262524b62'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.103'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('DBUS_STARTER_ADDRESS', 'unix:path=/run/user/1000/bus,guid=089966ec204b6e1eb6700c2d6789c9b9'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode:/opt/ros/humble')]), 'shell': False}
+[0.099948] (-) TimerEvent: {}
+[0.200174] (-) TimerEvent: {}
+[0.300431] (-) TimerEvent: {}
+[0.400707] (-) TimerEvent: {}
+[0.463768] (custom_msg) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.500868] (-) TimerEvent: {}
+[0.601124] (-) TimerEvent: {}
+[0.701397] (-) TimerEvent: {}
+[0.801811] (-) TimerEvent: {}
+[0.902258] (-) TimerEvent: {}
+[0.923188] (custom_msg) StdoutLine: {'line': b'-- Found geometry_msgs: 4.2.4 (/opt/ros/humble/share/geometry_msgs/cmake)\n'}
+[1.002358] (-) TimerEvent: {}
+[1.102069] (custom_msg) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[1.102412] (-) TimerEvent: {}
+[1.129747] (custom_msg) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[1.192239] (custom_msg) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[1.202543] (-) TimerEvent: {}
+[1.278567] (custom_msg) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[1.302624] (-) TimerEvent: {}
+[1.402892] (-) TimerEvent: {}
+[1.503099] (-) TimerEvent: {}
+[1.556005] (custom_msg) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[1.603183] (-) TimerEvent: {}
+[1.619390] (custom_msg) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)\n'}
+[1.703263] (-) TimerEvent: {}
+[1.803523] (-) TimerEvent: {}
+[1.903733] (-) TimerEvent: {}
+[1.911777] (custom_msg) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)\n'}
+[2.003840] (-) TimerEvent: {}
+[2.104040] (-) TimerEvent: {}
+[2.204219] (-) TimerEvent: {}
+[2.216518] (custom_msg) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[2.304324] (-) TimerEvent: {}
+[2.311265] (custom_msg) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[2.324974] (custom_msg) StdoutLine: {'line': b'-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)\n'}
+[2.355278] (custom_msg) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[2.355430] (custom_msg) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10\n'}
+[2.355514] (custom_msg) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so\n'}
+[2.387878] (custom_msg) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.11 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[2.404579] (-) TimerEvent: {}
+[2.489695] (custom_msg) StdoutLine: {'line': b'-- Found rclcpp: 16.0.11 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[2.504698] (-) TimerEvent: {}
+[2.605095] (-) TimerEvent: {}
+[2.679130] (custom_msg) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[2.705161] (-) TimerEvent: {}
+[2.712772] (custom_msg) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[2.805246] (-) TimerEvent: {}
+[2.888528] (custom_msg) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[2.905315] (-) TimerEvent: {}
+[3.005512] (-) TimerEvent: {}
+[3.009925] (custom_msg) StdoutLine: {'line': b'-- Found custom_msg: 0.0.0 (/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake)\n'}
+[3.083148] (custom_msg) StdoutLine: {'line': b"-- Added test 'flake8' to check Python code syntax and style conventions\n"}
+[3.085551] (custom_msg) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[3.092434] (custom_msg) StdoutLine: {'line': b"-- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257\n"}
+[3.102268] (custom_msg) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[3.103267] (custom_msg) StdoutLine: {'line': b'-- Configuring done\n'}
+[3.105600] (-) TimerEvent: {}
+[3.205499] (custom_msg) StdoutLine: {'line': b'-- Generating done\n'}
+[3.205604] (-) TimerEvent: {}
+[3.213763] (custom_msg) StdoutLine: {'line': b'-- Build files have been written to: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg\n'}
+[3.245765] (custom_msg) StdoutLine: {'line': b'[  2%] \x1b[34m\x1b[1mGenerating C code for ROS interfaces\x1b[0m\n'}
+[3.272010] (custom_msg) StdoutLine: {'line': b'[  4%] \x1b[34m\x1b[1mGenerating C++ code for ROS interfaces\x1b[0m\n'}
+[3.305711] (-) TimerEvent: {}
+[3.315327] (custom_msg) StdoutLine: {'line': b'[  4%] Built target ament_cmake_python_copy_custom_msg\n'}
+[3.405788] (-) TimerEvent: {}
+[3.433471] (custom_msg) StdoutLine: {'line': b'running egg_info\n'}
+[3.433859] (custom_msg) StdoutLine: {'line': b'writing custom_msg.egg-info/PKG-INFO\n'}
+[3.433969] (custom_msg) StdoutLine: {'line': b'writing dependency_links to custom_msg.egg-info/dependency_links.txt\n'}
+[3.434051] (custom_msg) StdoutLine: {'line': b'writing top-level names to custom_msg.egg-info/top_level.txt\n'}
+[3.435221] (custom_msg) StdoutLine: {'line': b"reading manifest file 'custom_msg.egg-info/SOURCES.txt'\n"}
+[3.446486] (custom_msg) StdoutLine: {'line': b"writing manifest file 'custom_msg.egg-info/SOURCES.txt'\n"}
+[3.459830] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_generator_c\x1b[0m\n'}
+[3.463575] (custom_msg) StdoutLine: {'line': b'[  4%] Built target ament_cmake_python_build_custom_msg_egg\n'}
+[3.465779] (custom_msg) StdoutLine: {'line': b'[  4%] Built target custom_msg__cpp\n'}
+[3.471508] (custom_msg) StdoutLine: {'line': b'[  6%] \x1b[34m\x1b[1mGenerating C++ type support for eProsima Fast-RTPS\x1b[0m\n'}
+[3.471614] (custom_msg) StdoutLine: {'line': b'[  8%] \x1b[34m\x1b[1mGenerating C++ introspection for ROS interfaces\x1b[0m\n'}
+[3.472116] (custom_msg) StdoutLine: {'line': b'[ 10%] \x1b[34m\x1b[1mGenerating C++ type support dispatch for ROS interfaces\x1b[0m\n'}
+[3.483509] (custom_msg) StdoutLine: {'line': b'[ 12%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_generator_c.dir/rosidl_generator_c/custom_msg/msg/detail/num__functions.c.o\x1b[0m\n'}
+[3.484418] (custom_msg) StdoutLine: {'line': b'[ 14%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_generator_c.dir/rosidl_generator_c/custom_msg/srv/detail/add_three_ints__functions.c.o\x1b[0m\n'}
+[3.484792] (custom_msg) StdoutLine: {'line': b'[ 17%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_generator_c.dir/rosidl_generator_c/custom_msg/msg/detail/sphere__functions.c.o\x1b[0m\n'}
+[3.505892] (-) TimerEvent: {}
+[3.606079] (-) TimerEvent: {}
+[3.632643] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_typesupport_introspection_cpp\x1b[0m\n'}
+[3.648299] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_typesupport_cpp\x1b[0m\n'}
+[3.663125] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_typesupport_fastrtps_cpp\x1b[0m\n'}
+[3.706184] (-) TimerEvent: {}
+[3.751562] (custom_msg) StdoutLine: {'line': b'[ 31%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/custom_msg/srv/detail/dds_fastrtps/add_three_ints__type_support.cpp.o\x1b[0m\n'}
+[3.751764] (custom_msg) StdoutLine: {'line': b'[ 31%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/custom_msg/msg/sphere__type_support.cpp.o\x1b[0m\n'}
+[3.751863] (custom_msg) StdoutLine: {'line': b'[ 31%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/custom_msg/msg/detail/num__type_support.cpp.o\x1b[0m\n'}
+[3.751939] (custom_msg) StdoutLine: {'line': b'[ 31%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/custom_msg/msg/detail/dds_fastrtps/num__type_support.cpp.o\x1b[0m\n'}
+[3.752014] (custom_msg) StdoutLine: {'line': b'[ 31%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/custom_msg/srv/detail/add_three_ints__type_support.cpp.o\x1b[0m\n'}
+[3.752107] (custom_msg) StdoutLine: {'line': b'[ 31%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/custom_msg/msg/detail/sphere__type_support.cpp.o\x1b[0m\n'}
+[3.752178] (custom_msg) StdoutLine: {'line': b'[ 31%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/custom_msg/msg/detail/dds_fastrtps/sphere__type_support.cpp.o\x1b[0m\n'}
+[3.752468] (custom_msg) StdoutLine: {'line': b'[ 36%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/custom_msg/srv/add_three_ints__type_support.cpp.o\x1b[0m\n'}
+[3.752550] (custom_msg) StdoutLine: {'line': b'[ 36%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/custom_msg/msg/num__type_support.cpp.o\x1b[0m\n'}
+[3.806307] (-) TimerEvent: {}
+[3.906583] (-) TimerEvent: {}
+[4.006952] (-) TimerEvent: {}
+[4.107309] (-) TimerEvent: {}
+[4.207725] (-) TimerEvent: {}
+[4.308073] (-) TimerEvent: {}
+[4.408479] (-) TimerEvent: {}
+[4.508887] (-) TimerEvent: {}
+[4.609183] (-) TimerEvent: {}
+[4.709421] (-) TimerEvent: {}
+[4.809654] (-) TimerEvent: {}
+[4.821814] (custom_msg) StdoutLine: {'line': b'[ 38%] \x1b[32m\x1b[1mLinking C shared library libcustom_msg__rosidl_generator_c.so\x1b[0m\n'}
+[4.909754] (-) TimerEvent: {}
+[5.010091] (-) TimerEvent: {}
+[5.110329] (-) TimerEvent: {}
+[5.210558] (-) TimerEvent: {}
+[5.260496] (custom_msg) StdoutLine: {'line': b'[ 38%] Built target custom_msg__rosidl_generator_c\n'}
+[5.266119] (custom_msg) StdoutLine: {'line': b'[ 40%] \x1b[34m\x1b[1mGenerating C type support dispatch for ROS interfaces\x1b[0m\n'}
+[5.267807] (custom_msg) StdoutLine: {'line': b'[ 42%] \x1b[34m\x1b[1mGenerating C introspection for ROS interfaces\x1b[0m\n'}
+[5.268306] (custom_msg) StdoutLine: {'line': b'[ 44%] \x1b[34m\x1b[1mGenerating C type support for eProsima Fast-RTPS\x1b[0m\n'}
+[5.310664] (-) TimerEvent: {}
+[5.407658] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_typesupport_c\x1b[0m\n'}
+[5.410736] (-) TimerEvent: {}
+[5.414780] (custom_msg) StdoutLine: {'line': b'[ 48%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_c.dir/rosidl_typesupport_c/custom_msg/msg/sphere__type_support.cpp.o\x1b[0m\n'}
+[5.415003] (custom_msg) StdoutLine: {'line': b'[ 48%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_c.dir/rosidl_typesupport_c/custom_msg/srv/add_three_ints__type_support.cpp.o\x1b[0m\n'}
+[5.416862] (custom_msg) StdoutLine: {'line': b'[ 51%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_c.dir/rosidl_typesupport_c/custom_msg/msg/num__type_support.cpp.o\x1b[0m\n'}
+[5.442164] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_typesupport_introspection_c\x1b[0m\n'}
+[5.449899] (custom_msg) StdoutLine: {'line': b'[ 57%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/custom_msg/msg/detail/sphere__type_support.c.o\x1b[0m\n'}
+[5.450074] (custom_msg) StdoutLine: {'line': b'[ 57%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/custom_msg/srv/detail/add_three_ints__type_support.c.o\x1b[0m\n'}
+[5.450115] (custom_msg) StdoutLine: {'line': b'[ 57%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/custom_msg/msg/detail/num__type_support.c.o\x1b[0m\n'}
+[5.480466] (custom_msg) StdoutLine: {'line': b'[ 59%] \x1b[32m\x1b[1mLinking C shared library libcustom_msg__rosidl_typesupport_introspection_c.so\x1b[0m\n'}
+[5.498247] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_typesupport_fastrtps_c\x1b[0m\n'}
+[5.509240] (custom_msg) StdoutLine: {'line': b'[ 63%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/custom_msg/msg/detail/sphere__type_support_c.cpp.o\x1b[0m\n'}
+[5.509407] (custom_msg) StdoutLine: {'line': b'[ 63%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/custom_msg/srv/detail/add_three_ints__type_support_c.cpp.o\x1b[0m\n'}
+[5.510646] (custom_msg) StdoutLine: {'line': b'[ 65%] \x1b[32mBuilding CXX object CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/custom_msg/msg/detail/num__type_support_c.cpp.o\x1b[0m\n'}
+[5.510843] (-) TimerEvent: {}
+[5.555997] (custom_msg) StdoutLine: {'line': b'[ 68%] \x1b[32m\x1b[1mLinking CXX shared library libcustom_msg__rosidl_typesupport_cpp.so\x1b[0m\n'}
+[5.556865] (custom_msg) StdoutLine: {'line': b'[ 70%] \x1b[32m\x1b[1mLinking CXX shared library libcustom_msg__rosidl_typesupport_c.so\x1b[0m\n'}
+[5.610961] (-) TimerEvent: {}
+[5.644529] (custom_msg) StdoutLine: {'line': b'[ 72%] \x1b[32m\x1b[1mLinking CXX shared library libcustom_msg__rosidl_typesupport_introspection_cpp.so\x1b[0m\n'}
+[5.703449] (custom_msg) StdoutLine: {'line': b'[ 72%] Built target custom_msg__rosidl_typesupport_introspection_c\n'}
+[5.711074] (-) TimerEvent: {}
+[5.769870] (custom_msg) StdoutLine: {'line': b'[ 72%] Built target custom_msg__rosidl_typesupport_cpp\n'}
+[5.770624] (custom_msg) StdoutLine: {'line': b'[ 72%] Built target custom_msg__rosidl_typesupport_c\n'}
+[5.792177] (custom_msg) StdoutLine: {'line': b'[ 72%] Built target custom_msg__rosidl_typesupport_introspection_cpp\n'}
+[5.811146] (-) TimerEvent: {}
+[5.911386] (-) TimerEvent: {}
+[5.954200] (custom_msg) StdoutLine: {'line': b'[ 74%] \x1b[32m\x1b[1mLinking CXX shared library libcustom_msg__rosidl_typesupport_fastrtps_c.so\x1b[0m\n'}
+[5.990045] (custom_msg) StdoutLine: {'line': b'[ 76%] \x1b[32m\x1b[1mLinking CXX shared library libcustom_msg__rosidl_typesupport_fastrtps_cpp.so\x1b[0m\n'}
+[6.011503] (-) TimerEvent: {}
+[6.077930] (custom_msg) StdoutLine: {'line': b'[ 76%] Built target custom_msg__rosidl_typesupport_fastrtps_c\n'}
+[6.090799] (custom_msg) StdoutLine: {'line': b'[ 76%] Built target custom_msg__rosidl_typesupport_fastrtps_cpp\n'}
+[6.103974] (custom_msg) StdoutLine: {'line': b'[ 76%] Built target custom_msg\n'}
+[6.111602] (-) TimerEvent: {}
+[6.118075] (custom_msg) StdoutLine: {'line': b'[ 78%] \x1b[34m\x1b[1mGenerating Python code for ROS interfaces\x1b[0m\n'}
+[6.211713] (-) TimerEvent: {}
+[6.311924] (-) TimerEvent: {}
+[6.393585] (custom_msg) StdoutLine: {'line': b'[ 78%] Built target custom_msg__py\n'}
+[6.401395] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_generator_py\x1b[0m\n'}
+[6.412047] (-) TimerEvent: {}
+[6.512238] (-) TimerEvent: {}
+[6.584786] (custom_msg) StdoutLine: {'line': b'[ 80%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_generator_py.dir/rosidl_generator_py/custom_msg/msg/_num_s.c.o\x1b[0m\n'}
+[6.584941] (custom_msg) StdoutLine: {'line': b'[ 82%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_generator_py.dir/rosidl_generator_py/custom_msg/msg/_sphere_s.c.o\x1b[0m\n'}
+[6.586580] (custom_msg) StdoutLine: {'line': b'[ 85%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_generator_py.dir/rosidl_generator_py/custom_msg/srv/_add_three_ints_s.c.o\x1b[0m\n'}
+[6.612325] (-) TimerEvent: {}
+[6.712590] (-) TimerEvent: {}
+[6.809580] (custom_msg) StdoutLine: {'line': b'[ 87%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/custom_msg/libcustom_msg__rosidl_generator_py.so\x1b[0m\n'}
+[6.812624] (-) TimerEvent: {}
+[6.844065] (custom_msg) StdoutLine: {'line': b'[ 87%] Built target custom_msg__rosidl_generator_py\n'}
+[6.851544] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_typesupport_fastrtps_c__pyext\x1b[0m\n'}
+[6.853750] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_typesupport_c__pyext\x1b[0m\n'}
+[6.857499] (custom_msg) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_msg__rosidl_typesupport_introspection_c__pyext\x1b[0m\n'}
+[6.859815] (custom_msg) StdoutLine: {'line': b'[ 89%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/custom_msg/_custom_msg_s.ep.rosidl_typesupport_fastrtps_c.c.o\x1b[0m\n'}
+[6.862032] (custom_msg) StdoutLine: {'line': b'[ 91%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/custom_msg/_custom_msg_s.ep.rosidl_typesupport_c.c.o\x1b[0m\n'}
+[6.864454] (custom_msg) StdoutLine: {'line': b'[ 93%] \x1b[32mBuilding C object CMakeFiles/custom_msg__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/custom_msg/_custom_msg_s.ep.rosidl_typesupport_introspection_c.c.o\x1b[0m\n'}
+[6.912742] (-) TimerEvent: {}
+[6.915711] (custom_msg) StdoutLine: {'line': b'[ 95%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/custom_msg/custom_msg_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[6.917649] (custom_msg) StdoutLine: {'line': b'[ 97%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/custom_msg/custom_msg_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[6.921088] (custom_msg) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/custom_msg/custom_msg_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[6.938585] (custom_msg) StdoutLine: {'line': b'[100%] Built target custom_msg__rosidl_typesupport_c__pyext\n'}
+[6.943814] (custom_msg) StdoutLine: {'line': b'[100%] Built target custom_msg__rosidl_typesupport_fastrtps_c__pyext\n'}
+[6.944828] (custom_msg) StdoutLine: {'line': b'[100%] Built target custom_msg__rosidl_typesupport_introspection_c__pyext\n'}
+[6.951408] (custom_msg) CommandEnded: {'returncode': 0}
+[6.956278] (custom_msg) JobProgress: {'identifier': 'custom_msg', 'progress': 'install'}
+[6.961663] (custom_msg) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg'], 'cwd': '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'matt'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/matt'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('DBUS_STARTER_BUS_TYPE', 'session'), ('SYSTEMD_EXEC_PID', '1533'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus,guid=089966ec204b6e1eb6700c2d6789c9b9'), ('COLORTERM', 'truecolor'), ('COLCON_PREFIX_PATH', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'matt'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'matt'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/matt-desktop:@/tmp/.ICE-unix/1533,unix/matt-desktop:/tmp/.ICE-unix/1533'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/e699a521_564b_4da1_8261_c05262524b62'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.103'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('DBUS_STARTER_ADDRESS', 'unix:path=/run/user/1000/bus,guid=089966ec204b6e1eb6700c2d6789c9b9'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/AutonControlNode:/opt/ros/humble')]), 'shell': False}
+[6.966150] (custom_msg) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[6.966245] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/ament_index/resource_index/rosidl_interfaces/custom_msg\n'}
+[6.966289] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg\n'}
+[6.966320] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv\n'}
+[6.966350] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail\n'}
+[6.966387] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__functions.h\n'}
+[6.966420] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__type_support.h\n'}
+[6.966446] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__struct.h\n'}
+[6.966480] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__functions.c\n'}
+[6.966523] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/add_three_ints.h\n'}
+[6.966573] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg\n'}
+[6.966611] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/rosidl_generator_c__visibility_control.h\n'}
+[6.966659] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail\n'}
+[6.966694] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__functions.h\n'}
+[6.966726] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__struct.h\n'}
+[6.966753] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__type_support.h\n'}
+[6.966787] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__struct.h\n'}
+[6.966824] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__type_support.h\n'}
+[6.966874] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__functions.c\n'}
+[6.966927] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__functions.h\n'}
+[6.966993] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__functions.c\n'}
+[6.967062] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/sphere.h\n'}
+[6.967117] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/num.h\n'}
+[6.967189] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/environment/library_path.sh\n'}
+[6.967225] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/environment/library_path.dsv\n'}
+[6.967328] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_generator_c.so\n'}
+[6.967501] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_generator_c.so" to ""\n'}
+[6.967562] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg\n'}
+[6.967602] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv\n'}
+[6.967630] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail\n'}
+[6.967673] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__rosidl_typesupport_fastrtps_c.h\n'}
+[6.967700] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg\n'}
+[6.967735] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail\n'}
+[6.967760] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__rosidl_typesupport_fastrtps_c.h\n'}
+[6.967793] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__rosidl_typesupport_fastrtps_c.h\n'}
+[6.967818] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[6.967852] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_fastrtps_c.so\n'}
+[6.967993] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_fastrtps_c.so" to ""\n'}
+[6.968036] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg\n'}
+[6.968077] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv\n'}
+[6.968102] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail\n'}
+[6.968128] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__struct.hpp\n'}
+[6.968200] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__type_support.hpp\n'}
+[6.968243] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__traits.hpp\n'}
+[6.968299] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__builder.hpp\n'}
+[6.968351] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/add_three_ints.hpp\n'}
+[6.968406] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg\n'}
+[6.968444] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/num.hpp\n'}
+[6.968484] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/sphere.hpp\n'}
+[6.968533] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail\n'}
+[6.968566] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__traits.hpp\n'}
+[6.968599] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__struct.hpp\n'}
+[6.968649] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__builder.hpp\n'}
+[6.968701] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__type_support.hpp\n'}
+[6.968752] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__struct.hpp\n'}
+[6.968805] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__builder.hpp\n'}
+[6.968857] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__type_support.hpp\n'}
+[6.968910] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__traits.hpp\n'}
+[6.968961] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/rosidl_generator_cpp__visibility_control.hpp\n'}
+[6.969004] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg\n'}
+[6.969044] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv\n'}
+[6.969079] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail\n'}
+[6.969105] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[6.969150] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/dds_fastrtps\n'}
+[6.969187] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg\n'}
+[6.969220] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[6.969254] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail\n'}
+[6.969280] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[6.969305] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/dds_fastrtps\n'}
+[6.969331] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[6.969844] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_fastrtps_cpp.so\n'}
+[6.970010] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_fastrtps_cpp.so" to ""\n'}
+[6.970088] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg\n'}
+[6.970117] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv\n'}
+[6.970144] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail\n'}
+[6.970179] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__type_support.c\n'}
+[6.970219] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__rosidl_typesupport_introspection_c.h\n'}
+[6.970252] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg\n'}
+[6.970278] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail\n'}
+[6.970305] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__type_support.c\n'}
+[6.970379] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__rosidl_typesupport_introspection_c.h\n'}
+[6.970413] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__type_support.c\n'}
+[6.970439] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__rosidl_typesupport_introspection_c.h\n'}
+[6.970472] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[6.970509] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_introspection_c.so\n'}
+[6.970655] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_introspection_c.so" to ""\n'}
+[6.970740] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_c.so\n'}
+[6.970845] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_c.so" to ""\n'}
+[6.970896] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg\n'}
+[6.970940] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv\n'}
+[6.970969] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail\n'}
+[6.970997] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__rosidl_typesupport_introspection_cpp.hpp\n'}
+[6.971044] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/srv/detail/add_three_ints__type_support.cpp\n'}
+[6.971082] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg\n'}
+[6.971117] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail\n'}
+[6.971145] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__rosidl_typesupport_introspection_cpp.hpp\n'}
+[6.971174] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__type_support.cpp\n'}
+[6.971225] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/num__type_support.cpp\n'}
+[6.971266] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/include/custom_msg/custom_msg/msg/detail/sphere__rosidl_typesupport_introspection_cpp.hpp\n'}
+[6.971635] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_introspection_cpp.so\n'}
+[6.971778] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_introspection_cpp.so" to ""\n'}
+[6.971838] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_cpp.so\n'}
+[6.971985] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_typesupport_cpp.so" to ""\n'}
+[6.972025] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/environment/pythonpath.sh\n'}
+[6.972064] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/environment/pythonpath.dsv\n'}
+[6.972102] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg-0.0.0-py3.10.egg-info\n'}
+[6.972143] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg-0.0.0-py3.10.egg-info/top_level.txt\n'}
+[6.972179] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg-0.0.0-py3.10.egg-info/PKG-INFO\n'}
+[6.972215] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg-0.0.0-py3.10.egg-info/SOURCES.txt\n'}
+[6.972259] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg-0.0.0-py3.10.egg-info/dependency_links.txt\n'}
+[6.972327] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg\n'}
+[6.972366] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/__init__.py\n'}
+[6.972404] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/custom_msg_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[6.972463] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/libcustom_msg__rosidl_generator_py.so\n'}
+[6.972537] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/_custom_msg_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[6.972603] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/srv\n'}
+[6.972640] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/srv/__init__.py\n'}
+[6.972675] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/srv/_add_three_ints_s.c\n'}
+[6.972723] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/srv/_add_three_ints.py\n'}
+[6.972781] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/_custom_msg_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[6.972849] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/custom_msg_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[6.972916] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/custom_msg_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[6.972983] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/msg\n'}
+[6.973023] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/msg/__init__.py\n'}
+[6.973058] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/msg/_num_s.c\n'}
+[6.973103] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/msg/_sphere.py\n'}
+[6.973157] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/msg/_num.py\n'}
+[6.973212] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/msg/_sphere_s.c\n'}
+[6.973266] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/_custom_msg_s.ep.rosidl_typesupport_c.c\n'}
+[7.008721] (custom_msg) StdoutLine: {'line': b"Listing '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg'...\n"}
+[7.008817] (custom_msg) StdoutLine: {'line': b"Compiling '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/__init__.py'...\n"}
+[7.008855] (custom_msg) StdoutLine: {'line': b"Listing '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/msg'...\n"}
+[7.008890] (custom_msg) StdoutLine: {'line': b"Compiling '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/msg/__init__.py'...\n"}
+[7.008919] (custom_msg) StdoutLine: {'line': b"Compiling '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/msg/_num.py'...\n"}
+[7.008946] (custom_msg) StdoutLine: {'line': b"Compiling '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/msg/_sphere.py'...\n"}
+[7.008972] (custom_msg) StdoutLine: {'line': b"Listing '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/srv'...\n"}
+[7.008999] (custom_msg) StdoutLine: {'line': b"Compiling '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/srv/__init__.py'...\n"}
+[7.009031] (custom_msg) StdoutLine: {'line': b"Compiling '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/srv/_add_three_ints.py'...\n"}
+[7.011214] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/custom_msg_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[7.011371] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/custom_msg_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[7.011554] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/custom_msg_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[7.011653] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/custom_msg_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[7.011745] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/custom_msg_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[7.011928] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/local/lib/python3.10/dist-packages/custom_msg/custom_msg_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[7.012002] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_generator_py.so\n'}
+[7.012217] (custom_msg) StdoutLine: {'line': b'-- Set runtime path of "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/lib/libcustom_msg__rosidl_generator_py.so" to ""\n'}
+[7.012302] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/msg/Num.idl\n'}
+[7.012336] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/msg/Sphere.idl\n'}
+[7.012388] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/srv/AddThreeInts.idl\n'}
+[7.012429] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/msg/Num.msg\n'}
+[7.012478] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/msg/Sphere.msg\n'}
+[7.012528] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/srv/AddThreeInts.srv\n'}
+[7.012572] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/srv/AddThreeInts_Request.msg\n'}
+[7.012612] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/srv/AddThreeInts_Response.msg\n'}
+[7.012654] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/ament_index/resource_index/package_run_dependencies/custom_msg\n'}
+[7.012681] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/ament_index/resource_index/parent_prefix_path/custom_msg\n'}
+[7.012714] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/environment/ament_prefix_path.sh\n'}
+[7.012748] (-) TimerEvent: {}
+[7.012813] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/environment/ament_prefix_path.dsv\n'}
+[7.012863] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/environment/path.sh\n'}
+[7.012893] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/environment/path.dsv\n'}
+[7.012930] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/local_setup.bash\n'}
+[7.012958] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/local_setup.sh\n'}
+[7.013011] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/local_setup.zsh\n'}
+[7.013070] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/local_setup.dsv\n'}
+[7.013163] (custom_msg) StdoutLine: {'line': b'-- Installing: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/package.dsv\n'}
+[7.013214] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/ament_index/resource_index/packages/custom_msg\n'}
+[7.013252] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/export_custom_msg__rosidl_generator_cExport.cmake\n'}
+[7.013290] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/export_custom_msg__rosidl_generator_cExport-noconfig.cmake\n'}
+[7.013333] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/export_custom_msg__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[7.013374] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/export_custom_msg__rosidl_typesupport_fastrtps_cExport-noconfig.cmake\n'}
+[7.013409] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/export_custom_msg__rosidl_generator_cppExport.cmake\n'}
+[7.013444] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/export_custom_msg__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[7.013482] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/export_custom_msg__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake\n'}
+[7.013518] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/custom_msg__rosidl_typesupport_introspection_cExport.cmake\n'}
+[7.013556] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/custom_msg__rosidl_typesupport_introspection_cExport-noconfig.cmake\n'}
+[7.013603] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/custom_msg__rosidl_typesupport_cExport.cmake\n'}
+[7.013647] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/custom_msg__rosidl_typesupport_cExport-noconfig.cmake\n'}
+[7.013684] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/custom_msg__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[7.013717] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/custom_msg__rosidl_typesupport_introspection_cppExport-noconfig.cmake\n'}
+[7.013743] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/custom_msg__rosidl_typesupport_cppExport.cmake\n'}
+[7.013771] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/custom_msg__rosidl_typesupport_cppExport-noconfig.cmake\n'}
+[7.013798] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/export_custom_msg__rosidl_generator_pyExport.cmake\n'}
+[7.013830] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/export_custom_msg__rosidl_generator_pyExport-noconfig.cmake\n'}
+[7.013855] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/rosidl_cmake-extras.cmake\n'}
+[7.013883] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[7.013912] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[7.013939] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[7.013966] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[7.013992] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[7.014022] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[7.014051] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/custom_msgConfig.cmake\n'}
+[7.014077] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake/custom_msgConfig-version.cmake\n'}
+[7.014104] (custom_msg) StdoutLine: {'line': b'-- Up-to-date: /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/package.xml\n'}
+[7.015075] (custom_msg) CommandEnded: {'returncode': 0}
+[7.025010] (custom_msg) JobEnded: {'identifier': 'custom_msg', 'rc': 0}
+[7.025365] (-) EventReactorShutdown: {}

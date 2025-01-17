@@ -1,0 +1,26 @@
+[1.034s] Invoking command in '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/src/py_pubsub': PYTHONPATH=/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/py_pubsub/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/py_pubsub build --build-base /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/py_pubsub/build install --record /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/py_pubsub/install.log --single-version-externally-managed install_data
+[1.148s] running egg_info
+[1.149s] writing ../../build/py_pubsub/py_pubsub.egg-info/PKG-INFO
+[1.149s] writing dependency_links to ../../build/py_pubsub/py_pubsub.egg-info/dependency_links.txt
+[1.149s] writing entry points to ../../build/py_pubsub/py_pubsub.egg-info/entry_points.txt
+[1.149s] writing requirements to ../../build/py_pubsub/py_pubsub.egg-info/requires.txt
+[1.149s] writing top-level names to ../../build/py_pubsub/py_pubsub.egg-info/top_level.txt
+[1.150s] reading manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+[1.151s] writing manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+[1.151s] running build
+[1.151s] running build_py
+[1.151s] copying py_pubsub/tcp_relay.py -> /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.151s] running install
+[1.151s] running install_lib
+[1.152s] copying /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub/tcp_relay.py -> /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub
+[1.152s] byte-compiling /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/tcp_relay.py to tcp_relay.cpython-310.pyc
+[1.153s] running install_data
+[1.153s] running install_egg_info
+[1.154s] removing '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info' (and everything under it)
+[1.154s] Copying ../../build/py_pubsub/py_pubsub.egg-info to /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info
+[1.155s] running install_scripts
+[1.168s] Installing listener script to /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.168s] Installing talker script to /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.168s] Installing tcp_relay script to /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.168s] writing list of installed files to '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/py_pubsub/install.log'
+[1.180s] Invoked command in '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/src/py_pubsub' returned '0': PYTHONPATH=/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/py_pubsub/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/py_pubsub build --build-base /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/py_pubsub/build install --record /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/py_pubsub/install.log --single-version-externally-managed install_data

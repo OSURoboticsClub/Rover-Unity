@@ -449,12 +449,18 @@ CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fast
   /usr/include/c++/11/bits/istream.tcc \
   /usr/include/malloc.h \
   rosidl_generator_c/custom_msg/msg/detail/sphere__struct.h \
+<<<<<<< HEAD
+  rosidl_generator_c/custom_msg/msg/detail/sphere__functions.h \
+  /usr/include/c++/11/stdlib.h \
+  rosidl_generator_c/custom_msg/msg/rosidl_generator_c__visibility_control.h
+=======
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.h \
   rosidl_generator_c/custom_msg/msg/detail/sphere__functions.h \
   /usr/include/c++/11/stdlib.h \
   rosidl_generator_c/custom_msg/msg/rosidl_generator_c__visibility_control.h \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__functions.h \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/rosidl_generator_c__visibility_control.h
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 
 CMakeFiles/custom_msg__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/custom_msg/srv/detail/add_three_ints__type_support_c.cpp.o: rosidl_typesupport_fastrtps_c/custom_msg/srv/detail/add_three_ints__type_support_c.cpp \
   /usr/include/stdc-predef.h \
@@ -750,12 +756,15 @@ rosidl_generator_c/custom_msg/srv/detail/add_three_ints__type_support.h:
 
 /opt/ros/humble/include/rmw/rmw/events_statuses/liveliness_changed.h:
 
+<<<<<<< HEAD
+=======
 /opt/ros/humble/include/rmw/rmw/visibility_control.h:
 
 /opt/ros/humble/include/rmw/rmw/events_statuses/message_lost.h:
 
 /opt/ros/humble/include/rmw/rmw/qos_policy_kind.h:
 
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 /usr/include/stdlib.h:
 
 /usr/include/c++/11/bits/stl_construct.h:
@@ -812,10 +821,17 @@ rosidl_typesupport_fastrtps_c/custom_msg/srv/detail/add_three_ints__rosidl_types
 
 /usr/include/c++/11/iostream:
 
+<<<<<<< HEAD
+/opt/ros/humble/include/rmw/rmw/visibility_control.h:
+
+/usr/include/x86_64-linux-gnu/bits/endianness.h:
+
+=======
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__functions.h:
 
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
 /usr/include/locale.h:
@@ -832,8 +848,11 @@ rosidl_typesupport_fastrtps_c/custom_msg/srv/detail/add_three_ints__rosidl_types
 
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
+<<<<<<< HEAD
+=======
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/rosidl_generator_c__visibility_control.h:
 
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 /usr/include/x86_64-linux-gnu/c++/11/bits/atomic_word.h:
 
 /usr/include/c++/11/cstdlib:
@@ -868,6 +887,13 @@ rosidl_typesupport_fastrtps_c/custom_msg/srv/detail/add_three_ints__rosidl_types
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
 
+<<<<<<< HEAD
+/opt/ros/humble/include/rmw/rmw/events_statuses/message_lost.h:
+
+/opt/ros/humble/include/rmw/rmw/qos_policy_kind.h:
+
+=======
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
 /usr/include/c++/11/limits:
@@ -1254,12 +1280,15 @@ rosidl_generator_c/custom_msg/msg/detail/num__functions.h:
 
 rosidl_generator_c/custom_msg/msg/rosidl_generator_c__visibility_control.h:
 
+<<<<<<< HEAD
+=======
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.h:
 
 /opt/ros/humble/include/rmw/rmw/events_statuses/incompatible_qos.h:
 
 rosidl_generator_c/custom_msg/msg/detail/sphere__functions.h:
 
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 rosidl_typesupport_fastrtps_c/custom_msg/srv/detail/add_three_ints__type_support_c.cpp:
 
 rosidl_generator_c/custom_msg/srv/detail/add_three_ints__struct.h:
@@ -1281,3 +1310,10 @@ rosidl_generator_c/custom_msg/srv/detail/add_three_ints__functions.h:
 /opt/ros/humble/include/rcutils/rcutils/types/char_array.h:
 
 /opt/ros/humble/include/rmw/rmw/events_statuses/events_statuses.h:
+<<<<<<< HEAD
+
+rosidl_generator_c/custom_msg/msg/detail/sphere__functions.h:
+
+/opt/ros/humble/include/rmw/rmw/events_statuses/incompatible_qos.h:
+=======
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49

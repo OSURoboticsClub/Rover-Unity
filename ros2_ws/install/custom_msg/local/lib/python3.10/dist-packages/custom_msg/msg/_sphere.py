@@ -44,10 +44,6 @@ class Metaclass_Sphere(type):
             cls._TYPE_SUPPORT = module.type_support_msg__msg__sphere
             cls._DESTROY_ROS_MESSAGE = module.destroy_ros_message_msg__msg__sphere
 
-            from geometry_msgs.msg import Point
-            if Point.__class__._TYPE_SUPPORT is None:
-                Point.__class__.__import_type_support__()
-
     @classmethod
     def __prepare__(cls, name, bases, **kwargs):
         # list constant names here so that they appear in the help text of
@@ -61,17 +57,20 @@ class Sphere(metaclass=Metaclass_Sphere):
     """Message class 'Sphere'."""
 
     __slots__ = [
-        '_center',
-        '_radius',
+        '_cmd',
+        '_latitude',
+        '_longitude',
     ]
 
     _fields_and_field_types = {
-        'center': 'geometry_msgs/Point',
-        'radius': 'double',
+        'cmd': 'string',
+        'latitude': 'double',
+        'longitude': 'double',
     }
 
     SLOT_TYPES = (
-        rosidl_parser.definition.NamespacedType(['geometry_msgs', 'msg'], 'Point'),  # noqa: E501
+        rosidl_parser.definition.UnboundedString(),  # noqa: E501
+        rosidl_parser.definition.BasicType('double'),  # noqa: E501
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
     )
 
@@ -79,9 +78,9 @@ class Sphere(metaclass=Metaclass_Sphere):
         assert all('_' + key in self.__slots__ for key in kwargs.keys()), \
             'Invalid arguments passed to constructor: %s' % \
             ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
-        from geometry_msgs.msg import Point
-        self.center = kwargs.get('center', Point())
-        self.radius = kwargs.get('radius', float())
+        self.cmd = kwargs.get('cmd', str())
+        self.latitude = kwargs.get('latitude', float())
+        self.longitude = kwargs.get('longitude', float())
 
     def __repr__(self):
         typename = self.__class__.__module__.split('.')
@@ -112,9 +111,11 @@ class Sphere(metaclass=Metaclass_Sphere):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        if self.center != other.center:
+        if self.cmd != other.cmd:
             return False
-        if self.radius != other.radius:
+        if self.latitude != other.latitude:
+            return False
+        if self.longitude != other.longitude:
             return False
         return True
 
@@ -124,30 +125,44 @@ class Sphere(metaclass=Metaclass_Sphere):
         return copy(cls._fields_and_field_types)
 
     @builtins.property
-    def center(self):
-        """Message field 'center'."""
-        return self._center
+    def cmd(self):
+        """Message field 'cmd'."""
+        return self._cmd
 
-    @center.setter
-    def center(self, value):
+    @cmd.setter
+    def cmd(self, value):
         if __debug__:
-            from geometry_msgs.msg import Point
             assert \
-                isinstance(value, Point), \
-                "The 'center' field must be a sub message of type 'Point'"
-        self._center = value
+                isinstance(value, str), \
+                "The 'cmd' field must be of type 'str'"
+        self._cmd = value
 
     @builtins.property
-    def radius(self):
-        """Message field 'radius'."""
-        return self._radius
+    def latitude(self):
+        """Message field 'latitude'."""
+        return self._latitude
 
-    @radius.setter
-    def radius(self, value):
+    @latitude.setter
+    def latitude(self, value):
         if __debug__:
             assert \
                 isinstance(value, float), \
-                "The 'radius' field must be of type 'float'"
+                "The 'latitude' field must be of type 'float'"
             assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'radius' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._radius = value
+                "The 'latitude' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
+        self._latitude = value
+
+    @builtins.property
+    def longitude(self):
+        """Message field 'longitude'."""
+        return self._longitude
+
+    @longitude.setter
+    def longitude(self, value):
+        if __debug__:
+            assert \
+                isinstance(value, float), \
+                "The 'longitude' field must be of type 'float'"
+            assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
+                "The 'longitude' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
+        self._longitude = value

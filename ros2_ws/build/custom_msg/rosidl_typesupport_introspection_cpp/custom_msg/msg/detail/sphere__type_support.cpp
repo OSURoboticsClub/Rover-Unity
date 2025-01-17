@@ -37,16 +37,16 @@ void Sphere_fini_function(void * message_memory)
   typed_message->~Sphere();
 }
 
-static const ::rosidl_typesupport_introspection_cpp::MessageMember Sphere_message_member_array[2] = {
+static const ::rosidl_typesupport_introspection_cpp::MessageMember Sphere_message_member_array[3] = {
   {
-    "center",  // name
-    ::rosidl_typesupport_introspection_cpp::ROS_TYPE_MESSAGE,  // type
+    "cmd",  // name
+    ::rosidl_typesupport_introspection_cpp::ROS_TYPE_STRING,  // type
     0,  // upper bound of string
-    ::rosidl_typesupport_introspection_cpp::get_message_type_support_handle<geometry_msgs::msg::Point>(),  // members of sub message
+    nullptr,  // members of sub message
     false,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(custom_msg::msg::Sphere, center),  // bytes offset in struct
+    offsetof(custom_msg::msg::Sphere, cmd),  // bytes offset in struct
     nullptr,  // default value
     nullptr,  // size() function pointer
     nullptr,  // get_const(index) function pointer
@@ -56,14 +56,31 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember Sphere_messag
     nullptr  // resize(index) function pointer
   },
   {
-    "radius",  // name
+    "latitude",  // name
     ::rosidl_typesupport_introspection_cpp::ROS_TYPE_DOUBLE,  // type
     0,  // upper bound of string
     nullptr,  // members of sub message
     false,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(custom_msg::msg::Sphere, radius),  // bytes offset in struct
+    offsetof(custom_msg::msg::Sphere, latitude),  // bytes offset in struct
+    nullptr,  // default value
+    nullptr,  // size() function pointer
+    nullptr,  // get_const(index) function pointer
+    nullptr,  // get(index) function pointer
+    nullptr,  // fetch(index, &value) function pointer
+    nullptr,  // assign(index, value) function pointer
+    nullptr  // resize(index) function pointer
+  },
+  {
+    "longitude",  // name
+    ::rosidl_typesupport_introspection_cpp::ROS_TYPE_DOUBLE,  // type
+    0,  // upper bound of string
+    nullptr,  // members of sub message
+    false,  // is array
+    0,  // array size
+    false,  // is upper bound
+    offsetof(custom_msg::msg::Sphere, longitude),  // bytes offset in struct
     nullptr,  // default value
     nullptr,  // size() function pointer
     nullptr,  // get_const(index) function pointer
@@ -77,7 +94,7 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember Sphere_messag
 static const ::rosidl_typesupport_introspection_cpp::MessageMembers Sphere_message_members = {
   "custom_msg::msg",  // message namespace
   "Sphere",  // message name
-  2,  // number of fields
+  3,  // number of fields
   sizeof(custom_msg::msg::Sphere),
   Sphere_message_member_array,  // message members
   Sphere_init_function,  // function to initialize message memory (memory has to be allocated)

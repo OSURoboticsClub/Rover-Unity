@@ -13,10 +13,8 @@
 
 
 // Include directives for member types
-// Member `center`
-#include "geometry_msgs/msg/point.h"
-// Member `center`
-#include "geometry_msgs/msg/detail/point__rosidl_typesupport_introspection_c.h"
+// Member `cmd`
+#include "rosidl_runtime_c/string_functions.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -37,16 +35,16 @@ void custom_msg__msg__Sphere__rosidl_typesupport_introspection_c__Sphere_fini_fu
   custom_msg__msg__Sphere__fini(message_memory);
 }
 
-static rosidl_typesupport_introspection_c__MessageMember custom_msg__msg__Sphere__rosidl_typesupport_introspection_c__Sphere_message_member_array[2] = {
+static rosidl_typesupport_introspection_c__MessageMember custom_msg__msg__Sphere__rosidl_typesupport_introspection_c__Sphere_message_member_array[3] = {
   {
-    "center",  // name
-    rosidl_typesupport_introspection_c__ROS_TYPE_MESSAGE,  // type
+    "cmd",  // name
+    rosidl_typesupport_introspection_c__ROS_TYPE_STRING,  // type
     0,  // upper bound of string
-    NULL,  // members of sub message (initialized later)
+    NULL,  // members of sub message
     false,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(custom_msg__msg__Sphere, center),  // bytes offset in struct
+    offsetof(custom_msg__msg__Sphere, cmd),  // bytes offset in struct
     NULL,  // default value
     NULL,  // size() function pointer
     NULL,  // get_const(index) function pointer
@@ -56,14 +54,31 @@ static rosidl_typesupport_introspection_c__MessageMember custom_msg__msg__Sphere
     NULL  // resize(index) function pointer
   },
   {
-    "radius",  // name
+    "latitude",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
     0,  // upper bound of string
     NULL,  // members of sub message
     false,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(custom_msg__msg__Sphere, radius),  // bytes offset in struct
+    offsetof(custom_msg__msg__Sphere, latitude),  // bytes offset in struct
+    NULL,  // default value
+    NULL,  // size() function pointer
+    NULL,  // get_const(index) function pointer
+    NULL,  // get(index) function pointer
+    NULL,  // fetch(index, &value) function pointer
+    NULL,  // assign(index, value) function pointer
+    NULL  // resize(index) function pointer
+  },
+  {
+    "longitude",  // name
+    rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
+    0,  // upper bound of string
+    NULL,  // members of sub message
+    false,  // is array
+    0,  // array size
+    false,  // is upper bound
+    offsetof(custom_msg__msg__Sphere, longitude),  // bytes offset in struct
     NULL,  // default value
     NULL,  // size() function pointer
     NULL,  // get_const(index) function pointer
@@ -77,7 +92,7 @@ static rosidl_typesupport_introspection_c__MessageMember custom_msg__msg__Sphere
 static const rosidl_typesupport_introspection_c__MessageMembers custom_msg__msg__Sphere__rosidl_typesupport_introspection_c__Sphere_message_members = {
   "custom_msg__msg",  // message namespace
   "Sphere",  // message name
-  2,  // number of fields
+  3,  // number of fields
   sizeof(custom_msg__msg__Sphere),
   custom_msg__msg__Sphere__rosidl_typesupport_introspection_c__Sphere_message_member_array,  // message members
   custom_msg__msg__Sphere__rosidl_typesupport_introspection_c__Sphere_init_function,  // function to initialize message memory (memory has to be allocated)
@@ -95,8 +110,6 @@ static rosidl_message_type_support_t custom_msg__msg__Sphere__rosidl_typesupport
 ROSIDL_TYPESUPPORT_INTROSPECTION_C_EXPORT_custom_msg
 const rosidl_message_type_support_t *
 ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, custom_msg, msg, Sphere)() {
-  custom_msg__msg__Sphere__rosidl_typesupport_introspection_c__Sphere_message_member_array[0].members_ =
-    ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, geometry_msgs, msg, Point)();
   if (!custom_msg__msg__Sphere__rosidl_typesupport_introspection_c__Sphere_message_type_support_handle.typesupport_identifier) {
     custom_msg__msg__Sphere__rosidl_typesupport_introspection_c__Sphere_message_type_support_handle.typesupport_identifier =
       rosidl_typesupport_introspection_c__identifier;

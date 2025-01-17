@@ -12,8 +12,8 @@
 
 
 // Include directives for member types
-// Member `center`
-#include "geometry_msgs/msg/detail/point__functions.h"
+// Member `cmd`
+#include "rosidl_runtime_c/string_functions.h"
 
 bool
 custom_msg__msg__Sphere__init(custom_msg__msg__Sphere * msg)
@@ -21,12 +21,13 @@ custom_msg__msg__Sphere__init(custom_msg__msg__Sphere * msg)
   if (!msg) {
     return false;
   }
-  // center
-  if (!geometry_msgs__msg__Point__init(&msg->center)) {
+  // cmd
+  if (!rosidl_runtime_c__String__init(&msg->cmd)) {
     custom_msg__msg__Sphere__fini(msg);
     return false;
   }
-  // radius
+  // latitude
+  // longitude
   return true;
 }
 
@@ -36,9 +37,10 @@ custom_msg__msg__Sphere__fini(custom_msg__msg__Sphere * msg)
   if (!msg) {
     return;
   }
-  // center
-  geometry_msgs__msg__Point__fini(&msg->center);
-  // radius
+  // cmd
+  rosidl_runtime_c__String__fini(&msg->cmd);
+  // latitude
+  // longitude
 }
 
 bool
@@ -47,14 +49,18 @@ custom_msg__msg__Sphere__are_equal(const custom_msg__msg__Sphere * lhs, const cu
   if (!lhs || !rhs) {
     return false;
   }
-  // center
-  if (!geometry_msgs__msg__Point__are_equal(
-      &(lhs->center), &(rhs->center)))
+  // cmd
+  if (!rosidl_runtime_c__String__are_equal(
+      &(lhs->cmd), &(rhs->cmd)))
   {
     return false;
   }
-  // radius
-  if (lhs->radius != rhs->radius) {
+  // latitude
+  if (lhs->latitude != rhs->latitude) {
+    return false;
+  }
+  // longitude
+  if (lhs->longitude != rhs->longitude) {
     return false;
   }
   return true;
@@ -68,14 +74,16 @@ custom_msg__msg__Sphere__copy(
   if (!input || !output) {
     return false;
   }
-  // center
-  if (!geometry_msgs__msg__Point__copy(
-      &(input->center), &(output->center)))
+  // cmd
+  if (!rosidl_runtime_c__String__copy(
+      &(input->cmd), &(output->cmd)))
   {
     return false;
   }
-  // radius
-  output->radius = input->radius;
+  // latitude
+  output->latitude = input->latitude;
+  // longitude
+  output->longitude = input->longitude;
   return true;
 }
 

@@ -66,7 +66,10 @@ CMakeFiles/custom_msg__rosidl_typesupport_c.dir/rosidl_typesupport_c/custom_msg/
   /usr/include/x86_64-linux-gnu/bits/wchar.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+<<<<<<< HEAD
+=======
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.h \
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
   rosidl_generator_c/custom_msg/msg/detail/sphere__type_support.h \
   rosidl_generator_c/custom_msg/msg/rosidl_generator_c__visibility_control.h \
   /opt/ros/humble/include/rosidl_typesupport_c/rosidl_typesupport_c/identifier.h \
@@ -119,8 +122,11 @@ rosidl_typesupport_c/custom_msg/srv/add_three_ints__type_support.cpp:
 
 rosidl_generator_c/custom_msg/msg/detail/sphere__type_support.h:
 
+<<<<<<< HEAD
+=======
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.h:
 
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 rosidl_typesupport_c/custom_msg/msg/sphere__type_support.cpp:
 
 rosidl_generator_c/custom_msg/srv/detail/add_three_ints__type_support.h:

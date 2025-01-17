@@ -208,6 +208,8 @@ CMakeFiles/custom_msg__rosidl_generator_py.dir/rosidl_generator_py/custom_msg/ms
  /usr/include/python3.10/numpy/__multiarray_api.h \
  /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/visibility_control.h \
  /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg/rosidl_generator_c/custom_msg/msg/detail/sphere__struct.h \
- /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.h \
+ /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/string.h \
+ /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/primitives_sequence.h \
  /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg/rosidl_generator_c/custom_msg/msg/detail/sphere__functions.h \
- /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg/rosidl_generator_c/custom_msg/msg/rosidl_generator_c__visibility_control.h
+ /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg/rosidl_generator_c/custom_msg/msg/rosidl_generator_c__visibility_control.h \
+ /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/string_functions.h

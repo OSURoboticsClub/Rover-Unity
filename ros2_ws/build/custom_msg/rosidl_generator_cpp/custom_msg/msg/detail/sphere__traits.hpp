@@ -14,10 +14,6 @@
 #include "custom_msg/msg/detail/sphere__struct.hpp"
 #include "rosidl_runtime_cpp/traits.hpp"
 
-// Include directives for member types
-// Member 'center'
-#include "geometry_msgs/msg/detail/point__traits.hpp"
-
 namespace custom_msg
 {
 
@@ -29,17 +25,24 @@ inline void to_flow_style_yaml(
   std::ostream & out)
 {
   out << "{";
-  // member: center
+  // member: cmd
   {
-    out << "center: ";
-    to_flow_style_yaml(msg.center, out);
+    out << "cmd: ";
+    rosidl_generator_traits::value_to_yaml(msg.cmd, out);
     out << ", ";
   }
 
-  // member: radius
+  // member: latitude
   {
-    out << "radius: ";
-    rosidl_generator_traits::value_to_yaml(msg.radius, out);
+    out << "latitude: ";
+    rosidl_generator_traits::value_to_yaml(msg.latitude, out);
+    out << ", ";
+  }
+
+  // member: longitude
+  {
+    out << "longitude: ";
+    rosidl_generator_traits::value_to_yaml(msg.longitude, out);
   }
   out << "}";
 }  // NOLINT(readability/fn_size)
@@ -48,22 +51,33 @@ inline void to_block_style_yaml(
   const Sphere & msg,
   std::ostream & out, size_t indentation = 0)
 {
-  // member: center
+  // member: cmd
   {
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "center:\n";
-    to_block_style_yaml(msg.center, out, indentation + 2);
+    out << "cmd: ";
+    rosidl_generator_traits::value_to_yaml(msg.cmd, out);
+    out << "\n";
   }
 
-  // member: radius
+  // member: latitude
   {
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "radius: ";
-    rosidl_generator_traits::value_to_yaml(msg.radius, out);
+    out << "latitude: ";
+    rosidl_generator_traits::value_to_yaml(msg.latitude, out);
+    out << "\n";
+  }
+
+  // member: longitude
+  {
+    if (indentation > 0) {
+      out << std::string(indentation, ' ');
+    }
+    out << "longitude: ";
+    rosidl_generator_traits::value_to_yaml(msg.longitude, out);
     out << "\n";
   }
 }  // NOLINT(readability/fn_size)
@@ -114,11 +128,11 @@ inline const char * name<custom_msg::msg::Sphere>()
 
 template<>
 struct has_fixed_size<custom_msg::msg::Sphere>
-  : std::integral_constant<bool, has_fixed_size<geometry_msgs::msg::Point>::value> {};
+  : std::integral_constant<bool, false> {};
 
 template<>
 struct has_bounded_size<custom_msg::msg::Sphere>
-  : std::integral_constant<bool, has_bounded_size<geometry_msgs::msg::Point>::value> {};
+  : std::integral_constant<bool, false> {};
 
 template<>
 struct is_message<custom_msg::msg::Sphere>

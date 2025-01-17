@@ -18,14 +18,15 @@ extern "C"
 // Constants defined in the message
 
 // Include directives for member types
-// Member 'center'
-#include "geometry_msgs/msg/detail/point__struct.h"
+// Member 'cmd'
+#include "rosidl_runtime_c/string.h"
 
 /// Struct defined in msg/Sphere in the package custom_msg.
 typedef struct custom_msg__msg__Sphere
 {
-  geometry_msgs__msg__Point center;
-  double radius;
+  rosidl_runtime_c__String cmd;
+  double latitude;
+  double longitude;
 } custom_msg__msg__Sphere;
 
 // Struct for a sequence of custom_msg__msg__Sphere.

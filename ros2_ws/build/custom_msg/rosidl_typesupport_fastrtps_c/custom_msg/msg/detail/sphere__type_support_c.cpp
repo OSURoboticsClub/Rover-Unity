@@ -34,23 +34,10 @@ extern "C"
 {
 #endif
 
-#include "geometry_msgs/msg/detail/point__functions.h"  // center
+#include "rosidl_runtime_c/string.h"  // cmd
+#include "rosidl_runtime_c/string_functions.h"  // cmd
 
 // forward declare type support functions
-ROSIDL_TYPESUPPORT_FASTRTPS_C_IMPORT_custom_msg
-size_t get_serialized_size_geometry_msgs__msg__Point(
-  const void * untyped_ros_message,
-  size_t current_alignment);
-
-ROSIDL_TYPESUPPORT_FASTRTPS_C_IMPORT_custom_msg
-size_t max_serialized_size_geometry_msgs__msg__Point(
-  bool & full_bounded,
-  bool & is_plain,
-  size_t current_alignment);
-
-ROSIDL_TYPESUPPORT_FASTRTPS_C_IMPORT_custom_msg
-const rosidl_message_type_support_t *
-  ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_fastrtps_c, geometry_msgs, msg, Point)();
 
 
 using _Sphere__ros_msg_type = custom_msg__msg__Sphere;
@@ -64,23 +51,28 @@ static bool _Sphere__cdr_serialize(
     return false;
   }
   const _Sphere__ros_msg_type * ros_message = static_cast<const _Sphere__ros_msg_type *>(untyped_ros_message);
-  // Field name: center
+  // Field name: cmd
   {
-    const message_type_support_callbacks_t * callbacks =
-      static_cast<const message_type_support_callbacks_t *>(
-      ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(
-        rosidl_typesupport_fastrtps_c, geometry_msgs, msg, Point
-      )()->data);
-    if (!callbacks->cdr_serialize(
-        &ros_message->center, cdr))
-    {
+    const rosidl_runtime_c__String * str = &ros_message->cmd;
+    if (str->capacity == 0 || str->capacity <= str->size) {
+      fprintf(stderr, "string capacity not greater than size\n");
       return false;
     }
+    if (str->data[str->size] != '\0') {
+      fprintf(stderr, "string not null-terminated\n");
+      return false;
+    }
+    cdr << str->data;
   }
 
-  // Field name: radius
+  // Field name: latitude
   {
-    cdr << ros_message->radius;
+    cdr << ros_message->latitude;
+  }
+
+  // Field name: longitude
+  {
+    cdr << ros_message->longitude;
   }
 
   return true;
@@ -95,23 +87,30 @@ static bool _Sphere__cdr_deserialize(
     return false;
   }
   _Sphere__ros_msg_type * ros_message = static_cast<_Sphere__ros_msg_type *>(untyped_ros_message);
-  // Field name: center
+  // Field name: cmd
   {
-    const message_type_support_callbacks_t * callbacks =
-      static_cast<const message_type_support_callbacks_t *>(
-      ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(
-        rosidl_typesupport_fastrtps_c, geometry_msgs, msg, Point
-      )()->data);
-    if (!callbacks->cdr_deserialize(
-        cdr, &ros_message->center))
-    {
+    std::string tmp;
+    cdr >> tmp;
+    if (!ros_message->cmd.data) {
+      rosidl_runtime_c__String__init(&ros_message->cmd);
+    }
+    bool succeeded = rosidl_runtime_c__String__assign(
+      &ros_message->cmd,
+      tmp.c_str());
+    if (!succeeded) {
+      fprintf(stderr, "failed to assign string into field 'cmd'\n");
       return false;
     }
   }
 
-  // Field name: radius
+  // Field name: latitude
   {
-    cdr >> ros_message->radius;
+    cdr >> ros_message->latitude;
+  }
+
+  // Field name: longitude
+  {
+    cdr >> ros_message->longitude;
   }
 
   return true;
@@ -131,13 +130,19 @@ size_t get_serialized_size_custom_msg__msg__Sphere(
   (void)padding;
   (void)wchar_size;
 
-  // field.name center
-
-  current_alignment += get_serialized_size_geometry_msgs__msg__Point(
-    &(ros_message->center), current_alignment);
-  // field.name radius
+  // field.name cmd
+  current_alignment += padding +
+    eprosima::fastcdr::Cdr::alignment(current_alignment, padding) +
+    (ros_message->cmd.size + 1);
+  // field.name latitude
   {
-    size_t item_size = sizeof(ros_message->radius);
+    size_t item_size = sizeof(ros_message->latitude);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+  // field.name longitude
+  {
+    size_t item_size = sizeof(ros_message->longitude);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -170,26 +175,27 @@ size_t max_serialized_size_custom_msg__msg__Sphere(
   full_bounded = true;
   is_plain = true;
 
-  // member: center
+  // member: cmd
   {
     size_t array_size = 1;
 
-
-    last_member_size = 0;
+    full_bounded = false;
+    is_plain = false;
     for (size_t index = 0; index < array_size; ++index) {
-      bool inner_full_bounded;
-      bool inner_is_plain;
-      size_t inner_size;
-      inner_size =
-        max_serialized_size_geometry_msgs__msg__Point(
-        inner_full_bounded, inner_is_plain, current_alignment);
-      last_member_size += inner_size;
-      current_alignment += inner_size;
-      full_bounded &= inner_full_bounded;
-      is_plain &= inner_is_plain;
+      current_alignment += padding +
+        eprosima::fastcdr::Cdr::alignment(current_alignment, padding) +
+        1;
     }
   }
-  // member: radius
+  // member: latitude
+  {
+    size_t array_size = 1;
+
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+  // member: longitude
   {
     size_t array_size = 1;
 
@@ -206,7 +212,7 @@ size_t max_serialized_size_custom_msg__msg__Sphere(
     using DataType = custom_msg__msg__Sphere;
     is_plain =
       (
-      offsetof(DataType, radius) +
+      offsetof(DataType, longitude) +
       last_member_size
       ) == ret_val;
   }

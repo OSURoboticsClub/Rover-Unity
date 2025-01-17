@@ -16,30 +16,6 @@
 
 
 // forward declaration of message dependencies and their conversion functions
-namespace geometry_msgs
-{
-namespace msg
-{
-namespace typesupport_fastrtps_cpp
-{
-bool cdr_serialize(
-  const geometry_msgs::msg::Point &,
-  eprosima::fastcdr::Cdr &);
-bool cdr_deserialize(
-  eprosima::fastcdr::Cdr &,
-  geometry_msgs::msg::Point &);
-size_t get_serialized_size(
-  const geometry_msgs::msg::Point &,
-  size_t current_alignment);
-size_t
-max_serialized_size_Point(
-  bool & full_bounded,
-  bool & is_plain,
-  size_t current_alignment);
-}  // namespace typesupport_fastrtps_cpp
-}  // namespace msg
-}  // namespace geometry_msgs
-
 
 namespace custom_msg
 {
@@ -56,12 +32,12 @@ cdr_serialize(
   const custom_msg::msg::Sphere & ros_message,
   eprosima::fastcdr::Cdr & cdr)
 {
-  // Member: center
-  geometry_msgs::msg::typesupport_fastrtps_cpp::cdr_serialize(
-    ros_message.center,
-    cdr);
-  // Member: radius
-  cdr << ros_message.radius;
+  // Member: cmd
+  cdr << ros_message.cmd;
+  // Member: latitude
+  cdr << ros_message.latitude;
+  // Member: longitude
+  cdr << ros_message.longitude;
   return true;
 }
 
@@ -71,12 +47,14 @@ cdr_deserialize(
   eprosima::fastcdr::Cdr & cdr,
   custom_msg::msg::Sphere & ros_message)
 {
-  // Member: center
-  geometry_msgs::msg::typesupport_fastrtps_cpp::cdr_deserialize(
-    cdr, ros_message.center);
+  // Member: cmd
+  cdr >> ros_message.cmd;
 
-  // Member: radius
-  cdr >> ros_message.radius;
+  // Member: latitude
+  cdr >> ros_message.latitude;
+
+  // Member: longitude
+  cdr >> ros_message.longitude;
 
   return true;
 }
@@ -94,14 +72,19 @@ get_serialized_size(
   (void)padding;
   (void)wchar_size;
 
-  // Member: center
-
-  current_alignment +=
-    geometry_msgs::msg::typesupport_fastrtps_cpp::get_serialized_size(
-    ros_message.center, current_alignment);
-  // Member: radius
+  // Member: cmd
+  current_alignment += padding +
+    eprosima::fastcdr::Cdr::alignment(current_alignment, padding) +
+    (ros_message.cmd.size() + 1);
+  // Member: latitude
   {
-    size_t item_size = sizeof(ros_message.radius);
+    size_t item_size = sizeof(ros_message.latitude);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+  // Member: longitude
+  {
+    size_t item_size = sizeof(ros_message.longitude);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -129,26 +112,29 @@ max_serialized_size_Sphere(
   is_plain = true;
 
 
-  // Member: center
+  // Member: cmd
   {
     size_t array_size = 1;
 
-
-    last_member_size = 0;
+    full_bounded = false;
+    is_plain = false;
     for (size_t index = 0; index < array_size; ++index) {
-      bool inner_full_bounded;
-      bool inner_is_plain;
-      size_t inner_size =
-        geometry_msgs::msg::typesupport_fastrtps_cpp::max_serialized_size_Point(
-        inner_full_bounded, inner_is_plain, current_alignment);
-      last_member_size += inner_size;
-      current_alignment += inner_size;
-      full_bounded &= inner_full_bounded;
-      is_plain &= inner_is_plain;
+      current_alignment += padding +
+        eprosima::fastcdr::Cdr::alignment(current_alignment, padding) +
+        1;
     }
   }
 
-  // Member: radius
+  // Member: latitude
+  {
+    size_t array_size = 1;
+
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+
+  // Member: longitude
   {
     size_t array_size = 1;
 
@@ -165,7 +151,7 @@ max_serialized_size_Sphere(
     using DataType = custom_msg::msg::Sphere;
     is_plain =
       (
-      offsetof(DataType, radius) +
+      offsetof(DataType, longitude) +
       last_member_size
       ) == ret_val;
   }

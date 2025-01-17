@@ -248,7 +248,10 @@ CMakeFiles/custom_msg__rosidl_typesupport_introspection_c__pyext.dir/rosidl_gene
   rosidl_generator_c/custom_msg/msg/detail/num__functions.h \
   rosidl_generator_c/custom_msg/msg/detail/sphere__type_support.h \
   rosidl_generator_c/custom_msg/msg/detail/sphere__struct.h \
+<<<<<<< HEAD
+=======
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.h \
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
   rosidl_generator_c/custom_msg/msg/detail/sphere__functions.h \
   rosidl_generator_c/custom_msg/srv/detail/add_three_ints__type_support.h \
   rosidl_generator_c/custom_msg/srv/detail/add_three_ints__struct.h \
@@ -261,8 +264,11 @@ rosidl_generator_c/custom_msg/srv/detail/add_three_ints__struct.h:
 
 rosidl_generator_c/custom_msg/srv/detail/add_three_ints__type_support.h:
 
+<<<<<<< HEAD
+=======
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.h:
 
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 rosidl_generator_c/custom_msg/msg/detail/sphere__struct.h:
 
 rosidl_generator_c/custom_msg/msg/detail/num__functions.h:

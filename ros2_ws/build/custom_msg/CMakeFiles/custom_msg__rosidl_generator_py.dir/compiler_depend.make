@@ -500,7 +500,10 @@ CMakeFiles/custom_msg__rosidl_generator_py.dir/rosidl_generator_py/custom_msg/ms
   /usr/include/python3.10/numpy/__multiarray_api.h \
   /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/visibility_control.h \
   rosidl_generator_c/custom_msg/msg/detail/sphere__struct.h \
+<<<<<<< HEAD
+=======
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.h \
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
   rosidl_generator_c/custom_msg/msg/detail/sphere__functions.h \
   rosidl_generator_c/custom_msg/msg/rosidl_generator_c__visibility_control.h
 
@@ -762,8 +765,11 @@ rosidl_generator_c/custom_msg/srv/detail/add_three_ints__struct.h:
 
 rosidl_generator_py/custom_msg/srv/_add_three_ints_s.c:
 
+<<<<<<< HEAD
+=======
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point__struct.h:
 
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
 rosidl_generator_c/custom_msg/msg/detail/sphere__struct.h:
 
 rosidl_generator_py/custom_msg/msg/_sphere_s.c:

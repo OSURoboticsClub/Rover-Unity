@@ -16,10 +16,9 @@
 #include "custom_msg/msg/detail/sphere__struct.h"
 #include "custom_msg/msg/detail/sphere__functions.h"
 
-ROSIDL_GENERATOR_C_IMPORT
-bool geometry_msgs__msg__point__convert_from_py(PyObject * _pymsg, void * _ros_message);
-ROSIDL_GENERATOR_C_IMPORT
-PyObject * geometry_msgs__msg__point__convert_to_py(void * raw_ros_message);
+#include "rosidl_runtime_c/string.h"
+#include "rosidl_runtime_c/string_functions.h"
+
 
 ROSIDL_GENERATOR_C_EXPORT
 bool custom_msg__msg__sphere__convert_from_py(PyObject * _pymsg, void * _ros_message)
@@ -54,24 +53,37 @@ bool custom_msg__msg__sphere__convert_from_py(PyObject * _pymsg, void * _ros_mes
     assert(strncmp("custom_msg.msg._sphere.Sphere", full_classname_dest, 29) == 0);
   }
   custom_msg__msg__Sphere * ros_message = _ros_message;
-  {  // center
-    PyObject * field = PyObject_GetAttrString(_pymsg, "center");
+  {  // cmd
+    PyObject * field = PyObject_GetAttrString(_pymsg, "cmd");
     if (!field) {
       return false;
     }
-    if (!geometry_msgs__msg__point__convert_from_py(field, &ros_message->center)) {
+    assert(PyUnicode_Check(field));
+    PyObject * encoded_field = PyUnicode_AsUTF8String(field);
+    if (!encoded_field) {
       Py_DECREF(field);
       return false;
     }
+    rosidl_runtime_c__String__assign(&ros_message->cmd, PyBytes_AS_STRING(encoded_field));
+    Py_DECREF(encoded_field);
     Py_DECREF(field);
   }
-  {  // radius
-    PyObject * field = PyObject_GetAttrString(_pymsg, "radius");
+  {  // latitude
+    PyObject * field = PyObject_GetAttrString(_pymsg, "latitude");
     if (!field) {
       return false;
     }
     assert(PyFloat_Check(field));
-    ros_message->radius = PyFloat_AS_DOUBLE(field);
+    ros_message->latitude = PyFloat_AS_DOUBLE(field);
+    Py_DECREF(field);
+  }
+  {  // longitude
+    PyObject * field = PyObject_GetAttrString(_pymsg, "longitude");
+    if (!field) {
+      return false;
+    }
+    assert(PyFloat_Check(field));
+    ros_message->longitude = PyFloat_AS_DOUBLE(field);
     Py_DECREF(field);
   }
 
@@ -96,25 +108,39 @@ PyObject * custom_msg__msg__sphere__convert_to_py(void * raw_ros_message)
     }
   }
   custom_msg__msg__Sphere * ros_message = (custom_msg__msg__Sphere *)raw_ros_message;
-  {  // center
+  {  // cmd
     PyObject * field = NULL;
-    field = geometry_msgs__msg__point__convert_to_py(&ros_message->center);
+    field = PyUnicode_DecodeUTF8(
+      ros_message->cmd.data,
+      strlen(ros_message->cmd.data),
+      "replace");
     if (!field) {
       return NULL;
     }
     {
-      int rc = PyObject_SetAttrString(_pymessage, "center", field);
+      int rc = PyObject_SetAttrString(_pymessage, "cmd", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;
       }
     }
   }
-  {  // radius
+  {  // latitude
     PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->radius);
+    field = PyFloat_FromDouble(ros_message->latitude);
     {
-      int rc = PyObject_SetAttrString(_pymessage, "radius", field);
+      int rc = PyObject_SetAttrString(_pymessage, "latitude", field);
+      Py_DECREF(field);
+      if (rc) {
+        return NULL;
+      }
+    }
+  }
+  {  // longitude
+    PyObject * field = NULL;
+    field = PyFloat_FromDouble(ros_message->longitude);
+    {
+      int rc = PyObject_SetAttrString(_pymessage, "longitude", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;

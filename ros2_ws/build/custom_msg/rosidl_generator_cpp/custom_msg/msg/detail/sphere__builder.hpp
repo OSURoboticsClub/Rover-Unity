@@ -21,15 +21,15 @@ namespace msg
 namespace builder
 {
 
-class Init_Sphere_radius
+class Init_Sphere_longitude
 {
 public:
-  explicit Init_Sphere_radius(::custom_msg::msg::Sphere & msg)
+  explicit Init_Sphere_longitude(::custom_msg::msg::Sphere & msg)
   : msg_(msg)
   {}
-  ::custom_msg::msg::Sphere radius(::custom_msg::msg::Sphere::_radius_type arg)
+  ::custom_msg::msg::Sphere longitude(::custom_msg::msg::Sphere::_longitude_type arg)
   {
-    msg_.radius = std::move(arg);
+    msg_.longitude = std::move(arg);
     return std::move(msg_);
   }
 
@@ -37,16 +37,32 @@ private:
   ::custom_msg::msg::Sphere msg_;
 };
 
-class Init_Sphere_center
+class Init_Sphere_latitude
 {
 public:
-  Init_Sphere_center()
+  explicit Init_Sphere_latitude(::custom_msg::msg::Sphere & msg)
+  : msg_(msg)
+  {}
+  Init_Sphere_longitude latitude(::custom_msg::msg::Sphere::_latitude_type arg)
+  {
+    msg_.latitude = std::move(arg);
+    return Init_Sphere_longitude(msg_);
+  }
+
+private:
+  ::custom_msg::msg::Sphere msg_;
+};
+
+class Init_Sphere_cmd
+{
+public:
+  Init_Sphere_cmd()
   : msg_(::rosidl_runtime_cpp::MessageInitialization::SKIP)
   {}
-  Init_Sphere_radius center(::custom_msg::msg::Sphere::_center_type arg)
+  Init_Sphere_latitude cmd(::custom_msg::msg::Sphere::_cmd_type arg)
   {
-    msg_.center = std::move(arg);
-    return Init_Sphere_radius(msg_);
+    msg_.cmd = std::move(arg);
+    return Init_Sphere_latitude(msg_);
   }
 
 private:
@@ -64,7 +80,7 @@ template<>
 inline
 auto build<::custom_msg::msg::Sphere>()
 {
-  return custom_msg::msg::builder::Init_Sphere_center();
+  return custom_msg::msg::builder::Init_Sphere_cmd();
 }
 
 }  // namespace custom_msg

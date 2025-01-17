@@ -15,10 +15,6 @@
 #include "rosidl_runtime_cpp/message_initialization.hpp"
 
 
-// Include directives for member types
-// Member 'center'
-#include "geometry_msgs/msg/detail/point__struct.hpp"
-
 #ifndef _WIN32
 # define DEPRECATED__custom_msg__msg__Sphere __attribute__((deprecated))
 #else
@@ -38,44 +34,56 @@ struct Sphere_
   using Type = Sphere_<ContainerAllocator>;
 
   explicit Sphere_(rosidl_runtime_cpp::MessageInitialization _init = rosidl_runtime_cpp::MessageInitialization::ALL)
-  : center(_init)
   {
     if (rosidl_runtime_cpp::MessageInitialization::ALL == _init ||
       rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
     {
-      this->radius = 0.0;
+      this->cmd = "";
+      this->latitude = 0.0;
+      this->longitude = 0.0;
     }
   }
 
   explicit Sphere_(const ContainerAllocator & _alloc, rosidl_runtime_cpp::MessageInitialization _init = rosidl_runtime_cpp::MessageInitialization::ALL)
-  : center(_alloc, _init)
+  : cmd(_alloc)
   {
     if (rosidl_runtime_cpp::MessageInitialization::ALL == _init ||
       rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
     {
-      this->radius = 0.0;
+      this->cmd = "";
+      this->latitude = 0.0;
+      this->longitude = 0.0;
     }
   }
 
   // field types and members
-  using _center_type =
-    geometry_msgs::msg::Point_<ContainerAllocator>;
-  _center_type center;
-  using _radius_type =
+  using _cmd_type =
+    std::basic_string<char, std::char_traits<char>, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<char>>;
+  _cmd_type cmd;
+  using _latitude_type =
     double;
-  _radius_type radius;
+  _latitude_type latitude;
+  using _longitude_type =
+    double;
+  _longitude_type longitude;
 
   // setters for named parameter idiom
-  Type & set__center(
-    const geometry_msgs::msg::Point_<ContainerAllocator> & _arg)
+  Type & set__cmd(
+    const std::basic_string<char, std::char_traits<char>, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<char>> & _arg)
   {
-    this->center = _arg;
+    this->cmd = _arg;
     return *this;
   }
-  Type & set__radius(
+  Type & set__latitude(
     const double & _arg)
   {
-    this->radius = _arg;
+    this->latitude = _arg;
+    return *this;
+  }
+  Type & set__longitude(
+    const double & _arg)
+  {
+    this->longitude = _arg;
     return *this;
   }
 
@@ -121,10 +129,13 @@ struct Sphere_
   // comparison operators
   bool operator==(const Sphere_ & other) const
   {
-    if (this->center != other.center) {
+    if (this->cmd != other.cmd) {
       return false;
     }
-    if (this->radius != other.radius) {
+    if (this->latitude != other.latitude) {
+      return false;
+    }
+    if (this->longitude != other.longitude) {
       return false;
     }
     return true;

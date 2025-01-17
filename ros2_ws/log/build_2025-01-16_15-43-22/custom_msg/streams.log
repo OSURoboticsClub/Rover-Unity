@@ -1,0 +1,63 @@
+[0.006s] Invoking command in '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg -- -j20 -l20
+[0.021s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.093s] -- Found geometry_msgs: 4.2.4 (/opt/ros/humble/share/geometry_msgs/cmake)
+[0.105s] -- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.106s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.109s] -- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.114s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.120s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.139s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.392s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[1.299s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.390s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.413s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[1.459s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.459s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[1.459s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[1.479s] -- Found ament_lint_auto: 0.12.11 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.570s] -- Found rclcpp: 16.0.11 (/opt/ros/humble/share/rclcpp/cmake)
+[1.603s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[1.630s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[1.771s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[1.801s] -- Found FastRTPS: /opt/ros/humble/include  
+[1.826s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[1.879s] -- Looking for pthread.h
+[2.472s] -- Looking for pthread.h - found
+[2.472s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[2.539s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[2.540s] -- Found Threads: TRUE  
+[2.596s] -- Found custom_msg: 0.0.0 (/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/custom_msg/share/custom_msg/cmake)
+[2.666s] -- Added test 'flake8' to check Python code syntax and style conventions
+[2.668s] -- Added test 'lint_cmake' to check CMake code style
+[2.675s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[2.685s] -- Added test 'xmllint' to check XML markup files
+[2.687s] -- Configuring done
+[2.689s] [31mCMake Error at CMakeLists.txt:40 (add_executable):
+[2.689s]   Cannot find source file:
+[2.689s] 
+[2.689s]     src/publisher_member_function.cpp
+[2.689s] 
+[2.689s]   Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm .h
+[2.689s]   .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90 .f95 .f03 .hip .ispc
+[2.689s] 
+[2.689s] [0m
+[2.690s] [31mCMake Error at CMakeLists.txt:43 (add_executable):
+[2.690s]   Cannot find source file:
+[2.690s] 
+[2.690s]     src/subscriber_member_function.cpp
+[2.690s] 
+[2.690s]   Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm .h
+[2.690s]   .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90 .f95 .f03 .hip .ispc
+[2.690s] 
+[2.690s] [0m
+[2.693s] [31mCMake Error at CMakeLists.txt:40 (add_executable):
+[2.693s]   No SOURCES given to target: talker
+[2.693s] 
+[2.693s] [0m
+[2.693s] [31mCMake Error at CMakeLists.txt:43 (add_executable):
+[2.693s]   No SOURCES given to target: listener
+[2.693s] 
+[2.693s] [0m
+[2.693s] [0mCMake Generate step failed.  Build files cannot be regenerated correctly.[0m
+[2.697s] gmake: *** [Makefile:1179: cmake_check_build_system] Error 1
+[2.698s] Invoked command in '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg' returned '2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg -- -j20 -l20

@@ -44,10 +44,13 @@ class Metaclass_Sphere(type):
             cls._TYPE_SUPPORT = module.type_support_msg__msg__sphere
             cls._DESTROY_ROS_MESSAGE = module.destroy_ros_message_msg__msg__sphere
 
+<<<<<<< HEAD
+=======
             from geometry_msgs.msg import Point
             if Point.__class__._TYPE_SUPPORT is None:
                 Point.__class__.__import_type_support__()
 
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
     @classmethod
     def __prepare__(cls, name, bases, **kwargs):
         # list constant names here so that they appear in the help text of
@@ -66,12 +69,20 @@ class Sphere(metaclass=Metaclass_Sphere):
     ]
 
     _fields_and_field_types = {
+<<<<<<< HEAD
+        'center': 'int64',
+=======
         'center': 'geometry_msgs/Point',
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
         'radius': 'double',
     }
 
     SLOT_TYPES = (
+<<<<<<< HEAD
+        rosidl_parser.definition.BasicType('int64'),  # noqa: E501
+=======
         rosidl_parser.definition.NamespacedType(['geometry_msgs', 'msg'], 'Point'),  # noqa: E501
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
     )
 
@@ -79,8 +90,12 @@ class Sphere(metaclass=Metaclass_Sphere):
         assert all('_' + key in self.__slots__ for key in kwargs.keys()), \
             'Invalid arguments passed to constructor: %s' % \
             ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
+<<<<<<< HEAD
+        self.center = kwargs.get('center', int())
+=======
         from geometry_msgs.msg import Point
         self.center = kwargs.get('center', Point())
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
         self.radius = kwargs.get('radius', float())
 
     def __repr__(self):
@@ -131,10 +146,18 @@ class Sphere(metaclass=Metaclass_Sphere):
     @center.setter
     def center(self, value):
         if __debug__:
+<<<<<<< HEAD
+            assert \
+                isinstance(value, int), \
+                "The 'center' field must be of type 'int'"
+            assert value >= -9223372036854775808 and value < 9223372036854775808, \
+                "The 'center' field must be an integer in [-9223372036854775808, 9223372036854775807]"
+=======
             from geometry_msgs.msg import Point
             assert \
                 isinstance(value, Point), \
                 "The 'center' field must be a sub message of type 'Point'"
+>>>>>>> e9b6c2db8b6b765c63bb478a0228ab194bb2ff49
         self._center = value
 
     @builtins.property
