@@ -91,8 +91,7 @@ public class TcpPublish : MonoBehaviour
     private void OnDataReceived(string data)
     {
         // Handle the data received from the server
-        Debug.Log($"Received: {data}");
-        // Add custom logic here to process or use the data
+        TcpMessageReceiver.inst.Receive(data);
     }
 
     void OnDestroy()

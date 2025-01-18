@@ -2209,6 +2209,8 @@ GameObject:
   - component: {fileID: 830746680}
   - component: {fileID: 830746681}
   - component: {fileID: 830746682}
+  - component: {fileID: 830746684}
+  - component: {fileID: 830746683}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
@@ -2391,6 +2393,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe8992cde8418ba89bc5f852eeaa5c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &830746683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830746671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a47fdb566550e77591bf2b51636ff7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &830746684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830746671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 167850771e691add6b535472848e07a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roverIcon: {fileID: 450525840}
 --- !u!1 &831638143
 GameObject:
   m_ObjectHideFlags: 0
