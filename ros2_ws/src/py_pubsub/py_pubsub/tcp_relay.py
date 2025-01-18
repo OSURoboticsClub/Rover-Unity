@@ -1,38 +1,57 @@
 import socket
 import rclpy
 from rclpy.node import Node
-from custom_msg.msg import Sphere  # Replace with your actual custom message import
-from std_msgs.msg import String  # Import for String message type
 from threading import Thread
+from std_msgs.msg import String
+from rover2_control_interface.msg import GPSStatusMessage
 
 
 class TCPServer(Node):
     def __init__(self):
         super().__init__('tcp_server_with_ros2')
-        self.publisher_ = self.create_publisher(Sphere, 'sphere_topic', 10)  # ROS 2 Publisher
+        self.publisher_ = self.create_publisher(String, 'tcp_to_ros', 10)  # ROS 2 Publisher
+        self.subscribers = []  # To store subscriber objects
         self.tcp_client = None  # Placeholder for TCP client connection
         self.get_logger().info('ROS 2 Publisher initialized.')
 
-        # ROS 2 Subscriber for "gps_response"
-        self.subscription = self.create_subscription(
-            String,
-            'auton_control_response',
-            self.auton_control_response_callback,
+        # Add subscriptions to multiple topics
+        self.add_subscription('test1', String)
+        self.add_subscription('test2', String)
+        self.add_subscription('tower/status/gps', GPSStatusMessage)  # Add more topics as needed
+
+    def add_subscription(self, topic_name, message_type):
+        # Create and store a subscription for each topic
+        subscription = self.create_subscription(
+            message_type,
+            topic_name,
+            self.ros_to_tcp_callback,
             10
         )
-        self.get_logger().info('Subscribed to "auton_control_response".')
+        self.subscribers.append(subscription)
+        self.get_logger().info(f"Subscribed to topic: {topic_name}")
 
-    def auton_control_response_callback(self, msg):
-        # Callback triggered when a message is received on "gps_response"
-        if self.tcp_client:
-            try:
-                # Send the received message over the TCP socket
-                self.tcp_client.sendall(msg.data.encode('utf-8'))
-                self.get_logger().info(f"Sent message over TCP: {msg.data}")
-            except Exception as e:
-                self.get_logger().error(f"Failed to send message over TCP: {e}")
-        else:
+    def ros_to_tcp_callback(self, msg):
+        # Callback for messages received on ROS 2 topics
+        if not(self.tcp_client):
             self.get_logger().warn("No active TCP client. Message not sent.")
+            return
+            
+        try:
+            # Determine message type and construct the string accordingly
+            if isinstance(msg, String):  # If the message is of type std_msgs/String
+                message_str = msg.data
+            elif isinstance(msg, GPSStatusMessage):  # Replace with your actual custom message type
+                # Construct a string from the custom message fields
+                message_str = f"field1: {msg.rover_latitude}, field2: {msg.rover_longitude}"
+            else:
+                # Handle unknown message types
+                message_str = f"Unsupported message type: {type(msg).__name__}"
+
+            # Send the constructed string over TCP
+            self.tcp_client.sendall(message_str.encode('utf-8'))
+            self.get_logger().info(f"Sent message over TCP: {message_str}")
+        except Exception as e:
+            self.get_logger().error(f"Failed to send message over TCP: {e}")
 
     def handle_client(self, conn, addr):
         self.get_logger().info(f"Connected by {addr}")
@@ -44,29 +63,18 @@ class TCPServer(Node):
                 if not data:
                     break
 
-                # Log the received message
-                message = data.decode()
-                self.get_logger().info(f"Received: {message}")
-                parts = message.split(";")
-                if len(parts) < 3:
-                    self.get_logger().error("Invalid message format. Expected 'cmd;latitude;longitude'.")
-                    continue
+                # Process the received message
+                message = data.decode().strip()
+                self.get_logger().info(f"Received from TCP: {message}")
 
-                try:
-                    lat = float(parts[1])
-                    long = float(parts[2])
-                    # Publish a Sphere message to ROS 2
-                    sphere_msg = Sphere()
-                    sphere_msg.cmd = parts[0]
-                    sphere_msg.latitude = lat
-                    sphere_msg.longitude = long
-                    self.publisher_.publish(sphere_msg)
-                    self.get_logger().info(f"Published Sphere: cmd={sphere_msg.cmd}, latitude={sphere_msg.latitude}, longitude={sphere_msg.longitude}")
+                # Publish received message to ROS 2
+                ros_msg = String()
+                ros_msg.data = message
+                self.publisher_.publish(ros_msg)
+                self.get_logger().info(f"Published to ROS topic: {ros_msg.data}")
 
-                    # Send acknowledgment to the client
-                    conn.sendall(b'Message received and Sphere published.')
-                except ValueError:
-                    self.get_logger().error("Invalid latitude or longitude format. Skipping message.")
+                # Acknowledge the client
+                conn.sendall(b'Message received and published.')
         except Exception as e:
             self.get_logger().error(f"Error handling client: {e}")
         finally:
