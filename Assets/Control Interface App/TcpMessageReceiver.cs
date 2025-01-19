@@ -10,7 +10,9 @@ public class TcpMessageReceiver : MonoBehaviour
     private ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
     [System.Serializable] public class GpsEvent : UnityEvent<string> { }
     public static GpsEvent gpsReceived = new GpsEvent();
-    
+    [System.Serializable] public class ImuEvent : UnityEvent<string> { }
+    public static GpsEvent imuReceived = new GpsEvent();
+
     void Awake()
     {
         inst = this;   
@@ -31,13 +33,16 @@ public class TcpMessageReceiver : MonoBehaviour
 
     private void ProcessMessage(string message)
     {
-        var parts = message.ToUpper().Split(";");
-        if(parts[0][0] == 'G'){
+        var parts = message.Split(";");
+        if (parts[0] == "tower/status/gps"){
             gpsReceived.Invoke(message);
+        }
+        else if (parts[0] == "imu/data")
+        {
+            imuReceived.Invoke(message);
         }
         else {
             Debug.Log($"Received message: {message}");
         }
-
     }
 }

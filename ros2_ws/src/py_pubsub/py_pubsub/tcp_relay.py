@@ -4,52 +4,49 @@ from rclpy.node import Node
 from threading import Thread
 from std_msgs.msg import String
 from rover2_control_interface.msg import GPSStatusMessage
+from sensor_msgs.msg import Imu
 
 
 class TCPServer(Node):
     def __init__(self):
         super().__init__('tcp_server_with_ros2')
-        self.publisher_ = self.create_publisher(String, 'tcp_to_ros', 10)  # ROS 2 Publisher
-        self.subscribers = []  # To store subscriber objects
-        self.tcp_client = None  # Placeholder for TCP client connection
+        self.publisher_ = self.create_publisher(String, 'tcp_to_ros', 10)
+        self.subscribers = []
+        self.tcp_client = None
         self.get_logger().info('ROS 2 Publisher initialized.')
 
         # Add subscriptions to multiple topics
-        self.add_subscription('test1', String)
-        self.add_subscription('test2', String)
-        self.add_subscription('tower/status/gps', GPSStatusMessage)  # Add more topics as needed
+        self.add_subscription('auton_control_response', String)
+        self.add_subscription('tower/status/gps', GPSStatusMessage)
+        self.add_subscription('imu/data', Imu)
 
     def add_subscription(self, topic_name, message_type):
         # Create and store a subscription for each topic
         subscription = self.create_subscription(
             message_type,
             topic_name,
-            self.ros_to_tcp_callback,
+            partial(self.ros_to_tcp_callback, topic_name),
             10
         )
         self.subscribers.append(subscription)
         self.get_logger().info(f"Subscribed to topic: {topic_name}")
 
-    def ros_to_tcp_callback(self, msg):
-        # Callback for messages received on ROS 2 topics
+    def ros_to_tcp_callback(self, topic_name, msg): # Callback for messages received on ROS 2 topics
         if not(self.tcp_client):
             self.get_logger().warn("No active TCP client. Message not sent.")
             return
             
-        try:
-            # Determine message type and construct the string accordingly
-            if isinstance(msg, String):  # If the message is of type std_msgs/String
-                message_str = msg.data
-            elif isinstance(msg, GPSStatusMessage):  # Replace with your actual custom message type
-                # Construct a string from the custom message fields
-                message_str = f"field1: {msg.rover_latitude}, field2: {msg.rover_longitude}"
+        try: # Determine message type and construct the string accordingly
+            message = topic_name + ";"
+            if topic_name == "tower/status/gps":
+                message += f"{msg.rover_latitude};{msg.rover_longitude}"
+            elif topic_name == "imu/data":
+                message += f"{msg.orientation.x};{msg.orientation.y};{msg.orientation.z};{msg.orientation.w}"
             else:
-                # Handle unknown message types
-                message_str = f"Unsupported message type: {type(msg).__name__}"
-
-            # Send the constructed string over TCP
-            self.tcp_client.sendall(message_str.encode('utf-8'))
-            self.get_logger().info(f"Sent message over TCP: {message_str}")
+                message += msg.data # handle string messages (not custom message type)
+            
+            self.tcp_client.sendall(messag.encode('utf-8')) # Send the constructed string over TCP
+            self.get_logger().info(f"Sent message over TCP: {message}")
         except Exception as e:
             self.get_logger().error(f"Failed to send message over TCP: {e}")
 

@@ -38,7 +38,7 @@ public class TcpPublish : MonoBehaviour
         }
     }
 
-    public void Publish(string cmd, double latitude, double longitude)
+    public void Publish(string message)
     {
         if (client == null || stream == null)
         {
@@ -49,7 +49,6 @@ public class TcpPublish : MonoBehaviour
         try
         {
             // Format the message
-            string message = $"{cmd};{latitude};{longitude}";
             byte[] dataToSend = Encoding.ASCII.GetBytes(message);
 
             // Send the message

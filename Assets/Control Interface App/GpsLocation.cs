@@ -35,7 +35,9 @@ public class GpsLocation : MonoBehaviour
             //change button to red
             goBtn.color = new Color(255 / 255f, 143/255f, 151 / 255f);
             goTxt.text = "Stop";
-            TcpPublish.inst.Publish("GOTO", double.Parse(lat.text), double.Parse(lon.text));
+
+            string message = $"auton_control;GOTO;{lat.text};{lon.text}";
+            TcpPublish.inst.Publish(message);
             StatusIndicator.instance.SetIndicator(Status.Activated, this);
             MapController.instance.SetLinePosition(iconObject.transform.position);
         }
@@ -44,7 +46,8 @@ public class GpsLocation : MonoBehaviour
             //change button to green
             goBtn.color = new Color(143 / 255f, 1f, 143 / 255f);
             goTxt.text = "Go";
-            TcpPublish.inst.Publish("STOP", double.Parse(lat.text), double.Parse(lon.text));
+            string message = $"auton_control;STOP;{lat.text};{lon.text}";
+            TcpPublish.inst.Publish(message);
             StatusIndicator.instance.SetIndicator(Status.NotActivated, this);
             MapController.instance.TurnOffLine();
         }
