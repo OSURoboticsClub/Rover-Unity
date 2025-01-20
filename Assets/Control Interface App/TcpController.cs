@@ -44,7 +44,8 @@ public class TcpController : MonoBehaviour
         if (client == null || stream == null)
         {
             Debug.LogWarning("TCP connection is not established. Unable to send data.");
-            return;
+            Start();
+            if (client == null || stream == null) return;
         }
 
         try
