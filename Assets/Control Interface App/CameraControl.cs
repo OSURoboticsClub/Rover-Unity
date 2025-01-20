@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
+    public static CameraControl inst;
     public Camera secondCamera; // Assign the second camera in the Inspector
     private Vector3 initialMouseScreenPosition;
     private Vector3 initialSecondCameraPosition;
@@ -26,6 +27,11 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] Transform iconsParent;
     [SerializeField] float lineScale = 1f;
 
+    void Awake()
+    {
+        inst = this;
+    }
+
 
     void Update()
     {
@@ -45,12 +51,19 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
             Vector3 diff = newMousepos - oldMousePos;
             secondCamera.transform.position -= diff;
 
+            RescaleIcons();
+
             float height = 2f * secondCamera.orthographicSize;
-            foreach(Transform child in iconsParent)
-            {
-                child.localScale = height * iconScale * Vector3.one;
-            }
             MapController.instance.SetLineScale(height * lineScale);
+        }
+    }
+
+    public void RescaleIcons()
+    {
+        float height = 2f * secondCamera.orthographicSize;
+        foreach (Transform child in iconsParent)
+        {
+            child.localScale = height * iconScale * Vector3.one;
         }
     }
 

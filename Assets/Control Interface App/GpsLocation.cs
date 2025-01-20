@@ -26,36 +26,22 @@ public class GpsLocation : MonoBehaviour
         lon.text = longitude.ToString();
     }
 
-    public void SetActive(bool on)
+    public void SetActive()
     {
-        isActive = on;
+        goBtn.color = new Color(255 / 255f, 143 / 255f, 151 / 255f);
+        goTxt.text = "Stop";
+    }
 
-        if (isActive)
-        {
-            //change button to red
-            goBtn.color = new Color(255 / 255f, 143/255f, 151 / 255f);
-            goTxt.text = "Stop";
-
-            string message = $"auton_control;GOTO;{lat.text};{lon.text}";
-            TcpPublish.inst.Publish(message);
-            StatusIndicator.instance.SetIndicator(Status.Activated, this);
-            MapController.instance.SetLinePosition(iconObject.transform.position);
-        }
-        else
-        {
-            //change button to green
-            goBtn.color = new Color(143 / 255f, 1f, 143 / 255f);
-            goTxt.text = "Go";
-            string message = $"auton_control;STOP;{lat.text};{lon.text}";
-            TcpPublish.inst.Publish(message);
-            StatusIndicator.instance.SetIndicator(Status.NotActivated, this);
-            MapController.instance.TurnOffLine();
-        }
+    public void SetInactive()
+    {
+        goBtn.color = new Color(143 / 255f, 1f, 143 / 255f);
+        goTxt.text = "Go";
+        MapController.instance.TurnOffLine();
     }
 
     public void ToggleActive()
     {
-        SetActive(!isActive);
+        CurrentDestinationController.inst.ClickBtn(this);
     }
 
     public void Delete()

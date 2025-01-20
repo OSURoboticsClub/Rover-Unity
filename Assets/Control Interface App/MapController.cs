@@ -45,11 +45,7 @@ public class MapController : MonoBehaviour
         bool succLat = double.TryParse(latText.text, out double lat);
         bool succlon = double.TryParse(longText.text, out double lon);
         if (!succLat || !succlon) return;
-        AddCoordinate(lat, lon, descText.text);
-        newListingMenu.SetActive(false);
-    }
 
-    public void AddCoordinate(double lat, double lon, string desc){
         Vector2 position = GetWorldPosition(lat, lon);
         Transform parent = iconsParent;
         GameObject newObject = Instantiate(icon, position, Quaternion.identity);
@@ -57,7 +53,9 @@ public class MapController : MonoBehaviour
         PreloadedIcon script = newObject.GetComponent<PreloadedIcon>();
         script.latitude = lat;
         script.longitude = lon;
-        script.description = desc;
+        script.description = descText.text;
+        newListingMenu.SetActive(false);
+        CameraControl.inst.RescaleIcons();
     }
 
     public void MoveIcon(Transform obj, double lat, double lon)

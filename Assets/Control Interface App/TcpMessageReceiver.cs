@@ -42,7 +42,8 @@ public class TcpMessageReceiver : MonoBehaviour
             imuReceived.Invoke(message);
         }
         else {
-            Debug.Log($"Received message: {message}");
+            MessagesController.inst.DisplayMessage(message);
         }
+
     }
 }

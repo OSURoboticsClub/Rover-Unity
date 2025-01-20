@@ -5,9 +5,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-public class TcpPublish : MonoBehaviour
+public class TcpController : MonoBehaviour
 {
-    public static TcpPublish inst;
+    public static TcpController inst;
     private TcpClient client;
     private NetworkStream stream;
     private Thread listenThread;
@@ -34,15 +34,16 @@ public class TcpPublish : MonoBehaviour
         }
         catch (SocketException e)
         {
-            Debug.LogError($"Could not connect to server: {e.Message}");
+            Debug.LogWarning($"Could not connect to server: {e.Message}");
         }
     }
 
     public void Publish(string message)
     {
+        Debug.Log($"Sending: {message}");
         if (client == null || stream == null)
         {
-            Debug.LogError("TCP connection is not established. Unable to send data.");
+            Debug.LogWarning("TCP connection is not established. Unable to send data.");
             return;
         }
 
@@ -53,7 +54,6 @@ public class TcpPublish : MonoBehaviour
 
             // Send the message
             stream.Write(dataToSend, 0, dataToSend.Length);
-            Debug.Log($"Sent: {message}");
         }
         catch (System.Exception e)
         {
