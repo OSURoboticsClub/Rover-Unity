@@ -1,4 +1,5 @@
 [console_scripts]
+auton_controller = py_pubsub.auton_controller:main
 listener = py_pubsub.subscriber_member_function:main
 talker = py_pubsub.publisher_member_function:main
 tcp_relay = py_pubsub.tcp_relay:main

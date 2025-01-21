@@ -10,6 +10,7 @@ from functools import partial
 
 
 class TCPServer(Node):
+
     def __init__(self):
         super().__init__('tcp_server_with_ros2')
         self.topic_publishers = {}  # Dictionary to store topic_name -> publisher
@@ -68,19 +69,25 @@ class TCPServer(Node):
 
     def handle_client(self, conn, addr):
         self.get_logger().info(f"Connected by {addr}")
-        self.tcp_client = conn  # Store the active TCP connection
+        self.tcp_client = conn
 
+        # Set a short timeout so we can periodically check if rclpy is still running.
+        conn.settimeout(1.0)
         try:
-            while True:
-                data = conn.recv(1024)
+            while rclpy.ok():
+                try:
+                    data = conn.recv(1024)
+                except socket.timeout:
+                    # No data arrived within 1 second, check if we're still running.
+                    continue
                 if not data:
+                    # Client disconnected.
                     break
 
-                # Process the received message
+                # Process the received message.
                 message = data.decode().strip()
                 self.get_logger().info(f"Received from TCP: {message}")
 
-                # Parse the message to extract topic name and content
                 parts = message.split(';')
                 if len(parts) < 2:
                     self.get_logger().error("Invalid message format. Expected 'topic_name;message_content'.")
@@ -92,16 +99,11 @@ class TCPServer(Node):
                 if not publisher:
                     continue
 
-                # Create and publish the message based on its type
+                # Create and publish the message based on its type.
                 message_type = self.message_type_map.get(topic_name, String)
                 if message_type == String:
                     ros_msg = String()
                     ros_msg.data = content
-                # elif message_type == GPSStatusMessage: just an example of creating a custom msg
-                #     lat, lon = map(float, content.split(';'))
-                #     ros_msg = GPSStatusMessage()
-                #     ros_msg.rover_latitude = lat
-                #     ros_msg.rover_longitude = lon
                 else:
                     self.get_logger().error(f"Unsupported message type for topic: {topic_name}")
                     continue
@@ -109,14 +111,13 @@ class TCPServer(Node):
                 publisher.publish(ros_msg)
                 self.get_logger().info(f"Published to ROS topic: {topic_name}")
 
-                # Acknowledge the client
-                conn.sendall(b'Message received and published.')
         except Exception as e:
             self.get_logger().error(f"Error handling client: {e}")
         finally:
             self.get_logger().info(f"Closing connection with {addr}")
             conn.close()
-            self.tcp_client = None  # Clear the active connection
+            self.tcp_client = None
+
 
     def start_tcp_server(self, host, port):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
@@ -125,12 +126,28 @@ class TCPServer(Node):
             server_socket.listen()
             self.get_logger().info(f"Server listening on {host}:{port}...")
 
-            while rclpy.ok():
-                conn, addr = server_socket.accept()  # Accept a connection
-                self.handle_client(conn, addr)  # Handle the client in the same thread
+            try:
+                while rclpy.ok():
+                    # Use a timeout to allow periodic checking of rclpy.ok()
+                    server_socket.settimeout(1.0)
+                    try:
+                        conn, addr = server_socket.accept()  # Accept a connection
+                        if not rclpy.ok():
+                            break
+                        self.handle_client(conn, addr)  # Handle the client in the same thread
+                    except socket.timeout:
+                        continue  # Timeout reached; check rclpy.ok() again
+            except Exception as e:
+                if rclpy.ok():  # Avoid logging if shutdown has been called
+                    self.get_logger().error(f"Error in TCP server: {e}")
+            finally:
+                if rclpy.ok():
+                    self.get_logger().info("Shutting down TCP server.")
 
+shutdown_called = False
 
 def main(args=None):
+    global shutdown_called
     rclpy.init(args=args)
     node = TCPServer()
 
@@ -139,13 +156,19 @@ def main(args=None):
     tcp_thread.start()
 
     try:
-        rclpy.spin(node)  # Spin the node to handle ROS 2 tasks
+        rclpy.spin(node)
     except KeyboardInterrupt:
-        node.get_logger().info("Shutting down server...")
+        pass
     finally:
-        tcp_thread.join()  # Wait for the TCP thread to finish
-        node.destroy_node()
-        rclpy.shutdown()
+        if not shutdown_called:
+            shutdown_called = True
+            node.get_logger().info("Shutting down server...")
+            node.destroy_node()
+            #rclpy.shutdown()
+
+        if tcp_thread.is_alive():
+            tcp_thread.join()
+
 
 
 if __name__ == '__main__':

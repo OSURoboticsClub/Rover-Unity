@@ -41,11 +41,11 @@ public class TcpController : MonoBehaviour
     public void Publish(string message)
     {
         Debug.Log($"Sending: {message}");
-        if (client == null || stream == null)
+        if (client == null || stream == null || !client.Connected)
         {
             Debug.LogWarning("TCP connection is not established. Unable to send data.");
             Start();
-            if (client == null || stream == null) return;
+            if (client == null || stream == null || !client.Connected) return;
         }
 
         try
@@ -58,7 +58,7 @@ public class TcpController : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Error while sending data: {e.Message}");
+            Debug.LogWarning($"Error while sending data: {e.Message}");
         }
     }
 
