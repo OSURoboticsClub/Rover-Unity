@@ -4,6 +4,7 @@ from std_msgs.msg import String  # Use appropriate message type
 from geometry_msgs.msg import Twist  # Import Twist message type
 from rover2_control_interface.msg import DriveCommandMessage
 import time
+from geographiclib.geodesic import Geodesic
 
 
 class auton_controller(Node):
@@ -26,6 +27,11 @@ class auton_controller(Node):
 
         # Publisher for Twist messages to 'x'
         self.drive_publisher = self.create_publisher(DriveCommandMessage, 'command_control/ground_station_drive', 10)
+
+    def calculate_bearing(lat1, lon1, lat2, lon2):
+        geod = Geodesic.WGS84
+        result = geod.Inverse(lat1, lon1, lat2, lon2)
+        return result['azi1'] 
 
     def start_control_loop(self):
         """Start a timer to publish the message at a specific interval for a duration."""
