@@ -22,6 +22,8 @@ public class RoverIconController : MonoBehaviour
         roverIcon.position = worldPos;
     }
 
+    [SerializeField] Vector3 angles;
+    [SerializeField] float offset;
     void OnImuReceived(string message)
     {
         // This method is called when the event is triggered
@@ -32,9 +34,15 @@ public class RoverIconController : MonoBehaviour
         float z = float.Parse(parts[3]);
         float w = float.Parse(parts[4]);
 
-        float yaw = Mathf.Atan2(2.0f * (w * z + x * y), 1.0f - 2.0f * (y * y + z * z));
-        yaw = yaw * Mathf.Rad2Deg; // Convert from radians to degrees
-        roverIcon.rotation = Quaternion.Euler(0, 0, -yaw); // Negative yaw due to coordinate differences
+        Quaternion quaternion = new Quaternion(x, y, z, w);
+        angles = quaternion.eulerAngles;
+
+        // float roll = Mathf.Atan2(
+        //     2.0f * (quaternion.w * quaternion.x + quaternion.y * quaternion.z),
+        //     1.0f - 2.0f * (quaternion.x * quaternion.x + quaternion.y * quaternion.y)
+        // );
+        //yaw = yaw * Mathf.Rad2Deg; // Convert from radians to degrees
+        roverIcon.rotation = Quaternion.Euler(0, 0, angles.x + offset); // Negative yaw due to coordinate differences
     }
 
     void OnDestroy()
