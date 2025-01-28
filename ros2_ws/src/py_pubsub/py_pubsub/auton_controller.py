@@ -3,8 +3,12 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from rover2_control_interface.msg import DriveCommandMessage
+#from rover2_control_interface.msg import GPSStatusMessage
+from sensor_msgs.msg import Imu
 import time
 from geographiclib.geodesic import Geodesic
+from transforms3d.euler import quat2euler
+# pip install numpy-quaternion
 
 
 class auton_controller(Node):
@@ -16,18 +20,33 @@ class auton_controller(Node):
     target_heading = None
     state = "stopped"
     control_timer = None 
+    offset = None
 
     def __init__(self):
         super().__init__('auton_controller')
 
-        self.subscription = self.create_subscription(
-            String,
-            'auton_control',
-            self.listener_callback,
-            10
-        )
+        self.control_subscription = self.create_subscription( String, 'auton_control', self.control_listener_callback, 10)
+        #self.gps_subscription = self.create_subscription(GPSStatusMessage, 'tower/status/gps', self.gps_listener_callback, 10)
+        self.gps_subscription = self.create_subscription(Imu, 'imu/data', self.imu_listener_callback, 10)
+
         self.response_publisher = self.create_publisher(String, 'auton_control_response', 10)
         self.drive_publisher = self.create_publisher(DriveCommandMessage, 'command_control/ground_station_drive', 10)
+
+
+    def publish_drive_message(self, linear_speed, angular_speed):
+        """Publish the current linear and angular speed to drivetrain"""
+        twist_msg = Twist()
+        twist_msg.linear.x = linear_speed
+        twist_msg.linear.y = 0.0
+        twist_msg.linear.z = 0.0
+        twist_msg.angular.x = 0.0
+        twist_msg.angular.y = 0.0
+        twist_msg.angular.z = angular_speed
+        custom_msg = DriveCommandMessage()
+        custom_msg.controller_present = True
+        custom_msg.ignore_drive_control = False
+        custom_msg.drive_twist = twist_msg
+        #self.drive_publisher.publish(custom_msg)
 
     def get_target_heading(self):
         geod = Geodesic.WGS84
@@ -51,11 +70,11 @@ class auton_controller(Node):
             return
 
         if self.target_heading == None:
-            self.target_heading = get_target_heading()
+            self.target_heading = self.get_target_heading()
             self.get_logger().info("Set target heading as: " + str(self.target_heading))
 
         if self.state == "turning":
-            heading_error = get_heading_error()
+            heading_error = self.get_heading_error()
             self.get_logger().info("Turning to target heading (" + str(self.target_heading) + "). Current heading: " + str(self.current_heading))
             if abs(heading_error) < 5.0:  # Example threshold
                 self.get_logger().info("Target heading reached.")
@@ -75,22 +94,7 @@ class auton_controller(Node):
             self.angular_speed = 0.0
             self.publish_drive_message()
 
-    def publish_drive_message(self, linear_speed, angular_speed):
-        """Publish the current linear and angular speed to drivetrain"""
-        twist_msg = Twist()
-        twist_msg.linear.x = linear_speed
-        twist_msg.linear.y = 0.0
-        twist_msg.linear.z = 0.0
-        twist_msg.angular.x = 0.0
-        twist_msg.angular.y = 0.0
-        twist_msg.angular.z = angular_speed
-        custom_msg = DriveCommandMessage()
-        custom_msg.controller_present = True
-        custom_msg.ignore_drive_control = False
-        custom_msg.drive_twist = twist_msg
-        self.drive_publisher.publish(custom_msg)
-
-    def listener_callback(self, msg):
+    def control_listener_callback(self, msg):
         """Listens to auton_control topic for commands"""
         self.get_logger().info(f'Received: "{msg.data}" on auton_control')
 
@@ -113,7 +117,22 @@ class auton_controller(Node):
                 self.get_logger().warn(f"Unknown command: {command}")
         except (IndexError, ValueError) as e:
             self.get_logger().error(f"Failed to parse message: {msg.data}. Error: {e}")
-          
+
+    def imu_listener_callback(self, msg):
+        """Receive IMU data, convert to Euler Angles"""
+        self.get_logger().info(f'Received data on imu/data')
+        quat = [msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z]
+
+        euler = quat2euler(quat, axes='sxyz')  # 'sxyz' is a common rotation convention
+        roll, pitch, yaw = euler
+        roll_degrees = roll * 57.2958
+
+        if self.offset == None:
+            self.current_heading = 0  # The rover should start pointing North
+            self.offset = roll_degrees # At the start, determine the offset in degrees of the rover if the IMU is off
+        else:
+            self.current_heading = roll_degrees - self.offset
+
 def main(args=None):
     rclpy.init(args=args)
     node = auton_controller()
