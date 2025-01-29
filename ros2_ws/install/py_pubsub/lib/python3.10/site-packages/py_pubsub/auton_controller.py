@@ -3,8 +3,9 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from rover2_control_interface.msg import DriveCommandMessage
-#from rover2_control_interface.msg import GPSStatusMessage
+from rover2_control_interface.msg import GPSStatusMessage
 from sensor_msgs.msg import Imu
+from std_msgs.msg import Float32
 import time
 from geographiclib.geodesic import Geodesic
 from transforms3d.euler import quat2euler
@@ -26,8 +27,9 @@ class auton_controller(Node):
         super().__init__('auton_controller')
 
         self.control_subscription = self.create_subscription( String, 'auton_control', self.control_listener_callback, 10)
-        #self.gps_subscription = self.create_subscription(GPSStatusMessage, 'tower/status/gps', self.gps_listener_callback, 10)
-        self.gps_subscription = self.create_subscription(Imu, 'imu/data', self.imu_listener_callback, 10)
+        self.gps_subscription = self.create_subscription(GPSStatusMessage, 'tower/status/gps', self.gps_listener_callback, 10)
+        #self.imu_subscription = self.create_subscription(Imu, 'imu/data', self.imu_listener_callback, 10)
+        self.imu_subscription = self.create_subscription(Float32, 'imu/data/heading', self.imu_heading_listener_callback, 10)
 
         self.response_publisher = self.create_publisher(String, 'auton_control_response', 10)
         self.drive_publisher = self.create_publisher(DriveCommandMessage, 'command_control/ground_station_drive', 10)
@@ -46,7 +48,7 @@ class auton_controller(Node):
         custom_msg.controller_present = True
         custom_msg.ignore_drive_control = False
         custom_msg.drive_twist = twist_msg
-        #self.drive_publisher.publish(custom_msg)
+        self.drive_publisher.publish(custom_msg)
 
     def get_target_heading(self):
         geod = Geodesic.WGS84
@@ -69,19 +71,16 @@ class auton_controller(Node):
             self.publish_log_msg("Stopped autonomous control")
             return
 
-        if self.target_heading == None:
-            self.target_heading = self.get_target_heading()
-            self.get_logger().info("Set target heading as: " + str(self.target_heading))
 
         if self.state == "turning":
             heading_error = self.get_heading_error()
             self.get_logger().info("Turning to target heading (" + str(self.target_heading) + "). Current heading: " + str(self.current_heading))
-            if abs(heading_error) < 5.0:  # Example threshold
+            if abs(heading_error) < 2.5:  # Example threshold
                 self.get_logger().info("Target heading reached.")
                 self.publish_log_msg("Reached target heading. Now driving")
                 self.state = "driving"
             else:
-                angular_speed = 0.5 # rad/s
+                angular_speed = 0.3 # rad/s
                 if heading_error < 0:
                     angular_speed *= -1
                 if abs(heading_error) < 30: # slow down on approach
@@ -89,10 +88,9 @@ class auton_controller(Node):
                 self.publish_drive_message(0.0, angular_speed) 
 
         elif self.state == "driving":
-            self.get_logger().info("Driving to target location...")
-            self.linear_speed = 0.1  # Example driving speed
-            self.angular_speed = 0.0
-            self.publish_drive_message()
+            self.state = "stopped"
+            # self.get_logger().info("Driving to target location...")
+            # self.publish_drive_message(0.1, 0.0)
 
     def control_listener_callback(self, msg):
         """Listens to auton_control topic for commands"""
@@ -107,6 +105,9 @@ class auton_controller(Node):
             if command == "GOTO":
                 self.get_logger().info(f"Command GOTO received with target lat: {lat}, lon: {lon}")
                 self.state = "turning"
+                self.target_lat = lat
+                self.target_lon = lon
+                self.target_heading = self.get_target_heading()
                 if self.control_timer is not None:
                     self.control_timer.cancel()
                 self.control_timer = self.create_timer(0.1, self.control_loop)
@@ -120,18 +121,40 @@ class auton_controller(Node):
 
     def imu_listener_callback(self, msg):
         """Receive IMU data, convert to Euler Angles"""
-        self.get_logger().info(f'Received data on imu/data')
+        #self.get_logger().info(f'Received data on imu/data')
         quat = [msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z]
 
         euler = quat2euler(quat, axes='sxyz')  # 'sxyz' is a common rotation convention
         roll, pitch, yaw = euler
         roll_degrees = roll * 57.2958
 
+        #self.get_logger().info(f'Roll: ' + str(roll * 57.2958) + ", Pitch: " + str(pitch * 57.2958) + ", Yaw: " + str(yaw * 57.2958))
         if self.offset == None:
-            self.current_heading = 0  # The rover should start pointing North
-            self.offset = roll_degrees # At the start, determine the offset in degrees of the rover if the IMU is off
+            self.current_heading = 18.0  # The rover should start pointing in alignment with Merryfield
+            self.get_logger().info(f'Heading should be 18')
+            self.get_logger().info(f'Current heading is: ' + str(roll_degrees))
+            self.get_logger().info(f'Thus the offset is: ' + str(18.0 - roll_degrees))
+            self.offset = 18.0 - roll_degrees # At the start, determine the offset in degrees of the rover if the IMU is off
         else:
-            self.current_heading = roll_degrees - self.offset
+            new_heading = roll_degrees + 180.0
+            if new_heading > 180.0:
+                new_heading -= 360.0
+            #self.get_logger().info(f'heading is: ' + str(new_heading))
+            self.current_heading = new_heading
+            # if(self.current_heading < -180.0):
+            #     self.current_heading += 360
+            # if(self.current_heading > 180.0):
+            #     self.current_heading -= 360
+
+    def imu_heading_listener_callback(self, msg):
+        """Listens to auton_control topic for commands"""
+        self.current_heading = msg.data
+        #self.get_logger().info(f"Received heading: " + str(self.current_heading))
+
+    def gps_listener_callback(self, msg):
+        """Receive GPS data"""
+        self.current_lat = msg.rover_latitude
+        self.current_lon = msg.rover_longitude
 
 def main(args=None):
     rclpy.init(args=args)
