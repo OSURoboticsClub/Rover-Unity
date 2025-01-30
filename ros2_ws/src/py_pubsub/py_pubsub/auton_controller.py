@@ -18,7 +18,8 @@ class Location:
 
 class auton_controller(Node):
     destination = Location(0.0, 0.0)
-    #final_destination = Location(0.0, 0.0) probably will use later
+    subpoints = None
+    curr_destination = None
     rover_position = Location(0.0, 0.0)
     # current_lat = 0.0
     # current_lon = 0.0
@@ -100,11 +101,32 @@ class auton_controller(Node):
         curvature = (2 * y) / (dist_to_target ** 2)
         return curvature
 
+    def get_points_along_line(self, steps, step_feet=10):
+        """
+        Moves along the geodesic path from (lat1, lon1) to (lat2, lon2) 
+        in steps of `step_feet`, returning a list of coordinates
+        """
+        step_meters = step_feet * 0.3048  # Convert feet to meters
+        total_distance = self.get_distance_to_dest()
+        geod = Geodesic.WGS84
+        lat1 = self.rover_position.latitude
+        lon1 = self.rover_position.longitude
+
+        self.subpoints = []  # Exclude start and end positions
+
+        for i in range(1, 1000):
+            traveled_distance = i * step_meters
+            if traveled_distance >= total_distance - 5.0:
+                break
+            new_pos = geod.Direct(lat1, lon1, self.target_heading, traveled_distance)
+            self.subpoints.append(Location(new_pos['lat2'], new_pos['lon2']))
+
     def control_loop(self):
         if self.state == "stopped":
             self.publish_drive_message(0.0, 0.0)
             self.control_timer.cancel()
             self.control_timer = None
+            self.subpoints = None
             self.publish_log_msg("Stopped autonomous control")
             return
 
@@ -130,6 +152,8 @@ class auton_controller(Node):
             distance = self.get_distance_to_dest()
             self.get_logger().info("Driving. Distance to current target: " + f"{distance:.0f}. " + heading_log)
 
+            if self.subpoints == None:
+                self.get_points_along_line()
 
             if distance < 2.0:
                 self.state = "stopped"
