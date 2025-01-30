@@ -37,7 +37,7 @@ public class TcpMessageReceiver : MonoBehaviour
         if (parts[0] == "tower/status/gps"){
             gpsReceived.Invoke(message);
         }
-        else if (parts[0] == "imu/data")
+        else if (parts[0] == "imu/data/heading")
         {
             imuReceived.Invoke(message);
         }

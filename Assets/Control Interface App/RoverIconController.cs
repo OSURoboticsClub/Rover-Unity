@@ -15,7 +15,7 @@ public class RoverIconController : MonoBehaviour
     void Start()
     {
         TcpMessageReceiver.gpsReceived.AddListener(OnGpsReceived);
-        TcpMessageReceiver.imuReceived.AddListener(OnImuReceived);
+        TcpMessageReceiver.imuReceived.AddListener(OnImuHeadingReceived);
         offset = -1000;
     }
 
@@ -27,6 +27,13 @@ public class RoverIconController : MonoBehaviour
         double lon = double.Parse(parts[2]);
         Vector2 worldPos = MapController.instance.GetWorldPosition(lat, lon);
         roverIcon.position = worldPos;
+    }
+
+    void OnImuHeadingReceived(string message)
+    {
+        Debug.Log("Received IMU heading: " + message);
+        bool succ = float.TryParse(message, out float result);
+        if(succ) roverIcon.rotation = Quaternion.Euler(0, 0, result);
     }
 
     void OnImuReceived(string message)
@@ -78,6 +85,6 @@ public class RoverIconController : MonoBehaviour
     void OnDestroy()
     {
         TcpMessageReceiver.gpsReceived.RemoveListener(OnGpsReceived);
-        TcpMessageReceiver.gpsReceived.RemoveListener(OnImuReceived);
+        TcpMessageReceiver.gpsReceived.RemoveListener(OnImuHeadingReceived);
     }
 }

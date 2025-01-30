@@ -61,7 +61,6 @@ public class PurePursuit : MonoBehaviour
     {
         // Calculate the direction vector to the lookahead point
         Vector2 direction = lookaheadPoint - robotPosition;
-        Debug.Log(direction);
         angleToPoint = Vector2.Angle(Vector2.up, direction);
 
         float a = Mathf.Atan(direction.y / direction.x);
@@ -70,16 +69,10 @@ public class PurePursuit : MonoBehaviour
         // Rotate direction vector into robot's local frame
         float localX = hypotenuse * Mathf.Cos(a + robotTheta);
         float localY = Mathf.Sqrt(hypotenuse * hypotenuse - localX * localX);
-        localXd = localX;
-        localYd = localY;
-
-        //if (direc
         if (direction.x < 0) localX *= -1;
 
-
-        // Curvature is 2 * x / (x^2 + y^2)
         if (localY == 0) return 0;
-        return 2 * localX / (localX * localX + localY * localY);
+        return 2 * localX / (localX * localX + localY * localY); // Curvature is 2 * x / (x^2 + y^2)
     }
 
     public void AddPointToLine(LineRenderer line, Vector3 newPoint)
