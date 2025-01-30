@@ -61,7 +61,14 @@ class auton_controller(Node):
         self.response_publisher.publish(msg)
 
     def get_heading_error(self):
-        return self.current_heading - self.target_heading
+        """Returns the shortest signed heading error in degrees."""
+        error = self.target_heading - self.current_heading
+        if error > 180:
+            error -= 360
+        elif error < -180:
+            error += 360
+        return error
+
 
     def control_loop(self):
         if self.state == "stopped":
@@ -71,10 +78,10 @@ class auton_controller(Node):
             self.publish_log_msg("Stopped autonomous control")
             return
 
+        heading_error = self.get_heading_error()
 
         if self.state == "turning":
-            heading_error = self.get_heading_error()
-            self.get_logger().info("Turning to target heading (" + str(self.target_heading) + "). Current heading: " + str(self.current_heading))
+            self.get_logger().info("Turning. Target: " + f"{self.target_heading:.1f}" + ". Current: " + f"{self.current_heading:.1f}" + ", Error: " + f"{self.heading_error:.1f}")
             if abs(heading_error) < 2.5:  # Example threshold
                 self.get_logger().info("Target heading reached.")
                 self.publish_log_msg("Reached target heading. Now driving")
@@ -84,13 +91,22 @@ class auton_controller(Node):
                 if heading_error < 0:
                     angular_speed *= -1
                 if abs(heading_error) < 30: # slow down on approach
-                    angular_speed *= 0.4
+                    angular_speed *= 0.5
                 self.publish_drive_message(0.0, angular_speed) 
 
         elif self.state == "driving":
-            self.state = "stopped"
-            # self.get_logger().info("Driving to target location...")
-            # self.publish_drive_message(0.1, 0.0)
+            self.target_heading = self.get_target_heading()
+            self.get_logger().info("Driving. Target H: " + f"{self.target_heading:.1f}" + ". Current H: " + f"{self.current_heading:.1f}" + ", Error: " + f"{self.heading_error:.1f}")
+
+
+            dist_to_target = 100.0
+            if dist_to_target < 2.0:
+                self.state = "stopped"
+                return
+                
+            speed = 0.0
+            angular = 0.0
+            # self.publish_drive_message(speed, angular)
 
     def control_listener_callback(self, msg):
         """Listens to auton_control topic for commands"""
@@ -121,14 +137,12 @@ class auton_controller(Node):
 
     def imu_listener_callback(self, msg):
         """Receive IMU data, convert to Euler Angles"""
-        #self.get_logger().info(f'Received data on imu/data')
         quat = [msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z]
 
         euler = quat2euler(quat, axes='sxyz')  # 'sxyz' is a common rotation convention
         roll, pitch, yaw = euler
         roll_degrees = roll * 57.2958
 
-        #self.get_logger().info(f'Roll: ' + str(roll * 57.2958) + ", Pitch: " + str(pitch * 57.2958) + ", Yaw: " + str(yaw * 57.2958))
         if self.offset == None:
             self.current_heading = 18.0  # The rover should start pointing in alignment with Merryfield
             self.get_logger().info(f'Heading should be 18')
