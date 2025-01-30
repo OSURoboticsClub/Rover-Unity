@@ -3,10 +3,10 @@ import rclpy
 from rclpy.node import Node
 from threading import Thread
 from std_msgs.msg import String
+from std_msgs.msg import Float32
 from rover2_control_interface.msg import GPSStatusMessage
 from sensor_msgs.msg import Imu
 from functools import partial
-
 
 
 class TCPServer(Node):
@@ -24,7 +24,8 @@ class TCPServer(Node):
         # Add subscriptions to multiple topics
         self.add_subscription('auton_control_response', String)
         self.add_subscription('tower/status/gps', GPSStatusMessage)
-        self.add_subscription('imu/data', Imu)
+        #self.add_subscription('imu/data', Imu)
+        self.add_subscription('imu/data/heading', Float32)
 
     def add_subscription(self, topic_name, message_type):
         # Create and store a subscription for each topic
@@ -46,6 +47,8 @@ class TCPServer(Node):
             message = topic_name + ";"
             if topic_name == "tower/status/gps":
                 message += f"{msg.rover_latitude};{msg.rover_longitude}"
+            elif topic_name == "imu/data/heading":
+                message += f"{msg.data}"
             elif topic_name == "imu/data":
                 message += f"{msg.orientation.x};{msg.orientation.y};{msg.orientation.z};{msg.orientation.w}"
             else:

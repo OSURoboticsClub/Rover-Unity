@@ -1023,7 +1023,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6568c22e63b90b04c94c6e861187b2e1, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.7607843}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.50980395}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2324,6 +2324,7 @@ GameObject:
   - component: {fileID: 830746683}
   - component: {fileID: 830746685}
   - component: {fileID: 830746686}
+  - component: {fileID: 830746687}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
@@ -2551,6 +2552,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   latestMsg: 
   text: {fileID: 1130625499}
+--- !u!114 &830746687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830746671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 866ac402ddd899188a368fbf32155faf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subpoint: {fileID: 9158389078652303773, guid: 46857e22b4a1f63c2a143a1b99f07a2f, type: 3}
+  iconParent: {fileID: 284135380}
+  fullMsg: 
 --- !u!1 &831638143
 GameObject:
   m_ObjectHideFlags: 0
@@ -5089,11 +5105,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.76
+      value: 11.92
       objectReference: {fileID: 0}
     - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.94
+      value: 12.48
       objectReference: {fileID: 0}
     - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5129,11 +5145,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 980054023813013849, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: latitude
-      value: 44.56782
+      value: 44.56737
       objectReference: {fileID: 0}
     - target: {fileID: 980054023813013849, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: longitude
-      value: -123.27369
+      value: -123.2741
       objectReference: {fileID: 0}
     - target: {fileID: 980054023813013849, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: description
@@ -7650,11 +7666,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.89
+      value: 10.86
       objectReference: {fileID: 0}
     - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.56
+      value: 9.92
       objectReference: {fileID: 0}
     - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: m_LocalPosition.z
