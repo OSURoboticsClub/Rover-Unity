@@ -10,6 +10,8 @@ from geographiclib.geodesic import Geodesic
 from transforms3d.euler import quat2euler
 from dataclasses import dataclass
 import math
+import json
+from dataclasses import asdict
 
 @dataclass
 class Location:
@@ -20,7 +22,7 @@ class auton_controller(Node):
     destination = Location(0.0, 0.0)
     subpoints = None
     curr_destination = None
-    rover_position = Location(0.0, 0.0)
+    rover_position = Location(44.56726, -123.27363)
     # current_lat = 0.0
     # current_lon = 0.0
     # target_lat = 0.0
@@ -120,6 +122,10 @@ class auton_controller(Node):
                 break
             new_pos = geod.Direct(lat1, lon1, self.target_heading, traveled_distance)
             self.subpoints.append(Location(new_pos['lat2'], new_pos['lon2']))
+        
+        msg = "subpoints;" + json.dumps([asdict(loc) for loc in self.subpoints])
+        self.publish_log_msg(msg)
+
 
     def control_loop(self):
         if self.state == "stopped":
