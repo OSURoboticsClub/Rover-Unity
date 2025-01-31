@@ -14,6 +14,11 @@ public class TcpController : MonoBehaviour
     private bool isRunning;
 
     // Start is called before the first frame update
+    public void Reconnect()
+    {
+        Start();
+    }
+
     void Start()
     {
         inst = this;

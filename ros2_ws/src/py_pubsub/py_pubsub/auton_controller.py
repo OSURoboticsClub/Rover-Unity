@@ -19,7 +19,7 @@ class Location:
     longitude: float
 
 class auton_controller(Node):
-    destination = Location(0.0, 0.0)
+    destination = None
     subpoints = None
     curr_destination = None
     rover_position = Location(44.56726, -123.27363)
@@ -62,8 +62,8 @@ class auton_controller(Node):
         geod = Geodesic.WGS84
         lat1 = self.rover_position.latitude
         lon1 = self.rover_position.longitude
-        lat2 = self.destination.latitude
-        lon2 = self.destination.longitude
+        lat2 = self.curr_destination.latitude
+        lon2 = self.curr_destination.longitude
         result = geod.Inverse(lat1, lon1, lat2, lon2)
         return result['azi1']
 
@@ -76,8 +76,8 @@ class auton_controller(Node):
         geod = Geodesic.WGS84
         lat1 = self.rover_position.latitude
         lon1 = self.rover_position.longitude
-        lat2 = self.destination.latitude
-        lon2 = self.destination.longitude
+        lat2 = self.curr_destination.latitude
+        lon2 = self.curr_destination.longitude
         result = geod.Inverse(lat1, lon1, lat2, lon2)
         return result['s12'] * 3.28084  # Convert meters to feet because this is America
 
@@ -127,6 +127,15 @@ class auton_controller(Node):
         msg = "subpoints;" + json.dumps([asdict(loc) for loc in self.subpoints])
         self.publish_log_msg(msg)
 
+    def set_next_dest(self):
+        if self.subpoints is not None and len(self.subpoints) > 0:
+            self.curr_destination = self.subpoints[0]
+            self.subpoints.pop(0)
+        elif self.destination is not None:
+            self.curr_destination = self.destination
+            self.destination = None
+        else:
+            self.curr_destination = None
 
     def control_loop(self):
         if self.state == "stopped":
@@ -155,21 +164,28 @@ class auton_controller(Node):
 
         elif self.state == "driving":
             self.target_heading = self.get_target_heading()
-            heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}, " + "Error: " + f"{heading_error:.1f}"
             distance = self.get_distance_to_dest()
+            curv = self.compute_curvature()
+
+            heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}, " + "Error: " + f"{heading_error:.1f}"
             self.get_logger().info("Driving. Distance to current target: " + f"{distance:.0f}. " + heading_log)
 
-            if self.subpoints == None:
-                self.get_points_along_line()
 
-            if distance < 2.0:
-                self.state = "stopped"
-                self.get_logger().info("Reached destination. Stopping...")
-                return
-                
-            speed = 0.0
-            angular = 0.0
-            # self.publish_drive_message(speed, angular)
+            if distance < 4.0:
+                self.set_next_dest()
+                if self.curr_destination is None:
+                    self.state = "stopped"
+                    self.get_logger().info("Reached destination. Stopping...")
+                    return
+
+
+            linear = 0.3
+            angular = curv * linear
+            if angular > 0.4:
+                angular = 0.4
+            elif angular < -0.4:
+                angular = -0.4
+            # self.publish_drive_message(linear, angular)
 
     def control_listener_callback(self, msg):
         """Listens to auton_control topic for commands"""
@@ -185,6 +201,8 @@ class auton_controller(Node):
                 self.get_logger().info(f"Command GOTO received with target lat: {lat}, lon: {lon}")
                 self.state = "driving"
                 self.destination = Location(lat, lon)
+                self.get_points_along_line()
+                self.set_next_dest()
                 # self.target_lat = lat
                 # self.target_lon = lon
                 self.target_heading = self.get_target_heading()
