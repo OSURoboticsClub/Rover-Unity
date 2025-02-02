@@ -23,10 +23,6 @@ class auton_controller(Node):
     subpoints = None
     curr_destination = None
     rover_position = Location(44.56726, -123.27363)
-    # current_lat = 0.0
-    # current_lon = 0.0
-    # target_lat = 0.0
-    # target_lon = 0.0
     current_heading = 0.0
     target_heading = None
     state = "stopped"
@@ -136,6 +132,8 @@ class auton_controller(Node):
             self.destination = None
         else:
             self.curr_destination = None
+        self.get_logger().info("Current dest: " + str(self.curr_destination))
+        
 
     def control_loop(self):
         if self.state == "stopped":
@@ -153,10 +151,10 @@ class auton_controller(Node):
             if abs(heading_error) < 2.5:  # Example threshold
                 self.get_logger().info("Target heading reached.")
                 self.publish_log_msg("Reached target heading. Now driving")
-                self.state = "driving"
+                self.state = "stopped"
             else:
                 angular_speed = 0.3 # rad/s
-                if heading_error < 0:
+                if heading_error > 0:
                     angular_speed *= -1
                 if abs(heading_error) < 30: # slow down on approach
                     angular_speed *= 0.5
@@ -185,7 +183,7 @@ class auton_controller(Node):
                 angular = 0.4
             elif angular < -0.4:
                 angular = -0.4
-            # self.publish_drive_message(linear, angular)
+            self.publish_drive_message(linear, angular)
 
     def control_listener_callback(self, msg):
         """Listens to auton_control topic for commands"""
@@ -199,9 +197,9 @@ class auton_controller(Node):
 
             if command == "GOTO":
                 self.get_logger().info(f"Command GOTO received with target lat: {lat}, lon: {lon}")
-                self.state = "driving"
+                self.state = "turning"
                 self.destination = Location(lat, lon)
-                self.get_points_along_line()
+                #self.get_points_along_line()
                 self.set_next_dest()
                 # self.target_lat = lat
                 # self.target_lon = lon

@@ -31,9 +31,10 @@ public class RoverIconController : MonoBehaviour
 
     void OnImuHeadingReceived(string message)
     {
-        Debug.Log("Received IMU heading: " + message);
-        bool succ = float.TryParse(message, out float result);
-        if(succ) roverIcon.rotation = Quaternion.Euler(0, 0, result);
+        //Debug.Log("Received IMU heading: " + message);
+        var parts = message.Split(";");
+        bool succ = float.TryParse(parts[1], out float result);
+        if(succ) roverIcon.rotation = Quaternion.Euler(0, 0, -result);
     }
 
     void OnImuReceived(string message)
