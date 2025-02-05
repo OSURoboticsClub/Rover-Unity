@@ -7,16 +7,27 @@ from std_msgs.msg import Float32
 from rover2_control_interface.msg import GPSStatusMessage
 from sensor_msgs.msg import Imu
 from functools import partial
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+import cv2
+import struct
 
+# UDP Configuration for Image Transmission
+UDP_IP = "127.0.0.1"  # Change to the Unity application's IP
+UDP_PORT = 12345
+PACKET_SIZE = 4096
+HEADER_SIZE = 16
+PAYLOAD_SIZE = PACKET_SIZE - HEADER_SIZE
+
+# Create UDP Socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 class TCPServer(Node):
 
     def __init__(self):
         super().__init__('tcp_server_with_ros2')
         self.topic_publishers = {}  # Dictionary to store topic_name -> publisher
-        self.message_type_map = {
-            #'tower/status/gps': GPSStatusMessage, (example)
-        }  # Map of topic names to message types
+        self.message_type_map = {}  # Map of topic names to message types
         self.subscribers = []
         self.tcp_client = None
         self.get_logger().info('TCP server initialized.')
@@ -26,17 +37,58 @@ class TCPServer(Node):
         self.add_subscription('tower/status/gps', GPSStatusMessage)
         #self.add_subscription('imu/data', Imu)
         self.add_subscription('imu/data/heading', Float32)
+        self.add_subscription('camera_chassis/420x280/compressed', Image)
 
     def add_subscription(self, topic_name, message_type):
         # Create and store a subscription for each topic
         subscription = self.create_subscription(
             message_type,
             topic_name,
-            partial(self.ros_to_tcp_callback, topic_name),
+            partial(self.ros_callback, topic_name),
             10
         )
         self.subscribers.append(subscription)
         self.get_logger().info(f"Subscribed to topic: {topic_name}")
+
+    def ros_callback(self, topic_name, msg):
+        """Callback for messages received on ROS 2 topics."""
+        if topic_name == "camera_chassis/420x280/compressed":
+            self.send_image_over_udp(msg)
+        else:
+            self.ros_to_tcp_callback(topic_name, msg)
+
+    def send_image_over_udp(self, msg):
+        """Converts ROS 2 Image message to bytes and sends it over UDP in chunks."""
+        try:
+            # Convert ROS Image to OpenCV format
+            frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+
+            # Encode image as JPEG
+            _, img_encoded = cv2.imencode(".jpg", frame)
+            image_bytes = img_encoded.tobytes()
+
+            # Calculate number of packets
+            num_of_packets = (len(image_bytes) + PAYLOAD_SIZE - 1) // PAYLOAD_SIZE
+            stream_id = 1
+
+            # Send packets
+            for i in range(num_of_packets):
+                start = i * PAYLOAD_SIZE
+                end = min(start + PAYLOAD_SIZE, len(image_bytes))  # Prevents reading beyond image size
+                packet_data = image_bytes[start:end]
+
+                # Construct packet: [Stream ID (4 bytes)] + [Frame Number (4 bytes)] + [Packet Index (4 bytes)] + [Total Packets (4 bytes)] + [Image Data]
+                header = struct.pack("<iiii", stream_id, self.frame_number, i, num_of_packets)
+                packet = header + packet_data
+
+                # Send UDP packet
+                sock.sendto(packet, (UDP_IP, UDP_PORT))
+
+            self.get_logger().info(f"Sent frame {self.frame_number} in {num_of_packets} packets")
+            self.frame_number += 1  # Increment frame count
+
+        except Exception as e:
+            self.get_logger().error(f"Failed to send image over UDP: {e}")
 
     def ros_to_tcp_callback(self, topic_name, msg): # Callback for messages received on ROS 2 topics
         if not(self.tcp_client):

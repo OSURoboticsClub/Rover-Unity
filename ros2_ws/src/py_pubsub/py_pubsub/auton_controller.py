@@ -39,6 +39,7 @@ class auton_controller(Node):
         self.response_publisher = self.create_publisher(String, 'auton_control_response', 10)
         self.drive_publisher = self.create_publisher(DriveCommandMessage, 'command_control/ground_station_drive', 10)
 
+
     def publish_drive_message(self, linear_speed, angular_speed):
         """Publish the current linear and angular speed to drivetrain"""
         twist_msg = Twist()
@@ -134,7 +135,6 @@ class auton_controller(Node):
             self.curr_destination = None
         self.get_logger().info("Current dest: " + str(self.curr_destination))
         
-
     def control_loop(self):
         if self.state == "stopped":
             self.publish_drive_message(0.0, 0.0)
