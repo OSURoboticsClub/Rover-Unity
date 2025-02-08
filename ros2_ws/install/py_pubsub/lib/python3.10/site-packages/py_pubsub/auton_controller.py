@@ -19,7 +19,7 @@ class Location:
     longitude: float
 
 class auton_controller(Node):
-    destination = None
+    waypoint_destination = None
     subpoints = None
     curr_destination = None
     rover_position = Location(44.56726, -123.27363)
@@ -39,6 +39,7 @@ class auton_controller(Node):
         self.response_publisher = self.create_publisher(String, 'auton_control_response', 10)
         self.drive_publisher = self.create_publisher(DriveCommandMessage, 'command_control/ground_station_drive', 10)
 
+
     def publish_drive_message(self, linear_speed, angular_speed):
         """Publish the current linear and angular speed to drivetrain"""
         twist_msg = Twist()
@@ -54,12 +55,12 @@ class auton_controller(Node):
         custom_msg.drive_twist = twist_msg
         self.drive_publisher.publish(custom_msg)
 
-    def get_target_heading(self):
+    def get_target_heading(self, target):
         geod = Geodesic.WGS84
         lat1 = self.rover_position.latitude
         lon1 = self.rover_position.longitude
-        lat2 = self.curr_destination.latitude
-        lon2 = self.curr_destination.longitude
+        lat2 = target.latitude
+        lon2 = target.longitude
         result = geod.Inverse(lat1, lon1, lat2, lon2)
         return result['azi1']
 
@@ -68,12 +69,12 @@ class auton_controller(Node):
         msg.data = text
         self.response_publisher.publish(msg)
 
-    def get_distance_to_dest(self):
+    def get_distance_to_location(self, target):
         geod = Geodesic.WGS84
         lat1 = self.rover_position.latitude
         lon1 = self.rover_position.longitude
-        lat2 = self.curr_destination.latitude
-        lon2 = self.curr_destination.longitude
+        lat2 = self.target.latitude
+        lon2 = self.target.longitude
         result = geod.Inverse(lat1, lon1, lat2, lon2)
         return result['s12'] * 3.28084  # Convert meters to feet because this is America
 
@@ -86,8 +87,8 @@ class auton_controller(Node):
             error += 360
         return error
 
-    def compute_curvature(self):
-        dist_to_target = self.get_distance_to_dest()
+    def compute_curvature(self, target):
+        dist_to_target = self.get_distance_to_location(target)
 
         # Compute lateral error (y)
         heading_error = math.radians(self.get_heading_error())  # Convert to radians
@@ -104,7 +105,7 @@ class auton_controller(Node):
         Moves along the geodesic path from (lat1, lon1) to (lat2, lon2) 
         in steps of `step_feet`, returning a list of coordinates
         """
-        total_distance = self.get_distance_to_dest()
+        total_distance = self.get_distance_to_location()
         geod = Geodesic.WGS84
         lat1 = self.rover_position.latitude
         lon1 = self.rover_position.longitude
@@ -127,14 +128,13 @@ class auton_controller(Node):
         if self.subpoints is not None and len(self.subpoints) > 0:
             self.curr_destination = self.subpoints[0]
             self.subpoints.pop(0)
-        elif self.destination is not None:
-            self.curr_destination = self.destination
-            self.destination = None
+        elif self.waypoint_destination is not None:
+            self.curr_destination = self.waypoint_destination
+            self.waypoint_destination = None
         else:
             self.curr_destination = None
         self.get_logger().info("Current dest: " + str(self.curr_destination))
         
-
     def control_loop(self):
         if self.state == "stopped":
             self.publish_drive_message(0.0, 0.0)
@@ -161,21 +161,20 @@ class auton_controller(Node):
                 self.publish_drive_message(0.0, angular_speed) 
 
         elif self.state == "driving":
-            self.target_heading = self.get_target_heading()
-            distance = self.get_distance_to_dest()
-            curv = self.compute_curvature()
+            self.target_heading = self.get_target_heading(self.curr_destination)
+            distance_to_nearest_point = self.get_distance_to_location(self.curr_destination)
+            distance_to_waypoint = self.get_distance_to_location(self.waypoint_destination)
+            curv = self.compute_curvature(self.curr_destination)
 
             heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}, " + "Error: " + f"{heading_error:.1f}"
-            self.get_logger().info("Driving. Distance to current target: " + f"{distance:.0f}. " + heading_log)
+            self.get_logger().info("Driving. Distance to current target: " + f"{distance_to_nearest_point:.0f}. " + heading_log)
 
-
-            if distance < 4.0:
+            if distance_to_nearest_point < 4.0:
+                self.get_logger().info("Reached current destination. Stopping...")
                 self.set_next_dest()
                 if self.curr_destination is None:
                     self.state = "stopped"
-                    self.get_logger().info("Reached destination. Stopping...")
                     return
-
 
             linear = 0.3
             angular = curv * linear
@@ -198,11 +197,9 @@ class auton_controller(Node):
             if command == "GOTO":
                 self.get_logger().info(f"Command GOTO received with target lat: {lat}, lon: {lon}")
                 self.state = "turning"
-                self.destination = Location(lat, lon)
-                #self.get_points_along_line()
+                self.waypoint_destination = Location(lat, lon)
+                self.get_points_along_line(self.waypoint_destination)
                 self.set_next_dest()
-                # self.target_lat = lat
-                # self.target_lon = lon
                 self.target_heading = self.get_target_heading()
                 if self.control_timer is not None:
                     self.control_timer.cancel()

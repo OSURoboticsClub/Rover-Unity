@@ -11,6 +11,7 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
 import struct
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy
 
 # UDP Configuration for Image Transmission
 UDP_IP = "127.0.0.1"  # Change to the Unity application's IP
@@ -31,34 +32,44 @@ class TCPServer(Node):
         self.subscribers = []
         self.tcp_client = None
         self.get_logger().info('TCP server initialized.')
+        self.bridge = CvBridge()
 
         # Add subscriptions to multiple topics
-        self.add_subscription('auton_control_response', String)
-        self.add_subscription('tower/status/gps', GPSStatusMessage)
         #self.add_subscription('imu/data', Imu)
-        self.add_subscription('imu/data/heading', Float32)
-        self.add_subscription('camera_chassis/420x280/compressed', Image)
+
+        # self.add_subscription('auton_control_response', String)
+        # self.add_subscription('tower/status/gps', GPSStatusMessage)
+        # self.add_subscription('imu/data/heading', Float32)
+
+        qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
+
+        self.img_subscription = self.create_subscription(
+            Image,
+            '/cameras/main_navigation/image_256x144',
+            self.ros_img_callback,
+            qos_profile
+        )
+        self.frame_number = 0
+
+    def ros_img_callback(self, msg):
+        self.send_image_over_udp(msg)
+
 
     def add_subscription(self, topic_name, message_type):
         # Create and store a subscription for each topic
         subscription = self.create_subscription(
             message_type,
             topic_name,
-            partial(self.ros_callback, topic_name),
+            partial(self.ros_to_tcp_callback, topic_name),
             10
         )
         self.subscribers.append(subscription)
         self.get_logger().info(f"Subscribed to topic: {topic_name}")
 
-    def ros_callback(self, topic_name, msg):
-        """Callback for messages received on ROS 2 topics."""
-        if topic_name == "camera_chassis/420x280/compressed":
-            self.send_image_over_udp(msg)
-        else:
-            self.ros_to_tcp_callback(topic_name, msg)
-
     def send_image_over_udp(self, msg):
         """Converts ROS 2 Image message to bytes and sends it over UDP in chunks."""
+        if self.frame_number >= 1000:
+            self.frame_number = 0
         try:
             # Convert ROS Image to OpenCV format
             frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
