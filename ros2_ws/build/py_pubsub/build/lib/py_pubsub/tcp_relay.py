@@ -37,9 +37,9 @@ class TCPServer(Node):
         # Add subscriptions to multiple topics
         #self.add_subscription('imu/data', Imu)
 
-        # self.add_subscription('auton_control_response', String)
-        # self.add_subscription('tower/status/gps', GPSStatusMessage)
-        # self.add_subscription('imu/data/heading', Float32)
+        self.add_subscription('auton_control_response', String)
+        self.add_subscription('tower/status/gps', GPSStatusMessage)
+        self.add_subscription('imu/data/heading', Float32)
 
         qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
 
@@ -68,6 +68,8 @@ class TCPServer(Node):
 
     def send_image_over_udp(self, msg):
         """Converts ROS 2 Image message to bytes and sends it over UDP in chunks."""
+        if self.frame_number >= 1000:
+            self.frame_number = 0
         try:
             # Convert ROS Image to OpenCV format
             frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')

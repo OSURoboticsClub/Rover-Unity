@@ -73,8 +73,8 @@ class auton_controller(Node):
         geod = Geodesic.WGS84
         lat1 = self.rover_position.latitude
         lon1 = self.rover_position.longitude
-        lat2 = self.target.latitude
-        lon2 = self.target.longitude
+        lat2 = target.latitude
+        lon2 = target.longitude
         result = geod.Inverse(lat1, lon1, lat2, lon2)
         return result['s12'] * 3.28084  # Convert meters to feet because this is America
 
@@ -105,7 +105,7 @@ class auton_controller(Node):
         Moves along the geodesic path from (lat1, lon1) to (lat2, lon2) 
         in steps of `step_feet`, returning a list of coordinates
         """
-        total_distance = self.get_distance_to_location()
+        total_distance = self.get_distance_to_location(self.waypoint_destination)
         geod = Geodesic.WGS84
         lat1 = self.rover_position.latitude
         lon1 = self.rover_position.longitude
@@ -151,13 +151,13 @@ class auton_controller(Node):
             if abs(heading_error) < 2.5:  # Example threshold
                 self.get_logger().info("Target heading reached.")
                 self.publish_log_msg("Reached target heading. Now driving")
-                self.state = "stopped"
+                self.state = "driving"
             else:
-                angular_speed = 0.3 # rad/s
+                angular_speed = 0.4 # rad/s
                 if heading_error > 0:
                     angular_speed *= -1
                 if abs(heading_error) < 30: # slow down on approach
-                    angular_speed *= 0.5
+                    angular_speed *= 0.6
                 self.publish_drive_message(0.0, angular_speed) 
 
         elif self.state == "driving":
@@ -169,7 +169,7 @@ class auton_controller(Node):
             heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}, " + "Error: " + f"{heading_error:.1f}"
             self.get_logger().info("Driving. Distance to current target: " + f"{distance_to_nearest_point:.0f}. " + heading_log)
 
-            if distance_to_nearest_point < 4.0:
+            if distance_to_nearest_point < 9.0:
                 self.get_logger().info("Reached current destination. Stopping...")
                 self.set_next_dest()
                 if self.curr_destination is None:
@@ -177,11 +177,11 @@ class auton_controller(Node):
                     return
 
             linear = 0.3
-            angular = curv * linear
-            if angular > 0.4:
-                angular = 0.4
-            elif angular < -0.4:
-                angular = -0.4
+            angular = -curv * linear
+            if angular > 0.6:
+                angular = 0.6
+            elif angular < -0.6:
+                angular = -0.6
             self.publish_drive_message(linear, angular)
 
     def control_listener_callback(self, msg):
@@ -198,9 +198,9 @@ class auton_controller(Node):
                 self.get_logger().info(f"Command GOTO received with target lat: {lat}, lon: {lon}")
                 self.state = "turning"
                 self.waypoint_destination = Location(lat, lon)
-                self.get_points_along_line(self.waypoint_destination)
+                self.target_heading = self.get_target_heading(self.waypoint_destination)
+                self.get_points_along_line()
                 self.set_next_dest()
-                self.target_heading = self.get_target_heading()
                 if self.control_timer is not None:
                     self.control_timer.cancel()
                 self.control_timer = self.create_timer(0.1, self.control_loop)
