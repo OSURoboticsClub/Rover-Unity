@@ -10,7 +10,6 @@ using UnityEngine.UI;
 
 public class streamListener : MonoBehaviour
 {
-    [SerializeField] int streamID = 1;
     //[SerializeField] int currentFrameNum = 0;
     [SerializeField] Image image;
     [SerializeField] float fps;
@@ -54,9 +53,9 @@ public class streamListener : MonoBehaviour
                 UdpReceiveResult result = await udpClient.ReceiveAsync();
                 ProcessPacket(result.Buffer);
             }
-            catch (Exception e)
+            catch
             {
-                Debug.LogError($"UDP Receive Error: {e.Message}");
+                //Debug.LogError($"UDP Receive Error: {e.Message}");
                 break;
             }
         }

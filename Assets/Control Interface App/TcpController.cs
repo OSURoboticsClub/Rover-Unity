@@ -49,7 +49,7 @@ public class TcpController : MonoBehaviour
         if (client == null || stream == null || !client.Connected)
         {
             Debug.LogWarning("TCP connection is not established. Unable to send data.");
-            Start();
+            //Start();
             if (client == null || stream == null || !client.Connected) return;
         }
 
@@ -114,6 +114,6 @@ public class TcpController : MonoBehaviour
         if (client != null)
             client.Close();
 
-        Debug.Log("TCP connection closed.");
+        //Debug.Log("TCP connection closed.");
     }
 }

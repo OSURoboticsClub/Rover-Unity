@@ -30,12 +30,14 @@ public class SelectDestination : MonoBehaviour
     public void SetIconBlue()
     {
         var scr = GetComponent<GpsLocation>();
+        if (scr.iconObject == null) return;
         scr.iconObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
     }
 
     public void SetIconGreen()
     {
         var scr = GetComponent<GpsLocation>();
+        if (scr.iconObject == null) return;
         scr.iconObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0, 1f, 2/255f);
     }
 }

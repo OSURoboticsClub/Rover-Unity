@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MapController : MonoBehaviour
 {
@@ -23,7 +24,9 @@ public class MapController : MonoBehaviour
     [SerializeField] TMP_InputField descText;
     [SerializeField] TMP_InputField latText;
     [SerializeField] TMP_InputField longText;
+    [SerializeField] Toggle homeIconToggle;
     [SerializeField] LineRenderer lineRenderer;
+    [SerializeField] Sprite homeIcon;
     // Start is called before the first frame update
     void Awake()
     {
@@ -54,6 +57,13 @@ public class MapController : MonoBehaviour
         script.latitude = lat;
         script.longitude = lon;
         script.description = descText.text;
+        if (homeIconToggle.isOn)
+        {
+            SpriteRenderer sr = newObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            sr.sprite = homeIcon;
+            sr.color = new Color(12 / 255f, 1f, 0f);
+            newObject.transform.GetChild(0).localPosition = new Vector3();
+        }
         newListingMenu.SetActive(false);
         CameraControl.inst.RescaleIcons();
     }

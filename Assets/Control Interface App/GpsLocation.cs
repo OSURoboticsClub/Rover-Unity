@@ -14,6 +14,8 @@ public class GpsLocation : MonoBehaviour
     public TextMeshProUGUI desc;
     public TextMeshProUGUI lat;
     public TextMeshProUGUI lon;
+    public TextMeshProUGUI waypointCountText;
+    public int waypointCount;
 
     [SerializeField] Image goBtn;
     [SerializeField] TextMeshProUGUI goTxt;
@@ -24,6 +26,7 @@ public class GpsLocation : MonoBehaviour
         desc.text = description;
         lat.text = latitude.ToString();
         lon.text = longitude.ToString();
+        waypointCountText.text = waypointCount.ToString();
     }
 
     public void SetActive()
