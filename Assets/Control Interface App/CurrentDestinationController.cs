@@ -33,7 +33,7 @@ public class CurrentDestinationController : MonoBehaviour
         string message = $"auton_control;GOTO;{script.lat.text};{script.lon.text}";
         TcpController.inst.Publish(message);
         StatusIndicator.instance.SetIndicator(Status.Activated, script);
-        MapController.instance.SetLinePosition(script.iconObject.transform.position);
+        //MapController.instance.SetLinePosition(script.iconObject.transform.position);
     }
 
     public void Stop(GpsLocation script)

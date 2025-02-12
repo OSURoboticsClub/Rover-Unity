@@ -87,6 +87,16 @@ public class MapController : MonoBehaviour
         return new Vector2(worldUnitsX, worldUnitsY);
     }
 
+    public void ReceiveNextDestination(string msg)
+    {
+
+        var parts = msg.Split(";");
+        float lat = float.Parse(parts[2]);
+        float lon = float.Parse(parts[3]);
+        Vector2 worldPos = GetWorldPosition(lat, lon);
+        SetLinePosition(worldPos);
+    }
+
     public void SetLinePosition(Vector3 target)
     {
         lineRenderer.enabled = true;

@@ -46,6 +46,10 @@ public class TcpMessageReceiver : MonoBehaviour
             if(parts[1] == "subpoints") {
                 SubpointDisplay.inst.Receive(message);
             }
+            else if(parts[1] == "nextdest")
+            {
+                MapController.instance.ReceiveNextDestination(message);
+            }
             else{
                 MessagesController.inst.DisplayMessage(message);
             }

@@ -133,7 +133,9 @@ class auton_controller(Node):
             self.waypoint_destination = None
         else:
             self.curr_destination = None
-        self.get_logger().info("Current dest: " + str(self.curr_destination))
+        self.get_logger().info("Set new dest: " + str(self.curr_destination))
+        if self.curr_destination is not None:
+            self.publish_log_msg("nextdest;" + str(self.curr_destination.latitude) + ";" + str(self.curr_destination.longitude))
         
     def control_loop(self):
         if self.state == "stopped":
@@ -166,14 +168,12 @@ class auton_controller(Node):
             distance_to_waypoint = self.get_distance_to_location(self.waypoint_destination)
             curv = self.compute_curvature(self.curr_destination)
 
-            heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}, " + "Error: " + f"{heading_error:.1f}"
-            self.get_logger().info("Driving. Distance to current target: " + f"{distance_to_nearest_point:.0f}. " + heading_log)
 
-            if distance_to_nearest_point < 9.0:
-                self.get_logger().info("Reached current destination. Stopping...")
+            if distance_to_nearest_point < 11.0:
                 self.set_next_dest()
                 if self.curr_destination is None:
                     self.state = "stopped"
+                    self.get_logger().info("Reached destination. Stopping...")
                     return
 
             linear = 0.3
@@ -182,6 +182,10 @@ class auton_controller(Node):
                 angular = 0.6
             elif angular < -0.6:
                 angular = -0.6
+            
+            log1 = "Driving. Dist to target: " + f"{distance_to_nearest_point:.0f}. Curv: " + f"{curv:0.1f}" + ". Angular: " + angular + ". "
+            heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}"
+            self.get_logger().info(log1 + heading_log)
             self.publish_drive_message(linear, angular)
 
     def control_listener_callback(self, msg):

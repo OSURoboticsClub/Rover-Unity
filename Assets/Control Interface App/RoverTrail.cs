@@ -25,4 +25,9 @@ public class RoverTrail : MonoBehaviour
             line.SetPosition(line.positionCount - 1, rover.position);
         }
     }
+
+    public void ResetTrail()
+    {
+        line.positionCount = 0;
+    }
 }
