@@ -17,6 +17,7 @@ public class MapController : MonoBehaviour
     [SerializeField] double scaleY;
     [SerializeField] float width;
     [SerializeField] float height;
+    [SerializeField] Vector2 lineTarget;
 
     [SerializeField] GameObject icon;
     [SerializeField] Transform iconsParent;
@@ -27,7 +28,7 @@ public class MapController : MonoBehaviour
     [SerializeField] Toggle homeIconToggle;
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Sprite homeIcon;
-    // Start is called before the first frame update
+
     void Awake()
     {
         instance = this;
@@ -41,6 +42,15 @@ public class MapController : MonoBehaviour
         double heightInDegrees = topRightCornerLat - bottomLeftCornerLat;
         scaleY = (double)height / heightInDegrees;
         //AddCoordinate(44.565631d, -123.276036d);
+        lineTarget = Vector3.zero;
+    }
+
+    private void Update()
+    {
+        if(lineTarget != Vector2.zero)
+        {
+            SetLinePosition();
+        }
     }
 
     public void AddCoordinateFromUIMenu()
@@ -89,17 +99,17 @@ public class MapController : MonoBehaviour
 
     public void ReceiveNextDestination(string msg)
     {
-
         var parts = msg.Split(";");
         float lat = float.Parse(parts[2]);
         float lon = float.Parse(parts[3]);
-        Vector2 worldPos = GetWorldPosition(lat, lon);
-        SetLinePosition(worldPos);
+        lineTarget = GetWorldPosition(lat, lon);
+        lineRenderer.enabled = true;
+        //SetLinePosition();
     }
 
-    public void SetLinePosition(Vector3 target)
+    public void SetLinePosition()
     {
-        lineRenderer.enabled = true;
+        Vector3 target = lineTarget;
         target.z = 0.5f;
         Vector3 roverPos = roverIcon.position;
         roverPos.z = 0.5f;
