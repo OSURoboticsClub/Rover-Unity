@@ -10,6 +10,9 @@ public class WaypointAdder : MonoBehaviour
     public Texture2D cursorTexture; // Assign your cursor image in the Inspector
     public Vector2 hotspot = Vector2.zero; // Adjust if needed
     public float t;
+    [SerializeField] RectTransform mapBox;
+    [SerializeField] Camera cam;
+    [SerializeField] GameObject waypointIcon;
 
     public bool isOverMap = false;
     private void Awake()
@@ -59,9 +62,28 @@ public class WaypointAdder : MonoBehaviour
         {
             if(t < 0.15f)
             {
-                Debug.Log("Clicked");
+                AddPointAtMouse();
             }
             t = 0;
         }
+    }
+
+    void AddPointAtMouse()
+    {
+        if (!isOverMap) return;
+        Vector2 mouseScreenPosition = Input.mousePosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(mapBox, mouseScreenPosition, Camera.main, out Vector2 localPoint);
+        localPoint /= mapBox.rect.width; // convert to percentage
+        Vector2 offsetFromCam = cam.orthographicSize * 2 * localPoint;
+
+        Vector2 camPos = new Vector2(cam.transform.position.x, cam.transform.position.y);
+        var worldPos = camPos + offsetFromCam;
+
+        Transform parent = MapController.instance.iconsParent;
+        GameObject newObject = Instantiate(waypointIcon, worldPos, Quaternion.identity);
+        newObject.transform.SetParent(parent, true);  // 'true' keeps the current world position
+        currentLocationBeingModified.waypoints.Add(newObject);
+        CameraControl.inst.RescaleIcons();
+        currentLocationBeingModified.SetLine();
     }
 }

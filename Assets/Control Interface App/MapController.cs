@@ -19,8 +19,8 @@ public class MapController : MonoBehaviour
     [SerializeField] float height;
     [SerializeField] Vector2 lineTarget;
 
-    [SerializeField] GameObject icon;
-    [SerializeField] Transform iconsParent;
+    public GameObject icon;
+    public Transform iconsParent;
     [SerializeField] GameObject newListingMenu;
     [SerializeField] TMP_InputField descText;
     [SerializeField] TMP_InputField latText;
@@ -77,6 +77,8 @@ public class MapController : MonoBehaviour
         newListingMenu.SetActive(false);
         CameraControl.inst.RescaleIcons();
     }
+
+    
 
     public void MoveIcon(Transform obj, double lat, double lon)
     {
