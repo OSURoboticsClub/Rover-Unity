@@ -28,6 +28,12 @@ public class PurePursuit : MonoBehaviour
 
     private void Update()
     {
+        for (int i = 0; i < pointParent.childCount; i++)
+        {
+            Transform child = pointParent.GetChild(i);
+            Waypoints[i] = new Vector3(child.transform.position.x, child.transform.position.y, 0);
+        }
+
         var pos = transform.position;
         pos.z = 0;
         line.SetPosition(0, pos);
@@ -71,8 +77,10 @@ public class PurePursuit : MonoBehaviour
         float localY = Mathf.Sqrt(hypotenuse * hypotenuse - localX * localX);
         if (direction.x < 0) localX *= -1;
 
+        float distance = Mathf.Sqrt(localX * localX + localY * localY);
+
         if (localY == 0) return 0;
-        return 2 * localX / (localX * localX + localY * localY); // Curvature is 2 * x / (x^2 + y^2)
+        return 2 * localX / (distance * distance); // Curvature is 2 * x / (x^2 + y^2)
     }
 
     public void AddPointToLine(LineRenderer line, Vector3 newPoint)

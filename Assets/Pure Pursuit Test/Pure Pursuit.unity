@@ -822,7 +822,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961033223}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28efd2b7d06140144a0974a30740137e, type: 3}
   m_Name: 
@@ -830,7 +830,7 @@ MonoBehaviour:
   wheelBase: 1
   wheelRadius: 0.1
   maxVoltage: 12
-  maxAngularVelocity: 10
+  maxAngularVelocity: 20
   leftVDisplay: 0
   rightVDisplay: 0
 --- !u!65 &961033225

@@ -78,9 +78,9 @@ class auton_controller(Node):
         result = geod.Inverse(lat1, lon1, lat2, lon2)
         return result['s12'] * 3.28084  # Convert meters to feet because this is America
 
-    def get_heading_error(self):
+    def get_heading_error(self, target_heading, current_heading):
         """Returns the shortest signed heading error in degrees."""
-        error = self.target_heading - self.current_heading
+        error = target_heading - current_heading
         if error > 180:
             error -= 360
         elif error < -180:
@@ -94,7 +94,6 @@ class auton_controller(Node):
         heading_error = math.radians(self.get_heading_error())  # Convert to radians
         y = dist_to_target * math.sin(heading_error)  # Perpendicular distance
 
-        # Compute curvature
         if dist_to_target == 0:
             return 0  # Prevent division by zero
         curvature = (2 * y) / (dist_to_target ** 2)
@@ -136,6 +135,7 @@ class auton_controller(Node):
         self.get_logger().info("Set new dest: " + str(self.curr_destination))
         if self.curr_destination is not None:
             self.publish_log_msg("nextdest;" + str(self.curr_destination.latitude) + ";" + str(self.curr_destination.longitude))
+            self.target_heading = self.get_target_heading(self.curr_destination)
         
     def control_loop(self):
         if self.state == "stopped":
@@ -146,9 +146,9 @@ class auton_controller(Node):
             self.publish_log_msg("Stopped autonomous control")
             return
 
-        heading_error = self.get_heading_error()
 
         if self.state == "turning":
+            heading_error = self.get_heading_error(self.target_heading, self.current_heading)
             self.get_logger().info("Turning. Target: " + f"{self.target_heading:.1f}" + ". Current: " + f"{self.current_heading:.1f}" + ", Error: " + f"{heading_error:.1f}")
             if abs(heading_error) < 2.5:  # Example threshold
                 self.get_logger().info("Target heading reached.")
@@ -164,10 +164,11 @@ class auton_controller(Node):
 
         elif self.state == "driving":
             self.target_heading = self.get_target_heading(self.curr_destination)
+            heading_error = self.get_heading_error(self.target_heading, self.current_heading)
             distance_to_nearest_point = self.get_distance_to_location(self.curr_destination)
-            distance_to_waypoint = self.get_distance_to_location(self.waypoint_destination)
-            curv = self.compute_curvature(self.curr_destination)
 
+            # distance_to_waypoint = self.get_distance_to_location(self.waypoint_destination)
+            curv = self.compute_curvature(self.curr_destination)
 
             if distance_to_nearest_point < 11.0:
                 self.set_next_dest()
@@ -177,7 +178,7 @@ class auton_controller(Node):
                     return
 
             linear = 0.3
-            angular = -curv * linear
+            angular = curv * 3.2808 * linear # since curvature is ft^-1, convert to m^-1
             if angular > 0.6:
                 angular = 0.6
             elif angular < -0.6:
