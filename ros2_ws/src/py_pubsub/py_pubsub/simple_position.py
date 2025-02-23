@@ -26,16 +26,20 @@ class SimplePosition(Node):
 
         self.publisher = self.create_publisher(String, 'autonomous/simple_position', 10)
 
-        self.control_timer = self.create_timer(0.05, self.publish_loop)
+        self.control_timer = self.create_timer(0.1, self.publish_loop)
 
     def publish_loop(self):
         # calculate new position
         if self.current_latitude == None:
             return
-        self.get_logger().info(f'Received: "{msg.data}" on manually_set_position')
-        distance_covered = 0.05 * self.current_speed
+        distance_covered = 0.1 * self.current_speed
         geod = Geodesic.WGS84
 
+        new_pos = geod.Direct(self.current_latitude, self.current_longitude, self.current_heading, distance_covered)
+        self.current_latitude = new_pos['lat2']
+        self.current_longitude = new_pos['lon2']
+
+        self.get_logger().info(f'Distance covered: {distance_covered}. New lat: {self.current_latitude}, new lon: {self.current_longitude}')
         msg = str(self.current_latitude) + ";" + str(self.current_longitude)
         self.publisher.publish(msg)
 
