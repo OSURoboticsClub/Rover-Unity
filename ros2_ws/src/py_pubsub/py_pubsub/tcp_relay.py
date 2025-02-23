@@ -37,9 +37,10 @@ class TCPServer(Node):
         # Add subscriptions to multiple topics
         #self.add_subscription('imu/data', Imu)
 
-        self.add_subscription('auton_control_response', String)
+        self.add_subscription('autonomous/auton_control_response', String)
         self.add_subscription('tower/status/gps', GPSStatusMessage)
         self.add_subscription('imu/data/heading', Float32)
+        self.add_subscription('autonomous/simple_position', String)
 
         qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
 

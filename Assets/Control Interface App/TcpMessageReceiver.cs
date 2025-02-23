@@ -12,6 +12,8 @@ public class TcpMessageReceiver : MonoBehaviour
     public static GpsEvent gpsReceived = new GpsEvent();
     [System.Serializable] public class ImuEvent : UnityEvent<string> { }
     public static GpsEvent imuReceived = new GpsEvent();
+    [System.Serializable] public class SimplePositionEvent : UnityEvent<string> { }
+    public static GpsEvent simplePositionReceived = new GpsEvent();
 
     void Awake()
     {
@@ -40,6 +42,10 @@ public class TcpMessageReceiver : MonoBehaviour
         else if (parts[0] == "imu/data/heading")
         {
             imuReceived.Invoke(message);
+        }
+        else if(parts[0] == "autonomous/simple_position")
+        {
+            simplePositionReceived.Invoke(message);
         }
         else if (parts[0] == "autonomous/auton_control_response")
         {

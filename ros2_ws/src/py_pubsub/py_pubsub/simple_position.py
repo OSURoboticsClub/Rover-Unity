@@ -25,6 +25,10 @@ class SimplePosition(Node):
         self.manual_position_subscription = self.create_subscription(String, 'autonomous/manually_set_position', self.manual_set_position_listener_callback, 10)
 
         self.publisher = self.create_publisher(String, 'autonomous/simple_position', 10)
+        #self.current_latitude = 44.566973
+        #self.current_longitude = -123.274295
+        self.current_heading = 45.0
+        self.current_speed = 1.0
 
         self.control_timer = self.create_timer(0.1, self.publish_loop)
 
@@ -40,12 +44,29 @@ class SimplePosition(Node):
         self.current_longitude = new_pos['lon2']
 
         self.get_logger().info(f'Distance covered: {distance_covered}. New lat: {self.current_latitude}, new lon: {self.current_longitude}')
-        msg = str(self.current_latitude) + ";" + str(self.current_longitude)
-        self.publisher.publish(msg)
+        ros_msg = String()
+        ros_msg.data = str(self.current_latitude) + ";" + str(self.current_longitude)
+        self.publisher.publish(ros_msg)
+
+    def midpoint(lat1, lon1, lat2, lon2):
+        geod = Geodesic.WGS84
+
+        # Compute the geodesic inverse problem
+        inv_result = geod.Inverse(lat1, lon1, lat2, lon2)
+
+        # Get the midpoint using the direct geodesic method
+        midpoint_result = geod.Direct(lat1, lon1, inv_result['azi1'], inv_result['s12'] / 2)
+
+        return midpoint_result['lat2'], midpoint_result['lon2']
 
     def gps_listener_callback(self, msg):
         self.latest_gps_latitude = msg.rover_latitude
         self.latest_gps_longitude = msg.rover_longitude
+
+        if self.current_latitude is not None:
+            mid_lat, mid_lon = self.midpoint(self.latest_gps_latitude, self.latest_gps_longitude, self.current_latitude, self.current_longitude)
+            self.current_latitude = mid_lat
+            self.current_longitude = mid_lon
 
     def imu_heading_listener_callback(self, msg):
         self.current_heading = msg.data

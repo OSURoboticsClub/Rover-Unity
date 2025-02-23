@@ -19,6 +19,7 @@ public class RoverIconController : MonoBehaviour
         inst = this;
         TcpMessageReceiver.gpsReceived.AddListener(OnGpsReceived);
         TcpMessageReceiver.imuReceived.AddListener(OnImuHeadingReceived);
+        TcpMessageReceiver.simplePositionReceived.AddListener(OnSimplePositionReceived);
         offset = -1000;
     }
 
@@ -39,6 +40,15 @@ public class RoverIconController : MonoBehaviour
         var parts = message.Split(";");
         bool succ = float.TryParse(parts[1], out float result);
         if(succ) roverIcon.rotation = Quaternion.Euler(0, 0, -result);
+    }
+
+    void OnSimplePositionReceived(string message)
+    {
+        var parts = message.Split(";");
+        double lat = double.Parse(parts[1]);
+        double lon = double.Parse(parts[2]);
+        Vector2 worldPos = MapController.instance.GetWorldPosition(lat, lon);
+        roverIcon.position = worldPos;
     }
 
     void OnImuReceived(string message)

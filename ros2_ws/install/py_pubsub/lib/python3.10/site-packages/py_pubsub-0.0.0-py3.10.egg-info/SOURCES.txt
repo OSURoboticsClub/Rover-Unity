@@ -11,6 +11,7 @@ setup.py
 py_pubsub/__init__.py
 py_pubsub/auton_controller.py
 py_pubsub/publisher_member_function.py
+py_pubsub/simple_position.py
 py_pubsub/subscriber_member_function.py
 py_pubsub/tcp_relay.py
 py_pubsub/udp_sender_test.py
