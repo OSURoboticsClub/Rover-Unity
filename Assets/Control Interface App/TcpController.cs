@@ -48,9 +48,13 @@ public class TcpController : MonoBehaviour
         Debug.Log($"Sending: {message}");
         if (client == null || stream == null || !client.Connected)
         {
-            Debug.LogWarning("TCP connection is not established. Unable to send data.");
-            //Start();
-            if (client == null || stream == null || !client.Connected) return;
+            Debug.LogWarning("TCP connection is not established. Attempting reconnect.");
+            Start();
+            if (client == null || stream == null || !client.Connected)
+            {
+                Debug.LogWarning("Attempted reconnect but still failed. Canceling publish");
+                return;
+            }
         }
 
         try

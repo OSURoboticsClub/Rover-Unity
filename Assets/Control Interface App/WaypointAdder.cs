@@ -68,9 +68,8 @@ public class WaypointAdder : MonoBehaviour
         }
     }
 
-    void AddPointAtMouse()
+    public Vector2 GetWorldPos()
     {
-        if (!isOverMap) return;
         Vector2 mouseScreenPosition = Input.mousePosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(mapBox, mouseScreenPosition, Camera.main, out Vector2 localPoint);
         localPoint /= mapBox.rect.width; // convert to percentage
@@ -78,6 +77,14 @@ public class WaypointAdder : MonoBehaviour
 
         Vector2 camPos = new Vector2(cam.transform.position.x, cam.transform.position.y);
         var worldPos = camPos + offsetFromCam;
+        return worldPos;
+    }
+
+    void AddPointAtMouse()
+    {
+        if (!isOverMap) return;
+        var worldPos = GetWorldPos();
+        
 
         Transform parent = MapController.instance.iconsParent;
         GameObject newObject = Instantiate(waypointIcon, worldPos, Quaternion.identity);

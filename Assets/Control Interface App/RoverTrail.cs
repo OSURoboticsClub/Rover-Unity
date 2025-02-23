@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class RoverTrail : MonoBehaviour
 {
+    public static RoverTrail inst;
     [SerializeField] LineRenderer line;
     [SerializeField] Transform rover;
     Vector2 lastPointPosition = new Vector2(1000,1000);
     float distance;
     [SerializeField] float cutoff = .1f;
+
+    private void Awake()
+    {
+        inst = this;
+    }
 
     private void Update()
     {

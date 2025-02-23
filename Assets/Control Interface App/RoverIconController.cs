@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class RoverIconController : MonoBehaviour
 {
-    [SerializeField] Transform roverIcon;
+    public static RoverIconController inst;
+    public Transform roverIcon;
 
     [SerializeField] Vector3 angles;
     [SerializeField] float offset = -1000;
     [SerializeField] bool useOffset = true;
     [SerializeField] bool logHeading = true;
     [SerializeField] float buildingAngle = -20f;
+    [SerializeField] GameObject circle;
 
     void Start()
     {
+        inst = this;
         TcpMessageReceiver.gpsReceived.AddListener(OnGpsReceived);
         TcpMessageReceiver.imuReceived.AddListener(OnImuHeadingReceived);
         offset = -1000;
@@ -26,7 +29,8 @@ public class RoverIconController : MonoBehaviour
         double lat = double.Parse(parts[1]);
         double lon = double.Parse(parts[2]);
         Vector2 worldPos = MapController.instance.GetWorldPosition(lat, lon);
-        roverIcon.position = worldPos;
+        Instantiate(circle, worldPos, Quaternion.identity, null);
+        //roverIcon.position = worldPos;
     }
 
     void OnImuHeadingReceived(string message)

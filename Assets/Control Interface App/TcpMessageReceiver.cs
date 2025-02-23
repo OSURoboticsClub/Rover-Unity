@@ -41,7 +41,7 @@ public class TcpMessageReceiver : MonoBehaviour
         {
             imuReceived.Invoke(message);
         }
-        else if (parts[0] == "auton_control_response")
+        else if (parts[0] == "autonomous/auton_control_response")
         {
             if(parts[1] == "subpoints") {
                 SubpointDisplay.inst.Receive(message);

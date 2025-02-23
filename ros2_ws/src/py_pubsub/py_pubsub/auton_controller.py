@@ -36,7 +36,7 @@ class auton_controller(Node):
         #self.imu_subscription = self.create_subscription(Imu, 'imu/data', self.imu_listener_callback, 10)
         self.imu_subscription = self.create_subscription(Float32, 'imu/data/heading', self.imu_heading_listener_callback, 10)
 
-        self.response_publisher = self.create_publisher(String, 'auton_control_response', 10)
+        self.response_publisher = self.create_publisher(String, 'autonomous/auton_control_response', 10)
         self.drive_publisher = self.create_publisher(DriveCommandMessage, 'command_control/ground_station_drive', 10)
 
 

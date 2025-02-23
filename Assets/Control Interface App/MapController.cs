@@ -99,6 +99,24 @@ public class MapController : MonoBehaviour
         return new Vector2(worldUnitsX, worldUnitsY);
     }
 
+    public List<double> GetLatLonFromWorldPosition(Vector2 worldPos)
+    {
+        // Convert world coordinates to meters
+        float xFromBLCornerInM = worldPos.x + width / 2f;
+        float yFromBLCornerInM = worldPos.y + height / 2f;
+
+        // Convert meters to degrees
+        double xFromBLCornerInDeg = xFromBLCornerInM / scaleX;
+        double yFromBLCornerInDeg = yFromBLCornerInM / scaleY;
+
+        // Compute latitude and longitude
+        double lon = bottomLeftCornerLong + xFromBLCornerInDeg;
+        double lat = bottomLeftCornerLat + yFromBLCornerInDeg;
+
+        List<double> results = new List<double>() { lat, lon };
+        return results;
+    }
+
     public void ReceiveNextDestination(string msg)
     {
         var parts = msg.Split(";");
