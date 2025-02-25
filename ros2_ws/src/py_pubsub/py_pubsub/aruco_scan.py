@@ -4,11 +4,10 @@ import numpy as np
 def get_distance(point1, point2):
     return np.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
 
-def detect_first_aruco_marker(image_path, aruco_dict_type=cv2.aruco.DICT_4X4_50):
+def detect_first_aruco_marker(image, aruco_dict_type=cv2.aruco.DICT_4X4_50):
     aruco_dict = cv2.aruco.getPredefinedDictionary(aruco_dict_type)
     parameters = cv2.aruco.DetectorParameters()
 
-    image = cv2.imread(image_path)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     detector = cv2.aruco.ArucoDetector(aruco_dict, parameters)
@@ -16,7 +15,7 @@ def detect_first_aruco_marker(image_path, aruco_dict_type=cv2.aruco.DICT_4X4_50)
 
     if len(corners) == 0:
         print("No arucos detected")
-        return
+        return None, None
 
     img_width = gray.shape[1]
     img_height = gray.shape[0]
@@ -28,13 +27,15 @@ def detect_first_aruco_marker(image_path, aruco_dict_type=cv2.aruco.DICT_4X4_50)
     marker_width_pct = (distance_pxls / img_width)
 
     center_x_pct, center_y_pct = get_marker_center_percentage(corner[0], img_width, img_height)
-    print(f"Marker ID {ids[0][0]} Center: ({center_x_pct:.2f}, {center_y_pct:.2f})")
-    print(f"Marker width as a percent of image: {marker_width_pct:.2f}")
+    # print(f"Marker ID {ids[0][0]} Center: ({center_x_pct:.2f}, {center_y_pct:.2f})")
+    # print(f"Marker width as a percent of image: {marker_width_pct:.2f}")
 
-    cv2.circle(image, (int(center_x_pct * img_width), int(center_y_pct * img_height)), 5, (0, 255, 0), -1)
-    cv2.imshow("Aruco Detection", image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.circle(image, (int(center_x_pct * img_width), int(center_y_pct * img_height)), 5, (0, 255, 0), -1)
+    # cv2.imshow("Aruco Detection", image)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    return center_x_pct, marker_width_pct
 
 def get_marker_center_percentage(corner_points, img_width, img_height):
     """
@@ -57,4 +58,5 @@ def get_marker_center_percentage(corner_points, img_width, img_height):
     return center_x_pct, center_y_pct
 
 if __name__ == "__main__":
-    detect_first_aruco_marker("aruco_real_life1.png")
+    image = cv2.imread("aruco_real_life1.png")
+    detect_first_aruco_marker(image)

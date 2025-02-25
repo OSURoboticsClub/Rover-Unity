@@ -12,6 +12,9 @@ from dataclasses import dataclass
 import math
 import json
 from dataclasses import asdict
+import aruco_scan
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy
+from sensor_msgs.msg import Image
 
 @dataclass
 class Location:
@@ -29,6 +32,8 @@ class auton_controller(Node):
     control_timer = None 
     offset = None
     time_driving = 0.0
+    time_looking_for_aruco = 0.0
+    latest_img_frame = None
 
     # 30%: 117.5" in 5 sec
     # 20%: 
@@ -39,10 +44,14 @@ class auton_controller(Node):
         self.gps_subscription = self.create_subscription(GPSStatusMessage, 'tower/status/gps', self.gps_listener_callback, 10)
         #self.imu_subscription = self.create_subscription(Imu, 'imu/data', self.imu_listener_callback, 10)
         self.imu_subscription = self.create_subscription(Float32, 'imu/data/heading', self.imu_heading_listener_callback, 10)
+        qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
+        self.img_subscription = self.create_subscription(Image, '/cameras/main_navigation/image_256x144', self.ros_img_callback, qos_profile)
 
         self.response_publisher = self.create_publisher(String, 'auton_control_response', 10)
         self.drive_publisher = self.create_publisher(DriveCommandMessage, 'command_control/ground_station_drive', 10)
 
+    def ros_img_callback(self, msg):
+        self.latest_img_frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
 
     def publish_drive_message(self, linear_speed, angular_speed):
         """Publish the current linear and angular speed to drivetrain"""
@@ -150,15 +159,15 @@ class auton_controller(Node):
             self.publish_log_msg("Stopped autonomous control")
             return
 
-        #heading_error = self.get_heading_error()
-        self.publish_drive_message(0.2,0.0)
-        self.time_driving += 0.1
-        print("Time driving: " + str(self.time_driving))
-        if self.time_driving >= 5.0:
-            self.state = "stopped"
-        return
+        # self.publish_drive_message(0.2,0.0)
+        # self.time_driving += 0.1
+        # print("Time driving: " + str(self.time_driving))
+        # if self.time_driving >= 5.0:
+        #     self.state = "stopped"
+        # return
 
         if self.state == "turning":
+            heading_error = self.get_heading_error()
             self.get_logger().info("Turning. Target: " + f"{self.target_heading:.1f}" + ". Current: " + f"{self.current_heading:.1f}" + ", Error: " + f"{heading_error:.1f}")
             if abs(heading_error) < 2.5:  # Example threshold
                 self.get_logger().info("Target heading reached.")
@@ -197,6 +206,65 @@ class auton_controller(Node):
             heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}"
             self.get_logger().info(log1 + heading_log)
             self.publish_drive_message(linear, angular)
+        
+        elif self.state == "scanning":
+            # turn until an aruco tag is found
+            if self.time_looking_for_aruco >= 5.0:
+                self.get_logger().info(f"Timed out looking for an ARUCO tag")
+                self.state = "stopped"
+                return
+            
+            aruco_location_in_img, width = aruco_scan.detect_first_aruco_marker(self.latest_img_frame)
+            if aruco_location_in_img == None:
+                self.time_looking_for_aruco += 0.1
+                self.get_logger().info(f"Looking for ARUCO for {self.time_looking_for_aruco} seconds")
+                self.publish_drive_message(0.0, 0.4) 
+            else:
+                self.time_looking_for_aruco = 0.0
+                angular_vel = 0.5
+                if abs(aruco_location_in_img - 0.5) < 0.2:
+                    angular_vel = 0.3 # slow down on approach
+
+                self.get_logger().info(f"ARUCO is at: {aruco_location_in_img:.2f}. Width: {width:0.2f}")
+                if aruco_location_in_img > 0.45 and aruco_location_in_img < 0.55:
+                    #self.get_logger().info(f"Pointed towards ARUCO, should now drive forward")
+                    angular_vel = 0.0
+                elif aruco_location_in_img <= 0.45:
+                    #self.get_logger().info(f"ARUCO is to the left, turning left")
+                    hi = 4
+                else:
+                    #self.get_logger().info(f"ARUCO is to the right, turning right")
+                    angular_vel *= -1
+                
+                self.publish_drive_message(0.0, angular_vel) 
+
+        elif self.state == "driving to aruco":
+            linear_vel = 0.3
+            angular = 0.0
+            aruco_location_in_img, width = aruco_scan.detect_first_aruco_marker(self.latest_img_frame)
+            if aruco_location_in_img == None:
+                self.get_logger().info(f"Lost the aruco")
+                self.state == "scanning"
+                return
+            
+            if width > 0.3:
+                self.get_logger().info(f"Arrived")
+                self.state == "stopped"
+                return
+
+            self.get_logger().info(f"ARUCO is at: {aruco_location_in_img:.2f}. Width: {width:0.2f}")
+            if aruco_location_in_img > 0.45 and aruco_location_in_img < 0.55:
+                #self.get_logger().info(f"On track towards ARUCO")
+                hi = 4
+            elif aruco_location_in_img <= 0.45:
+                #self.get_logger().info(f"ARUCO is to the left, turning left")
+                angular = 0.15
+            else:
+                #self.get_logger().info(f"ARUCO is to the right, turning right")
+                angular = -0.15
+            
+            self.publish_drive_message(linear_vel, angular) 
+
 
     def control_listener_callback(self, msg):
         """Listens to auton_control topic for commands"""
@@ -210,7 +278,7 @@ class auton_controller(Node):
 
             if command == "GOTO":
                 self.get_logger().info(f"Command GOTO received with target lat: {lat}, lon: {lon}")
-                self.state = "turning"
+                self.state = "scanning"
                 self.waypoint_destination = Location(lat, lon)
                 self.target_heading = self.get_target_heading(self.waypoint_destination)
                 self.get_points_along_line()
