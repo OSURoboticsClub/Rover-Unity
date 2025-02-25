@@ -12,6 +12,11 @@ from dataclasses import dataclass
 import math
 import json
 from dataclasses import asdict
+#from rover2_control import aruco_scan
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy
+from sensor_msgs.msg import Image
+import cv2
+import numpy as np
 
 @dataclass
 class Location:
@@ -28,17 +33,86 @@ class auton_controller(Node):
     state = "stopped"
     control_timer = None 
     offset = None
+    time_driving = 0.0
+    time_looking_for_aruco = 0.0
+    latest_img_frame = None
+
+    # 30%: 117.5" in 5 sec
+    # 20%: 
 
     def __init__(self):
         super().__init__('auton_controller')
-        self.control_subscription = self.create_subscription( String, 'auton_control', self.control_listener_callback, 10)
+        self.control_subscription = self.create_subscription( String, 'autonomous/auton_control', self.control_listener_callback, 10)
         self.gps_subscription = self.create_subscription(GPSStatusMessage, 'tower/status/gps', self.gps_listener_callback, 10)
         #self.imu_subscription = self.create_subscription(Imu, 'imu/data', self.imu_listener_callback, 10)
         self.imu_subscription = self.create_subscription(Float32, 'imu/data/heading', self.imu_heading_listener_callback, 10)
+        qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
+        self.img_subscription = self.create_subscription(Image, '/cameras/main_navigation/image_256x144', self.ros_img_callback, qos_profile)
 
-        self.response_publisher = self.create_publisher(String, 'auton_control_response', 10)
+        self.response_publisher = self.create_publisher(String, 'autonomous/auton_control_response', 10)
         self.drive_publisher = self.create_publisher(DriveCommandMessage, 'command_control/ground_station_drive', 10)
 
+    def get_distance(self, point1, point2):
+        return np.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+
+    def detect_first_aruco_marker(self, image, aruco_dict_type=cv2.aruco.DICT_4X4_50):
+        if image is None:
+            self.get_logger().info(f"Image is None")
+            return None, None
+        aruco_dict = cv2.aruco.getPredefinedDictionary(aruco_dict_type)
+        parameters = cv2.aruco.DetectorParameters()
+
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        detector = cv2.aruco.ArucoDetector(aruco_dict, parameters)
+        corners, ids, _ = detector.detectMarkers(gray)
+
+        if len(corners) == 0:
+            print("No arucos detected")
+            return None, None
+
+        img_width = gray.shape[1]
+        img_height = gray.shape[0]
+        corner = corners[0]
+        img_corners = corner[0]
+        top_left = img_corners[0]
+        bottom_right = img_corners[2]
+        distance_pxls = self.get_distance(top_left, bottom_right)
+        marker_width_pct = (distance_pxls / img_width)
+
+        center_x_pct, center_y_pct = self.get_marker_center_percentage(corner[0], img_width, img_height)
+        # print(f"Marker ID {ids[0][0]} Center: ({center_x_pct:.2f}, {center_y_pct:.2f})")
+        # print(f"Marker width as a percent of image: {marker_width_pct:.2f}")
+
+        # cv2.circle(image, (int(center_x_pct * img_width), int(center_y_pct * img_height)), 5, (0, 255, 0), -1)
+        # cv2.imshow("Aruco Detection", image)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
+        return center_x_pct, marker_width_pct
+
+    def get_marker_center_percentage(self, corner_points, img_width, img_height):
+        """
+        Calculates the center of an Aruco marker as a percentage of the image dimensions.
+
+        Parameters:
+        - corner_points (np.array): 4x2 array of marker corner coordinates.
+        - img_width (int): Width of the image.
+        - img_height (int): Height of the image.
+
+        Returns:
+        - (float, float): Center coordinates as a percentage (x%, y%).
+        """
+        center_x = np.mean(corner_points[:, 0])  # Mean of X coordinates
+        center_y = np.mean(corner_points[:, 1])  # Mean of Y coordinates
+
+        center_x_pct = (center_x / img_width)
+        center_y_pct = (center_y / img_height)
+
+        return center_x_pct, center_y_pct
+
+    def ros_img_callback(self, msg):
+        self.latest_img_frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
 
     def publish_drive_message(self, linear_speed, angular_speed):
         """Publish the current linear and angular speed to drivetrain"""
@@ -133,7 +207,9 @@ class auton_controller(Node):
             self.waypoint_destination = None
         else:
             self.curr_destination = None
-        self.get_logger().info("Current dest: " + str(self.curr_destination))
+        self.get_logger().info("Set new dest: " + str(self.curr_destination))
+        if self.curr_destination is not None:
+            self.publish_log_msg("nextdest;" + str(self.curr_destination.latitude) + ";" + str(self.curr_destination.longitude))
         
     def control_loop(self):
         if self.state == "stopped":
@@ -144,9 +220,15 @@ class auton_controller(Node):
             self.publish_log_msg("Stopped autonomous control")
             return
 
-        heading_error = self.get_heading_error()
+        # self.publish_drive_message(0.2,0.0)
+        # self.time_driving += 0.1
+        # print("Time driving: " + str(self.time_driving))
+        # if self.time_driving >= 5.0:
+        #     self.state = "stopped"
+        # return
 
         if self.state == "turning":
+            heading_error = self.get_heading_error()
             self.get_logger().info("Turning. Target: " + f"{self.target_heading:.1f}" + ". Current: " + f"{self.current_heading:.1f}" + ", Error: " + f"{heading_error:.1f}")
             if abs(heading_error) < 2.5:  # Example threshold
                 self.get_logger().info("Target heading reached.")
@@ -166,14 +248,12 @@ class auton_controller(Node):
             distance_to_waypoint = self.get_distance_to_location(self.waypoint_destination)
             curv = self.compute_curvature(self.curr_destination)
 
-            heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}, " + "Error: " + f"{heading_error:.1f}"
-            self.get_logger().info("Driving. Distance to current target: " + f"{distance_to_nearest_point:.0f}. " + heading_log)
 
-            if distance_to_nearest_point < 9.0:
-                self.get_logger().info("Reached current destination. Stopping...")
+            if distance_to_nearest_point < 11.0:
                 self.set_next_dest()
                 if self.curr_destination is None:
                     self.state = "stopped"
+                    self.get_logger().info("Reached destination. Stopping...")
                     return
 
             linear = 0.3
@@ -182,7 +262,69 @@ class auton_controller(Node):
                 angular = 0.6
             elif angular < -0.6:
                 angular = -0.6
+            
+            log1 = "Driving. Dist to target: " + f"{distance_to_nearest_point:.0f}. Curv: " + f"{curv:0.1f}" + ". Angular: " + str(angular) + ". "
+            heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}"
+            self.get_logger().info(log1 + heading_log)
             self.publish_drive_message(linear, angular)
+        
+        elif self.state == "scanning":
+            # turn until an aruco tag is found
+            if self.time_looking_for_aruco >= 5.0:
+                self.get_logger().info(f"Timed out looking for an ARUCO tag")
+                self.state = "stopped"
+                return
+            
+            aruco_location_in_img, width = self.detect_first_aruco_marker(self.latest_img_frame)
+            if aruco_location_in_img == None:
+                self.time_looking_for_aruco += 0.1
+                self.get_logger().info(f"Looking for ARUCO for {self.time_looking_for_aruco} seconds")
+                self.publish_drive_message(0.0, 0.4) 
+            else:
+                self.time_looking_for_aruco = 0.0
+                angular_vel = 0.5
+                if abs(aruco_location_in_img - 0.5) < 0.2:
+                    angular_vel = 0.3 # slow down on approach
+
+                self.get_logger().info(f"ARUCO is at: {aruco_location_in_img:.2f}. Width: {width:0.2f}")
+                if aruco_location_in_img > 0.45 and aruco_location_in_img < 0.55:
+                    #self.get_logger().info(f"Pointed towards ARUCO, should now drive forward")
+                    angular_vel = 0.0
+                elif aruco_location_in_img <= 0.45:
+                    #self.get_logger().info(f"ARUCO is to the left, turning left")
+                    hi = 4
+                else:
+                    #self.get_logger().info(f"ARUCO is to the right, turning right")
+                    angular_vel *= -1
+                
+                #self.publish_drive_message(0.0, angular_vel) 
+
+        elif self.state == "driving to aruco":
+            linear_vel = 0.3
+            angular = 0.0
+            aruco_location_in_img, width = aruco_scan.detect_first_aruco_marker(self.latest_img_frame)
+            if aruco_location_in_img == None:
+                self.get_logger().info(f"Lost the aruco")
+                self.state == "scanning"
+                return
+            
+            if width > 0.3:
+                self.get_logger().info(f"Arrived")
+                self.state == "stopped"
+                return
+
+            self.get_logger().info(f"ARUCO is at: {aruco_location_in_img:.2f}. Width: {width:0.2f}")
+            if aruco_location_in_img > 0.45 and aruco_location_in_img < 0.55:
+                #self.get_logger().info(f"On track towards ARUCO")
+                hi = 4
+            elif aruco_location_in_img <= 0.45:
+                #self.get_logger().info(f"ARUCO is to the left, turning left")
+                angular = 0.15
+            else:
+                #self.get_logger().info(f"ARUCO is to the right, turning right")
+                angular = -0.15
+            
+            self.publish_drive_message(linear_vel, angular) 
 
     def control_listener_callback(self, msg):
         """Listens to auton_control topic for commands"""
@@ -196,7 +338,7 @@ class auton_controller(Node):
 
             if command == "GOTO":
                 self.get_logger().info(f"Command GOTO received with target lat: {lat}, lon: {lon}")
-                self.state = "turning"
+                self.state = "scanning"
                 self.waypoint_destination = Location(lat, lon)
                 self.target_heading = self.get_target_heading(self.waypoint_destination)
                 self.get_points_along_line()
