@@ -218,7 +218,8 @@ class auton_controller(Node):
             self.publish_drive_message(0.0, 0.0)
             self.control_timer.cancel()
             self.control_timer = None
-            self.aruco_turn_timer.cancel()
+            if self.aruco_turn_timer is not None:
+                self.aruco_turn_timer.cancel()
             self.aruco_turn_timer = None
             self.subpoints = None
             self.publish_log_msg("Stopped autonomous control")
@@ -274,6 +275,9 @@ class auton_controller(Node):
         
         elif self.state == "scanning":
             # turn until an aruco tag is found
+            if self.aruco_turn_timer is None:
+                self.aruco_turn_timer = self.create_timer(0.1, self.vel_control_loop)
+
             if self.pause_time is not None:
                 if self.pause < 1.0:
                     self.pause_time += 0.1
@@ -302,6 +306,10 @@ class auton_controller(Node):
                     #self.get_logger().info(f"Pointed towards ARUCO, should now drive forward")
                     self.curr_turning_velocity = 0.0
                     angular_vel = 0.0
+                    self.state = "driving to aruco"
+                    self.get_logger().info("Now driving to ARUCO")
+                    self.aruco_turn_timer.cancel()
+                    self.aruco_turn_timer = None
                 elif aruco_location_in_img <= 0.4:
                     #self.get_logger().info(f"ARUCO is to the left, turning left")
                     hi = 4
@@ -316,35 +324,38 @@ class auton_controller(Node):
         elif self.state == "driving to aruco":
             linear_vel = 0.3
             angular = 0.0
-            aruco_location_in_img, width = aruco_scan.detect_first_aruco_marker(self.latest_img_frame)
+            aruco_location_in_img, width = self.detect_first_aruco_marker(self.latest_img_frame)
             if aruco_location_in_img == None:
                 self.get_logger().info(f"Lost the aruco")
                 self.state == "scanning"
                 return
             
-            if width > 0.3:
+            if width > 0.16:
                 self.get_logger().info(f"Arrived")
-                self.state == "stopped"
+                self.state = "stopped"
                 return
 
-            self.get_logger().info(f"ARUCO is at: {aruco_location_in_img:.2f}. Width: {width:0.2f}")
             if aruco_location_in_img > 0.45 and aruco_location_in_img < 0.55:
                 #self.get_logger().info(f"On track towards ARUCO")
                 hi = 4
             elif aruco_location_in_img <= 0.45:
                 #self.get_logger().info(f"ARUCO is to the left, turning left")
-                angular = 0.15
+                angular = 0.2
             else:
                 #self.get_logger().info(f"ARUCO is to the right, turning right")
-                angular = -0.15
+                angular = -0.2
             
+
+            msg = f"Driving towards ARUCO. Location: {aruco_location_in_img:.2f}. Width: {width:0.2f}. Angular: {angular:.2f}"
+            self.get_logger().info(msg)
+
             self.publish_drive_message(linear_vel, angular) 
 
     def vel_control_loop(self):
         if self.curr_turning_velocity < self.target_turning_velocity:
-            self.curr_turning_velocity += 0.02
+            self.curr_turning_velocity += 0.03
         elif self.curr_turning_velocity > self.target_turning_velocity:
-            self.curr_turning_velocity -= 0.02
+            self.curr_turning_velocity -= 0.03
 
         if abs(self.curr_turning_velocity - self.target_turning_velocity) < 0.04:
             self.curr_turning_velocity = self.target_turning_velocity
@@ -363,6 +374,7 @@ class auton_controller(Node):
             if command == "GOTO":
                 self.get_logger().info(f"Command GOTO received with target lat: {lat}, lon: {lon}")
                 self.state = "scanning"
+                self.time_looking_for_aruco = 0.0
                 self.waypoint_destination = Location(lat, lon)
                 self.target_heading = self.get_target_heading(self.waypoint_destination)
                 self.get_points_along_line()
@@ -372,7 +384,6 @@ class auton_controller(Node):
                 if self.aruco_turn_timer is not None:
                     self.aruco_turn_timer.cancel()
                 self.control_timer = self.create_timer(0.1, self.control_loop)
-                self.aruco_turn_timer = self.create_timer(0.1, self.vel_control_loop)
             elif command == "STOP":
                 self.get_logger().info("STOP command received. Stopping autonomous navigation.")
                 self.state = "stopped"
