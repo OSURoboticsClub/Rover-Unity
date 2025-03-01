@@ -30,7 +30,7 @@ public class RoverIconController : MonoBehaviour
         double lat = double.Parse(parts[1]);
         double lon = double.Parse(parts[2]);
         Vector2 worldPos = MapController.instance.GetWorldPosition(lat, lon);
-        Instantiate(circle, worldPos, Quaternion.identity, null);
+        //Instantiate(circle, worldPos, Quaternion.identity, null);
         //roverIcon.position = worldPos;
     }
 

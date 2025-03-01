@@ -5895,7 +5895,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1198079142
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6658,15 +6658,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 980054023813013849, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: latitude
-      value: 44.56737
+      value: 44.566502
       objectReference: {fileID: 0}
     - target: {fileID: 980054023813013849, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: longitude
-      value: -123.2741
+      value: -123.272034
       objectReference: {fileID: 0}
     - target: {fileID: 980054023813013849, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: description
-      value: asdf
+      value: Field 1
       objectReference: {fileID: 0}
     - target: {fileID: 9158389078652303773, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
       propertyPath: m_Name

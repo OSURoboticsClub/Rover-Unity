@@ -50,7 +50,7 @@ public class TcpMessageReceiver : MonoBehaviour
         else if (parts[0] == "autonomous/auton_control_response")
         {
             if(parts[1] == "subpoints") {
-                SubpointDisplay.inst.Receive(message);
+                //SubpointDisplay.inst.Receive(message);
             }
             else if(parts[1] == "nextdest")
             {

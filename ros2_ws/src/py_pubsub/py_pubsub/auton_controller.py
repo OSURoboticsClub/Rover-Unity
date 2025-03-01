@@ -18,6 +18,7 @@ from sensor_msgs.msg import Image
 import cv2
 import numpy as np
 from cv_bridge import CvBridge
+from rover2_status_interface.msg import LED
 
 @dataclass
 class Location:
@@ -40,6 +41,8 @@ class auton_controller(Node):
     target_turning_velocity = 0.0
     curr_turning_velocity = 0.0
     pause_time = None
+    led_state = "green"
+    led_timer = None
 
     # 30%: 117.5" in 5 sec
     # 20%: 
@@ -56,6 +59,9 @@ class auton_controller(Node):
 
         self.response_publisher = self.create_publisher(String, 'autonomous/auton_control_response', 10)
         self.drive_publisher = self.create_publisher(DriveCommandMessage, 'command_control/ground_station_drive', 10)
+        self.led_publisher = self.create_publisher(LED, 'autonomous_LED/color', 10)
+        #self.publish_led_message(,0,0)
+        
 
     def get_distance(self, point1, point2):
         return np.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
@@ -92,6 +98,13 @@ class auton_controller(Node):
 
         return center_x_pct, marker_width_pct
 
+    def publish_led_message(self, red, green, blue):
+        self.get_logger().info(f"Published LED msg. R:{red}, G:{green}, B:{blue}")
+        led_msg = LED()
+        led_msg.red = red
+        led_msg.green = green
+        led_msg.blue = blue
+        self.led_publisher.publish(led_msg)
 
     def get_marker_center_percentage(self, corner_points, img_width, img_height):
         """
@@ -220,7 +233,7 @@ class auton_controller(Node):
             self.control_timer = None
             if self.aruco_turn_timer is not None:
                 self.aruco_turn_timer.cancel()
-            self.aruco_turn_timer = None
+                self.aruco_turn_timer = None
             self.subpoints = None
             self.publish_log_msg("Stopped autonomous control")
             return
@@ -243,8 +256,8 @@ class auton_controller(Node):
                 angular_speed = 0.4 # rad/s
                 if heading_error > 0:
                     angular_speed *= -1
-                if abs(heading_error) < 30: # slow down on approach
-                    angular_speed *= 0.6
+                #if abs(heading_error) < 30: # slow down on approach
+                    #angular_speed *= 0.6
                 self.publish_drive_message(0.0, angular_speed) 
 
         elif self.state == "driving":
@@ -261,7 +274,7 @@ class auton_controller(Node):
                     self.get_logger().info("Reached destination. Stopping...")
                     return
 
-            linear = 0.3
+            linear = 0.65
             angular = -curv * linear
             if angular > 0.6:
                 angular = 0.6
@@ -332,11 +345,14 @@ class auton_controller(Node):
             
             if width > 0.16:
                 self.get_logger().info(f"Arrived")
+                self.led_timer = self.create_timer(0.6, self.blinking_led_loop)
+                self.publish_led_message(0,255,0)
+                self.led_state = "green"
                 self.state = "stopped"
                 return
 
             if aruco_location_in_img > 0.45 and aruco_location_in_img < 0.55:
-                #self.get_logger().info(f"On track towards ARUCO")
+                #self.get_logger().inscp ~/Documents/GitHub/Rover-Unity/ros2_ws/src/py_pubsub/py_pubsub/auton_controller.py makemorerobot@192.168.1.101:~/Rover_2023_2024/software/ros_packages/rover2_control/rover2_control/auton_controller.pyfo(f"On track towards ARUCO")
                 hi = 4
             elif aruco_location_in_img <= 0.45:
                 #self.get_logger().info(f"ARUCO is to the left, turning left")
@@ -350,6 +366,16 @@ class auton_controller(Node):
             self.get_logger().info(msg)
 
             self.publish_drive_message(linear_vel, angular) 
+
+        #elif self.state == "led blinking":
+
+    def blinking_led_loop(self):
+        if self.led_state == "green":
+            self.led_state = "black"
+            self.publish_led_message(0, 0, 0)
+        else:
+            self.led_state = "green"
+            self.publish_led_message(0, 255, 0)
 
     def vel_control_loop(self):
         if self.curr_turning_velocity < self.target_turning_velocity:
@@ -373,7 +399,8 @@ class auton_controller(Node):
 
             if command == "GOTO":
                 self.get_logger().info(f"Command GOTO received with target lat: {lat}, lon: {lon}")
-                self.state = "scanning"
+                self.publish_led_message(255, 0, 0)
+                self.state = "turning"
                 self.time_looking_for_aruco = 0.0
                 self.waypoint_destination = Location(lat, lon)
                 self.target_heading = self.get_target_heading(self.waypoint_destination)
@@ -381,11 +408,19 @@ class auton_controller(Node):
                 self.set_next_dest()
                 if self.control_timer is not None:
                     self.control_timer.cancel()
+                    self.aruco_turn_timer = None
                 if self.aruco_turn_timer is not None:
                     self.aruco_turn_timer.cancel()
+                    self.aruco_turn_timer = None
+                if self.led_timer is not None:
+                    self.led_timer.cancel()
+                    self.led_timer = None
                 self.control_timer = self.create_timer(0.1, self.control_loop)
             elif command == "STOP":
                 self.get_logger().info("STOP command received. Stopping autonomous navigation.")
+                if self.led_timer is not None:
+                    self.led_timer.cancel()
+                    self.led_timer = None
                 self.state = "stopped"
             else:
                 self.get_logger().warn(f"Unknown command: {command}")
