@@ -8,6 +8,10 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 {
     public static CameraControl inst;
     public Camera secondCamera; // Assign the second camera in the Inspector
+    [SerializeField] Transform roverIcon;
+    [SerializeField] Transform destIcon;
+    [SerializeField] Transform iconsParent;
+    [SerializeField] Transform camCornerGameobject;
     private Vector3 initialMouseScreenPosition;
     private Vector3 initialSecondCameraPosition;
     private bool isDragging = false;
@@ -21,12 +25,9 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] RawImage map;
     [SerializeField] Vector2 worldPosOfMouseDown;
     [SerializeField] Vector2 offset;
-    [SerializeField] Transform roverIcon;
-    [SerializeField] Transform destIcon;
     [SerializeField] float iconScale = 1f;
-    [SerializeField] Transform iconsParent;
     [SerializeField] float lineScale = 1f;
-    [SerializeField] Transform camCornerGameobject;
+    public float iconScaleForZoom = 1f;
 
     void Awake()
     {
@@ -59,10 +60,10 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void RescaleIcons()
     {
-        float height = 2f * secondCamera.orthographicSize;
+        iconScaleForZoom = 2f * secondCamera.orthographicSize;
         foreach (Transform child in iconsParent)
         {
-            child.localScale = height * iconScale * Vector3.one;
+            child.localScale = iconScaleForZoom * iconScale * Vector3.one;
         }
     }
 

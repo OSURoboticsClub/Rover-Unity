@@ -13,6 +13,9 @@ public class RoverIconController : MonoBehaviour
     [SerializeField] bool logHeading = true;
     [SerializeField] float buildingAngle = -20f;
     [SerializeField] GameObject circle;
+    [SerializeField] double latestlat = 0;
+    [SerializeField] double latestlon = 0;
+    [SerializeField] Transform gpsCircleParent;
 
     void Start()
     {
@@ -23,14 +26,25 @@ public class RoverIconController : MonoBehaviour
         offset = -1000;
     }
 
+    public float t = 3f;
+    private void Update()
+    {
+        if (latestlat == 0) return;
+        if(t > 2f)
+        {
+            t = 0;
+            Vector2 worldPos = MapController.instance.GetWorldPosition(latestlat, latestlon);
+            var obj = Instantiate(circle, worldPos, Quaternion.identity, null);
+            obj.transform.SetParent(gpsCircleParent);
+        }
+    }
+
     void OnGpsReceived(string message)
     {
         // Debug.Log($"Received message: {message}");
         var parts = message.Split(";");
-        double lat = double.Parse(parts[1]);
-        double lon = double.Parse(parts[2]);
-        Vector2 worldPos = MapController.instance.GetWorldPosition(lat, lon);
-        //Instantiate(circle, worldPos, Quaternion.identity, null);
+        latestlat = double.Parse(parts[1]);
+        latestlon = double.Parse(parts[2]);
         //roverIcon.position = worldPos;
     }
 

@@ -283,6 +283,7 @@ MonoBehaviour:
   isModifying: 0
   btnText: {fileID: 6670467572782476639}
   btnColor: {fileID: 9207804607320971083}
+  selectScr: {fileID: 661560476042765631}
 --- !u!1 &1515418651349792028
 GameObject:
   m_ObjectHideFlags: 0

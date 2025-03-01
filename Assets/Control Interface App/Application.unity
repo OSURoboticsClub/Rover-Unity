@@ -373,8 +373,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.67, y: -155.28}
-  m_SizeDelta: {x: 847.64, y: 560.48}
+  m_AnchoredPosition: {x: -217.85, y: -296.24}
+  m_SizeDelta: {x: 421.29, y: 278.57}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &121529708
 MonoBehaviour:
@@ -734,6 +734,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secondCamera: {fileID: 404434355}
+  roverIcon: {fileID: 450525840}
+  destIcon: {fileID: 271320677}
+  iconsParent: {fileID: 284135380}
+  camCornerGameobject: {fileID: 1367039430}
   delta: {x: 0, y: 0}
   scaleX: 1.12
   scaleY: 1.04434
@@ -743,12 +747,9 @@ MonoBehaviour:
   map: {fileID: 1942512588}
   worldPosOfMouseDown: {x: 0, y: 0}
   offset: {x: 0, y: 0}
-  roverIcon: {fileID: 450525840}
-  destIcon: {fileID: 271320677}
   iconScale: 0.1
-  iconsParent: {fileID: 284135380}
   lineScale: 0.08
-  camCornerGameobject: {fileID: 1367039430}
+  iconScaleForZoom: 1
 --- !u!1 &177365754
 GameObject:
   m_ObjectHideFlags: 0
@@ -3470,6 +3471,10 @@ MonoBehaviour:
   logHeading: 0
   buildingAngle: 18
   circle: {fileID: 7919546940054837755, guid: a70a1631aff0daf4c9a101bdf2f44b55, type: 3}
+  latestlat: 0
+  latestlon: 0
+  gpsCircleParent: {fileID: 2079480241}
+  t: 3
 --- !u!114 &830746685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3509,7 +3514,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   subpoint: {fileID: 9158389078652303773, guid: 46857e22b4a1f63c2a143a1b99f07a2f, type: 3}
-  iconParent: {fileID: 284135380}
+  iconParent: {fileID: 1366530270}
   fullMsg: 
 --- !u!114 &830746688
 MonoBehaviour:
@@ -5895,7 +5900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1198079142
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6443,6 +6448,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1324249520}
   m_CullTransparentMesh: 1
+--- !u!1 &1366530269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1366530270}
+  m_Layer: 0
+  m_Name: Subpoint circles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1366530270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366530269}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -42.09745, y: 2.8259737, z: -25.113134}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1367039429
 GameObject:
   m_ObjectHideFlags: 0
@@ -9816,6 +9852,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
   m_PrefabInstance: {fileID: 2028927673}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2079480239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2079480241}
+  - component: {fileID: 2079480240}
+  m_Layer: 0
+  m_Name: GPS circles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2079480240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079480239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dceafcb8730360144b27d7afce790a33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cirlcesParent: {fileID: 2079480241}
+--- !u!4 &2079480241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079480239}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -42.09745, y: 2.8259737, z: -25.113134}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2098503893
 GameObject:
   m_ObjectHideFlags: 0
@@ -10276,3 +10357,5 @@ SceneRoots:
   - {fileID: 830746673}
   - {fileID: 284135380}
   - {fileID: 1988088882}
+  - {fileID: 1366530270}
+  - {fileID: 2079480241}

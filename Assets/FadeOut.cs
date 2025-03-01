@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FadeOut : MonoBehaviour
 {
-    [SerializeField] SpriteRenderer spr;
+    SpriteRenderer spr;
     float a = 1f;
     float fadeTime = 3f;
 

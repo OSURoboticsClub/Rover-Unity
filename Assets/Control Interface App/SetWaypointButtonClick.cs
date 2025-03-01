@@ -9,10 +9,12 @@ public class SetWaypointButtonClick : MonoBehaviour
     public bool isModifying = false;
     [SerializeField] TextMeshProUGUI btnText;
     [SerializeField] Image btnColor;
+    [SerializeField] SelectDestination selectScr;
 
     public void OnClick()
     {
         isModifying = !isModifying;
+        selectScr.SetBgColor();
 
         if (isModifying)
         {
