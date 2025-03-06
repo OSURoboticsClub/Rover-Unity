@@ -6,7 +6,8 @@ def get_distance(point1, point2):
 
 def detect_first_aruco_marker(auton_class, image, aruco_dict_type=cv2.aruco.DICT_4X4_50):
     if image is None:
-        auton_class.get_logger().info(f"Image is None")
+        if auton_class is not None:
+            auton_class.get_logger().info(f"Image is None")
         return None, None
 
     aruco_dict = cv2.aruco.getPredefinedDictionary(aruco_dict_type)
@@ -61,4 +62,4 @@ def get_distance(point1, point2):
 
 if __name__ == "__main__":
     image = cv2.imread("aruco_real_life1.png")
-    detect_first_aruco_marker(image)
+    detect_first_aruco_marker(None, image)

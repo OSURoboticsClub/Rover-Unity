@@ -3,10 +3,19 @@ import cv2
 import numpy as np
 import time
 import matplotlib.pyplot as plt
+#import torch
+#import onnx
+#from onnx2torch import convert
+
+# onnx_model = onnx.load("/home/matt/best.onnx")
+# torch_model = convert(onnx_model)
+# torch.save(torch_model.state_dict(), "model.pt")
+# print("saved")
+
 
 class bottle_detector:
     def __init__(self):
-        self.model = YOLO("best.pt")  # Load trained model
+        self.model = YOLO("/home/makemorerobot/best.pt")  # Load trained model~/Documents/GitHub/Rover-Unity
         #self.model = YOLO("~/bottle_detector.pt")  # Load trained model
 
     def get_bottle(self, image):
@@ -18,7 +27,7 @@ class bottle_detector:
 
         if len(result.boxes) == 0:
             print("No water bottle detected.")
-            return None
+            return None, None
         
         class_indices = result.boxes.cls.cpu().numpy().astype(int)  # Get class indices
         class_names = [self.model.names[idx] for idx in class_indices]  # Map indices to class names
@@ -48,8 +57,8 @@ class bottle_detector:
 
 inst = bottle_detector()
 image = cv2.imread("it.jpg")
-result = inst.get_bottle(image)
+x, diag = inst.get_bottle(image)
 
-if result:
-    x_pct, y_pct, diag_pct = result
-    print(f"WaterBottle detected at: {x_pct:.2f}, Diagonal %: {diag_pct:.2f}")
+if x is not None:
+    # x_pct, y_pct, diag_pct = result
+    print(f"WaterBottle detected at: {x:.2f}, Diagonal %: {diag:.2f}")
