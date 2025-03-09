@@ -12,6 +12,8 @@ from cv_bridge import CvBridge
 import cv2
 import struct
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy
+from sensor_msgs.msg import JointState
+
 
 # UDP Configuration for Image Transmission
 UDP_IP = "127.0.0.1"  # Change to the Unity application's IP
@@ -41,6 +43,7 @@ class TCPServer(Node):
         self.add_subscription('tower/status/gps', GPSStatusMessage)
         self.add_subscription('imu/data/heading', Float32)
         self.add_subscription('autonomous/simple_position', String)
+        self.add_subscription('/joint_states', JointState)
 
         qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
 
@@ -115,6 +118,10 @@ class TCPServer(Node):
                 message += f"{msg.data}"
             elif topic_name == "imu/data":
                 message += f"{msg.orientation.x};{msg.orientation.y};{msg.orientation.z};{msg.orientation.w}"
+            elif topic_name == "/joint_states":
+                for position in msg.position:
+                    message += f"{position};"
+                message = message[:-1]
             else:
                 message += msg.data # handle string messages (not custom message type)
             
