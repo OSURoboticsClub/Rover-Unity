@@ -4,51 +4,70 @@ using UnityEngine;
 
 public class ArmCameraOrbit : MonoBehaviour
 {
-    public Transform target;  // The object to orbit around
-    public Transform cam;  // The object to orbit around
-    public float rotationSpeed = 5f;
-    public float minPitch = -80f;
-    public float maxPitch = 80f;
-    public float distance = 5f;
+    public Vector3 target; // The target vector to orbit and pan around
 
-    float yaw = 0f;
-    float pitch = 0f;
+    [SerializeField] Camera cam; // Camera component
+    [SerializeField] Transform arm;
+    public float xSpeed = 120.0f;
+    public float ySpeed = 120.0f;
 
+    public float cameraPanModifier = 0.1f;
+
+    public float yMinLimit = -20f; // Minimum vertical angle
+    public float yMaxLimit = 80f; // Maximum vertical angle
+
+    public float sizeMin = 1f; // Minimum orthographic size
+    public float sizeMax = 20f; // Maximum orthographic size
+
+    float x = 0.0f;
+    float y = 0.0f;
+
+    // Start is called before the first frame update
     void Start()
     {
-        if (target == null)
-        {
-            Debug.LogError("No target assigned to orbit around!");
-            return;
-        }
-
-        // Initialize yaw and pitch based on current camera position
-        Vector3 angles = cam.eulerAngles;
-        yaw = angles.y;
-        pitch = angles.x;
+        Vector3 angles = cam.transform.eulerAngles;
+        x = angles.y;
+        y = angles.x;
+        target = arm.position;
     }
 
-    void Update()
+    void LateUpdate()
     {
-        if (target == null) return;
-
-        if (Input.GetMouseButton(1)) // Right Mouse Button
+        if (Input.GetMouseButton(1)) // Only rotate when the right mouse button is held down
         {
-            float horizontal = Input.GetAxis("Mouse X") * rotationSpeed;
-            float vertical = -Input.GetAxis("Mouse Y") * rotationSpeed; // invert Y
+            x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
+            y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
 
-            yaw += horizontal;
-            pitch += vertical;
-            pitch = Mathf.Clamp(pitch, minPitch, maxPitch); // limit vertical angle
+            y = ClampAngle(y, yMinLimit, yMaxLimit);
         }
 
-        // Convert yaw/pitch into a rotation
-        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
+        Quaternion rotation = Quaternion.Euler(y, x, 0);
+        cam.transform.rotation = rotation;
 
-        // Compute new camera position based on that rotation
-        Vector3 newPos = target.position + (rotation * Vector3.back * distance);
+        if (Input.GetMouseButton(2)) // Pan when middle mouse button is pressed
+        {
+            Vector3 right = cam.transform.right;
+            Vector3 up = cam.transform.up;
+            target += -Input.GetAxis("Mouse X") * right * cam.orthographicSize * cameraPanModifier;
+            target += -Input.GetAxis("Mouse Y") * up * cam.orthographicSize * cameraPanModifier;
+        }
 
-        cam.position = newPos;
-        cam.LookAt(target);
+        cam.transform.position = target - (rotation * Vector3.forward * 20);
+
+        // Adjust orthographic size with mouse scroll wheel
+        if (cam.orthographic)
+        {
+            cam.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * 5f;
+            cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, sizeMin, sizeMax);
+        }
+    }
+
+    public static float ClampAngle(float angle, float min, float max)
+    {
+        if (angle < -360F)
+            angle += 360F;
+        if (angle > 360F)
+            angle -= 360F;
+        return Mathf.Clamp(angle, min, max);
     }
 }
