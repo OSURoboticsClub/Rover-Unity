@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // Needed for RawImage
 
 public class ArmCameraOrbit : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class ArmCameraOrbit : MonoBehaviour
 
     [SerializeField] Camera cam; // Camera component
     [SerializeField] Transform arm;
+    [SerializeField] RawImage img;
+    [SerializeField] Canvas canvas;
     public float xSpeed = 120.0f;
     public float ySpeed = 120.0f;
 
@@ -21,8 +24,11 @@ public class ArmCameraOrbit : MonoBehaviour
 
     float x = 0.0f;
     float y = 0.0f;
+    [SerializeField] float zoomSpeed = 1f;
 
-    // Start is called before the first frame update
+    private bool isDragging = false; // Track if the user started dragging inside the image
+    private Vector3 lastMousePosition; // Store last known mouse position
+
     void Start()
     {
         Vector3 angles = cam.transform.eulerAngles;
@@ -33,31 +39,55 @@ public class ArmCameraOrbit : MonoBehaviour
 
     void LateUpdate()
     {
-        if (Input.GetMouseButton(1)) // Only rotate when the right mouse button is held down
+        // Detect mouse click over image
+        if ((Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)) && IsMouseOverImage())
         {
-            x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
-            y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
+            isDragging = true;
+            lastMousePosition = Input.mousePosition; // Store starting mouse position
+        }
 
+        // Stop dragging when the mouse button is released
+        if (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(2))
+        {
+            isDragging = false;
+        }
+
+        // Only allow rotation if dragging was initiated on the image
+        if (isDragging && Input.GetMouseButton(1))
+        {
+            Vector3 currentMousePosition = Input.mousePosition;
+            Vector3 delta = currentMousePosition - lastMousePosition;
+
+            x += delta.x * xSpeed * 0.002f; // Adjust speed factor
+            y -= delta.y * ySpeed * 0.002f;
             y = ClampAngle(y, yMinLimit, yMaxLimit);
+
+            lastMousePosition = currentMousePosition; // Update last position
         }
 
         Quaternion rotation = Quaternion.Euler(y, x, 0);
         cam.transform.rotation = rotation;
 
-        if (Input.GetMouseButton(2)) // Pan when middle mouse button is pressed
+        // Pan when middle mouse button is pressed
+        if (isDragging && Input.GetMouseButton(2))
         {
+            Vector3 currentMousePosition = Input.mousePosition;
+            Vector3 delta = currentMousePosition - lastMousePosition;
+
             Vector3 right = cam.transform.right;
             Vector3 up = cam.transform.up;
-            target += -Input.GetAxis("Mouse X") * right * cam.orthographicSize * cameraPanModifier;
-            target += -Input.GetAxis("Mouse Y") * up * cam.orthographicSize * cameraPanModifier;
+            target += -delta.x * right * cam.orthographicSize * cameraPanModifier * 0.002f;
+            target += -delta.y * up * cam.orthographicSize * cameraPanModifier * 0.002f;
+
+            lastMousePosition = currentMousePosition; // Update last position
         }
 
         cam.transform.position = target - (rotation * Vector3.forward * 20);
 
         // Adjust orthographic size with mouse scroll wheel
-        if (cam.orthographic)
+        if (cam.orthographic && IsMouseOverImage())
         {
-            cam.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * 5f;
+            cam.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed * cam.orthographicSize;
             cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, sizeMin, sizeMax);
         }
     }
@@ -69,5 +99,24 @@ public class ArmCameraOrbit : MonoBehaviour
         if (angle > 360F)
             angle -= 360F;
         return Mathf.Clamp(angle, min, max);
+    }
+
+    bool IsMouseOverImage()
+    {
+        if (img == null || canvas == null) return false;
+        if (float.IsInfinity(Input.mousePosition.x) || float.IsInfinity(Input.mousePosition.y))
+        {
+            return false; // Avoid processing when mouse position is invalid
+        }
+
+        RectTransform rectTransform = img.rectTransform;
+        Vector2 localMousePosition;
+
+        return RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            rectTransform,
+            Input.mousePosition,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
+            out localMousePosition)
+            && rectTransform.rect.Contains(localMousePosition);
     }
 }
