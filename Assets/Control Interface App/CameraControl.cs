@@ -12,7 +12,7 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] Transform destIcon;
     [SerializeField] Transform iconsParent;
     [SerializeField] Transform camCornerGameobject;
-    private Vector3 initialMouseScreenPosition;
+    private Vector3 initialMouseWorldPosition;
     private Vector3 initialSecondCameraPosition;
     private bool isDragging = false;
     [SerializeField] Vector2 delta;
@@ -28,10 +28,12 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] float iconScale = 1f;
     [SerializeField] float lineScale = 1f;
     public float iconScaleForZoom = 1f;
+    public float mapImageScaleFactor = 1f;
 
     void Awake()
     {
         inst = this;
+        mapImageScaleFactor = Screen.height / map.rectTransform.sizeDelta.y;
     }
 
 
@@ -43,14 +45,14 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         if(!IsMouseOverMap()) return;
 
 
-        Vector2 oldMousePos = GetWorldPositionOfMouse(Input.mousePosition);
-        Vector2 oldMouseScreenPos = Input.mousePosition;
+        //Vector2 oldMousePos = GetWorldPositionOfMouse(Input.mousePosition);
+        //Vector2 oldMouseScreenPos = Input.mousePosition;
         secondCamera.orthographicSize -= scrollInput * zoomSpeed * secondCamera.orthographicSize;
         secondCamera.orthographicSize = Mathf.Clamp(secondCamera.orthographicSize, minOrthoSize, maxOrthoSize);
 
-        Vector2 newMousepos = GetWorldPositionOfMouse(oldMouseScreenPos);
-        Vector3 diff = newMousepos - oldMousePos;
-        secondCamera.transform.position -= diff;
+        //Vector2 newMousepos = GetWorldPositionOfMouse(oldMouseScreenPos);
+        //Vector3 diff = newMousepos - oldMousePos;
+        //secondCamera.transform.position -= diff * mapImageScaleFactor;
 
         RescaleIcons();
 
@@ -84,12 +86,12 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left && IsMouseOverMap())
         {
             isDragging = true;
 
             // Store the initial mouse screen position when the middle mouse button is pressed
-            initialMouseScreenPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            initialMouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             initialSecondCameraPosition = secondCamera.transform.position;
         }
     }
@@ -106,10 +108,9 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     {
         if (isDragging)
         {
-            Vector3 worldDelta = Camera.main.ScreenToWorldPoint(Input.mousePosition) - initialMouseScreenPosition;
-            float porportion = secondCamera.orthographicSize / Camera.main.orthographicSize;
-            //not sure why scaleX and scaleY are needed but they are!
-            worldDelta = new Vector2(worldDelta.x * scaleX, worldDelta.y * scaleY) * porportion;
+            Vector3 worldDelta = Camera.main.ScreenToWorldPoint(Input.mousePosition) - initialMouseWorldPosition;
+            float proportion = secondCamera.orthographicSize / Camera.main.orthographicSize;
+            worldDelta = new Vector2(worldDelta.x, worldDelta.y) * proportion * mapImageScaleFactor;
             delta = worldDelta;
             secondCamera.transform.position = initialSecondCameraPosition - worldDelta;
         }

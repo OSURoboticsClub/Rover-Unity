@@ -40,14 +40,14 @@ public class ArmCameraOrbit : MonoBehaviour
     void LateUpdate()
     {
         // Detect mouse click over image
-        if ((Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)) && IsMouseOverImage())
+        if ((Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) && IsMouseOverImage())
         {
             isDragging = true;
             lastMousePosition = Input.mousePosition; // Store starting mouse position
         }
 
         // Stop dragging when the mouse button is released
-        if (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(2))
+        if (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0))
         {
             isDragging = false;
         }
@@ -68,8 +68,8 @@ public class ArmCameraOrbit : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(y, x, 0);
         cam.transform.rotation = rotation;
 
-        // Pan when middle mouse button is pressed
-        if (isDragging && Input.GetMouseButton(2))
+        // Pan when left mouse button is pressed
+        if (isDragging && Input.GetMouseButton(0))
         {
             Vector3 currentMousePosition = Input.mousePosition;
             Vector3 delta = currentMousePosition - lastMousePosition;
