@@ -120,7 +120,7 @@ class TCPServer(Node):
                 message += f"{msg.orientation.x};{msg.orientation.y};{msg.orientation.z};{msg.orientation.w}"
             elif topic_name == "/joint_states":
                 for position in msg.position:
-                    message += f"{position};"
+                    message += f"{position:.3f};"
                 message = message[:-1]
             else:
                 message += msg.data # handle string messages (not custom message type)
