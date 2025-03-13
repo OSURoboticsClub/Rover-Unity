@@ -26,15 +26,16 @@ class Location:
     longitude: float
 
 class auton_controller(Node):
+    state = "stopped"
+    led_state = "green"
+    
     waypoint_destination = None
     subpoints = None
     curr_destination = None
+    latest_img_frame = None
     rover_position = Location(44.56726, -123.27363)
     current_heading = 0.0
     target_heading = None
-    state = "stopped"
-    control_timer = None 
-    vel_control_loop_timer = None
     offset = None
     time_driving = 0.0
     time_looking_for_item = None
@@ -42,10 +43,11 @@ class auton_controller(Node):
     target_turning_velocity = 0.0
     curr_turning_velocity = 0.0
     pause_time = None
-    led_state = "green"
-    led_timer = None
-    latest_img_frame = None
     bottle_detector = None
+
+    control_timer = None 
+    vel_control_loop_timer = None
+    led_timer = None
 
 
     def __init__(self):
