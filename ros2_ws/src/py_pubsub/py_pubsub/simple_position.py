@@ -23,6 +23,7 @@ class SimplePosition(Node):
         self.gps_subscription = self.create_subscription(GPSStatusMessage, 'tower/status/gps', self.gps_listener_callback, 10)
         self.imu_subscription = self.create_subscription(Float32, 'imu/data/heading', self.imu_heading_listener_callback, 10)
         self.drive_subscription = self.create_subscription(DriveCommandMessage, 'command_control/iris_drive', self.drive_listener_callback, 10)
+        self.drive_subscription = self.create_subscription(DriveCommandMessage, 'command_control/ground_station_drive', self.drive_listener_callback, 10)
         self.manual_position_subscription = self.create_subscription(String, 'autonomous/manually_set_position', self.manual_set_position_listener_callback, 10)
 
         self.publisher = self.create_publisher(String, 'autonomous/simple_position', 10)
