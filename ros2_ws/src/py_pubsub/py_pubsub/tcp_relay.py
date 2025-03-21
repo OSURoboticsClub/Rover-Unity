@@ -13,6 +13,8 @@ import cv2
 import struct
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy
 from sensor_msgs.msg import JointState
+from std_msgs.msg import Float32MultiArray
+
 
 
 # UDP Configuration for Image Transmission
@@ -30,7 +32,9 @@ class TCPServer(Node):
     def __init__(self):
         super().__init__('tcp_server_with_ros2')
         self.topic_publishers = {}  # Dictionary to store topic_name -> publisher
-        self.message_type_map = {}  # Map of topic names to message types
+        self.message_type_map = {
+            'set_joint_angles': Float32MultiArray
+        }  # Map of topic names to message types
         self.subscribers = []
         self.tcp_client = None
         self.get_logger().info('TCP server initialized.')
@@ -178,6 +182,15 @@ class TCPServer(Node):
                 if message_type == String:
                     ros_msg = String()
                     ros_msg.data = content
+                elif message_type == Float32MultiArray:
+                    ros_msg = Float32MultiArray()
+                    ang1 = float(parts[1])
+                    ang2 = float(parts[2])
+                    ang3 = float(parts[3])
+                    ang4 = float(parts[4])
+                    ang5 = float(parts[5])
+                    ang6 = float(parts[6])
+                    ros_msg.data = [ang1, ang2, ang3, ang4, ang5, ang6]
                 else:
                     self.get_logger().error(f"Unsupported message type for topic: {topic_name}")
                     continue
@@ -191,7 +204,6 @@ class TCPServer(Node):
             self.get_logger().info(f"Closing connection with {addr}")
             conn.close()
             self.tcp_client = None
-
 
     def start_tcp_server(self, host, port):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
@@ -242,8 +254,6 @@ def main(args=None):
 
         if tcp_thread.is_alive():
             tcp_thread.join()
-
-
 
 if __name__ == '__main__':
     main()

@@ -32,7 +32,9 @@ public class CurrentDestinationController : MonoBehaviour
         script.SetActive();
         string message = $"autonomous/auton_control;GOTO;{script.lat.text};{script.lon.text}";
         TcpController.inst.Publish(message);
-        StatusIndicator.instance.SetIndicator(Status.Activated, script);
+        //StatusIndicator.instance.SetIndicator(Status.Activated, script);
+        // this should be done on callback from the rover
+
         //MapController.instance.SetLinePosition(script.iconObject.transform.position);
     }
 
@@ -41,6 +43,8 @@ public class CurrentDestinationController : MonoBehaviour
         script.SetInactive();
         string message = $"autonomous/auton_control;STOP;{script.lat.text};{script.lon.text}";
         TcpController.inst.Publish(message);
-        StatusIndicator.instance.SetIndicator(Status.NotActivated, script);
+
+        //StatusIndicator.instance.SetIndicator(Status.NotActivated, script);
+        // this should be done on callback from the rover
     }
 }

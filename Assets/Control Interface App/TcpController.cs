@@ -12,6 +12,7 @@ public class TcpController : MonoBehaviour
     private NetworkStream stream;
     private Thread listenThread;
     private bool isRunning;
+    public bool disconnected;
 
     // Start is called before the first frame update
     public void Reconnect()
@@ -40,6 +41,7 @@ public class TcpController : MonoBehaviour
         catch (SocketException e)
         {
             Debug.LogWarning($"Could not connect to server: {e.Message}");
+            disconnected = true;
         }
     }
 
@@ -57,6 +59,7 @@ public class TcpController : MonoBehaviour
             }
         }
 
+        disconnected = false;
         try
         {
             // Format the message

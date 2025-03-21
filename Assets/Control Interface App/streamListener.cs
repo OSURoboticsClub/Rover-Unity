@@ -10,7 +10,8 @@ using UnityEngine.UI;
 
 public class streamListener : MonoBehaviour
 {
-    //[SerializeField] int currentFrameNum = 0;
+    public static streamListener inst;
+
     [SerializeField] Image image;
     [SerializeField] float fps;
     float fpsCounter = 0;
@@ -36,9 +37,11 @@ public class streamListener : MonoBehaviour
 
     public int listenPort = 12345;
     private UdpClient udpClient;
+    public float timeSinceLastPacket = 0;
 
     private void Start()
     {
+        inst = this;
         udpClient = new UdpClient(listenPort);
         udpClient.Client.ReceiveBufferSize = 600000;
         Task.Factory.StartNew(() => ListenForData(), TaskCreationOptions.LongRunning);
@@ -120,6 +123,8 @@ public class streamListener : MonoBehaviour
                 AddToFrameDictionary(receivedPacketsFrame3, numOfPackets, packetIndex, data, 2);
             }
         }
+
+        timeSinceLastPacket = 0;
     }
 
     void AddToFrameDictionary(Dictionary<int, byte[]> dict, int numOfPackets, int index, byte[] data, int bufferNum)
@@ -144,6 +149,7 @@ public class streamListener : MonoBehaviour
 
     private void Update()
     {
+        timeSinceLastPacket += Time.deltaTime;
         timeCounter += Time.deltaTime;
         fpsCounter += Time.deltaTime;
 
@@ -159,6 +165,10 @@ public class streamListener : MonoBehaviour
             var tex = ReconstructImage(receivedPacketsFrame1);
             Sprite newSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
             image.sprite = newSprite;
+            if(image.color != Color.white)
+            {
+                image.color = Color.white;
+            }
             frame1Num = -1;
             receivedPacketsFrame1.Clear();
         }
@@ -167,6 +177,10 @@ public class streamListener : MonoBehaviour
             var tex = ReconstructImage(receivedPacketsFrame2);
             Sprite newSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
             image.sprite = newSprite;
+            if (image.color != Color.white)
+            {
+                image.color = Color.white;
+            }
             frame2Num = -1;
             receivedPacketsFrame2.Clear();
         }
@@ -175,6 +189,10 @@ public class streamListener : MonoBehaviour
             var tex = ReconstructImage(receivedPacketsFrame3);
             Sprite newSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
             image.sprite = newSprite;
+            if (image.color != Color.white)
+            {
+                image.color = Color.white;
+            }
             frame3Num = -1;
             receivedPacketsFrame3.Clear();
         }
