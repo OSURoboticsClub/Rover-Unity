@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class WarningsPanelController : MonoBehaviour
@@ -8,6 +9,7 @@ public class WarningsPanelController : MonoBehaviour
     [SerializeField] List<bool> warnings = new();
     [SerializeField] GameObject disconnectedWarning;
     [SerializeField] GameObject noCam1Warning;
+    [SerializeField] TextMeshProUGUI cam1Text;
     [SerializeField] GameObject noCam2Warning;
 
     private void Update()
@@ -20,6 +22,7 @@ public class WarningsPanelController : MonoBehaviour
         }
 
         bool noCam1Feed = false;
+        if (streamListener.inst.timeSinceLastPacket > 2f) noCam1Feed = true;
         bool noCam2Feed = false;
 
         if(isDisconnected)
@@ -33,6 +36,8 @@ public class WarningsPanelController : MonoBehaviour
         {
             warnings[1] = noCam1Feed;
             noCam1Warning.SetActive(noCam1Feed);
+            string timeSince = streamListener.inst.timeSinceLastPacket.ToString("F1");
+            cam1Text.text = "No feed from camera 1 for " + timeSince + " seconds.";
         }
         if (noCam2Feed != warnings[2])
         {

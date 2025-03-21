@@ -698,7 +698,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.013244629}
+  m_AnchoredPosition: {x: 0, y: -0.013183594}
   m_SizeDelta: {x: 0, y: 0.0054932}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &96935686
@@ -1059,7 +1059,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75.91, y: -809.6021}
+  m_AnchoredPosition: {x: 75.90991, y: -809.6021}
   m_SizeDelta: {x: 113.44, y: 40.23}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &147003038
@@ -4929,7 +4929,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 339.6, y: -809.46216}
+  m_AnchoredPosition: {x: 339.60004, y: -809.46216}
   m_SizeDelta: {x: 102.75, y: 40.51}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &772154466
@@ -5654,6 +5654,7 @@ MonoBehaviour:
   warnings: 000000
   disconnectedWarning: {fileID: 779716504}
   noCam1Warning: {fileID: 531111457}
+  cam1Text: {fileID: 0}
   noCam2Warning: {fileID: 41396849}
 --- !u!1 &831638143
 GameObject:
@@ -6150,7 +6151,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -364.3709, y: -0.006286621}
+  m_AnchoredPosition: {x: -364.37085, y: -0.0063476562}
   m_SizeDelta: {x: -729.93, y: -0.21098633}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &870170480
@@ -15769,7 +15770,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -364.47086, y: -368.1021}
+  m_AnchoredPosition: {x: -364.4709, y: -368.1021}
   m_SizeDelta: {x: 729.73, y: 728.63}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1942512588
@@ -16003,7 +16004,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Not connected to ROS 2
+  m_text: Not connected to ROS 2.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
