@@ -31,18 +31,26 @@ public class WarningsPanelController : MonoBehaviour
             noCam2Feed = false;
         }
 
-
-        if (noCam1Feed != warnings[1])
-        {
+        if(warnings[1] != noCam1Feed) {
             warnings[1] = noCam1Feed;
             noCam1Warning.SetActive(noCam1Feed);
-            string timeSince = streamListener.inst.timeSinceLastPacket.ToString("F1");
+        }
+        if (noCam1Feed)
+        {
+            if(warnings[1] != noCam1Feed) {
+                warnings[1] = noCam1Feed;
+                noCam1Warning.SetActive(noCam1Feed);
+            }
+            float timeSinceFloat = streamListener.inst.timeSinceLastPacket;
+            string timeSince = timeSinceFloat.ToString("F1");
+            if(timeSinceFloat > 99f) timeSince = "99+";
+
             cam1Text.text = "No feed from camera 1 for " + timeSince + " seconds.";
         }
-        if (noCam2Feed != warnings[2])
-        {
-            warnings[2] = noCam2Feed;
-            noCam2Warning.SetActive(noCam2Feed);
-        }
+        // if (noCam2Feed != warnings[2])
+        // {
+        //     warnings[2] = noCam2Feed;
+        //     noCam2Warning.SetActive(noCam2Feed);
+        // }
     }
 }

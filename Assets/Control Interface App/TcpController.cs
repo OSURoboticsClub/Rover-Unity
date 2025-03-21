@@ -32,6 +32,7 @@ public class TcpController : MonoBehaviour
             isRunning = true;
 
             Debug.Log($"Connected to server at {server}:{port}");
+            disconnected = false;
 
             // Start a thread to listen for incoming data
             listenThread = new Thread(ListenForData);
@@ -42,6 +43,10 @@ public class TcpController : MonoBehaviour
         {
             Debug.LogWarning($"Could not connect to server: {e.Message}");
             disconnected = true;
+        }
+
+        if(!disconnected){
+            streamListener.inst.timeSinceLastPacket = 0;
         }
     }
 
@@ -71,6 +76,7 @@ public class TcpController : MonoBehaviour
         catch (System.Exception e)
         {
             Debug.LogWarning($"Error while sending data: {e.Message}");
+            disconnected = true;
         }
     }
 
