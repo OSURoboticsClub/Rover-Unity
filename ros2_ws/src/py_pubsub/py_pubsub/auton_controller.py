@@ -6,7 +6,7 @@ from rover2_control_interface.msg import DriveCommandMessage
 from rover2_control_interface.msg import GPSStatusMessage
 from rover2_control import aruco_scan
 from rover2_control import geographic_functions
-from rover2_control import bottle_detect
+#from rover2_control import bottle_detect
 from rover2_status_interface.msg import LED
 from sensor_msgs.msg import Imu
 from std_msgs.msg import Float32
@@ -18,7 +18,7 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import json
 from dataclasses import asdict
-import bottle_detect
+#import bottle_detect
 
 @dataclass
 class Location:
@@ -53,7 +53,7 @@ class auton_controller(Node):
     def __init__(self):
         super().__init__('auton_controller')
         self.bridge = CvBridge()
-        self.bottle_detector = bottle_detect.bottle_detector()
+        #self.bottle_detector = bottle_detect.bottle_detector()
         self.control_subscription = self.create_subscription( String, 'autonomous/auton_control', self.control_listener_callback, 10)
         self.gps_subscription = self.create_subscription(GPSStatusMessage, 'tower/status/gps', self.gps_listener_callback, 10)
         #self.imu_subscription = self.create_subscription(Imu, 'imu/data', self.imu_listener_callback, 10)
@@ -151,8 +151,8 @@ class auton_controller(Node):
             width = None
             if self.item_searching_for == "ARUCO":
                 item_location_in_img, width = aruco_scan.detect_first_aruco_marker(self, self.latest_img_frame)
-            elif self.item_searching_for == "bottle":
-                item_location_in_img, width = self.bottle_detector.get_bottle(self.latest_img_frame)
+            # elif self.item_searching_for == "bottle":
+            #     item_location_in_img, width = self.bottle_detector.get_bottle(self.latest_img_frame)
 
             if item_location_in_img == None:
                 self.time_looking_for_item += 0.1
@@ -197,8 +197,8 @@ class auton_controller(Node):
             item_location_in_img, width = None
             if self.item_searching_for == "ARUCO":
                 item_location_in_img, width = aruco_scan.detect_first_aruco_marker(self, self.latest_img_frame)
-            elif self.item_searching_for == "bottle":
-                item_location_in_img, width = self.bottle_detector.get_bottle(self.latest_img_frame)
+            # elif self.item_searching_for == "bottle":
+            #     item_location_in_img, width = self.bottle_detector.get_bottle(self.latest_img_frame)
 
             if item_location_in_img == None:
                 self.get_logger().info(f"Lost the {self.item_searching_for}")
@@ -258,7 +258,7 @@ class auton_controller(Node):
                 self.get_logger().info(f"Command GOTO received with target lat: {lat}, lon: {lon}")
                 self.waypoint_destination = Location(lat, lon)
                 self.publish_led_message(255, 0, 0)
-                self.state = "scanning"
+                self.state = "driving"
                 self.item_searching_for = "ARUCO"
                 if self.control_timer is not None:
                     self.control_timer.cancel()
@@ -335,18 +335,24 @@ class auton_controller(Node):
         if self.subpoints is not None and len(self.subpoints) > 0:
             self.curr_destination = self.subpoints[0]
             self.subpoints.pop(0)
-        elif self.waypoint_destination is not None:
-            self.curr_destination = self.waypoint_destination
-            self.waypoint_destination = None
-        else:
-            self.curr_destination = None
+        elif self.curr_destination == self.waypoint_destination:
+            # noooo
+        # elif self.waypoint_destination is not None:
+        #     self.curr_destination = self.waypoint_destination
+        #     self.waypoint_destination = None
+        # else:
+        #     self.curr_destination = None
         self.get_logger().info("Set new dest: " + str(self.curr_destination))
         if self.curr_destination is not None:
             self.publish_log_msg("nextdest;" + str(self.curr_destination.latitude) + ";" + str(self.curr_destination.longitude))
     
     def imu_heading_listener_callback(self, msg):
         """Listens to auton_control topic for commands"""
-        self.current_heading = msg.data
+        self.current_heading = msg.data + 23.0
+        if self.current_heading > 360.0:
+            self.current_heading -= 360.0
+        elif self.current_heading < 0.0:
+            self.current_heading += 360.0
         #self.get_logger().info(f"Received heading: " + str(self.current_heading))
 
     def gps_listener_callback(self, msg):

@@ -5565,8 +5565,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roverIcon: {fileID: 450525840}
   angles: {x: 0, y: 0, z: 0}
-  offset: -21
-  useOffset: 0
+  offset: 15
+  useOffset: 1
   logHeading: 0
   buildingAngle: 18
   circle: {fileID: 7919546940054837755, guid: a70a1631aff0daf4c9a101bdf2f44b55, type: 3}

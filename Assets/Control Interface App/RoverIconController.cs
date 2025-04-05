@@ -23,7 +23,7 @@ public class RoverIconController : MonoBehaviour
         TcpMessageReceiver.gpsReceived.AddListener(OnGpsReceived);
         TcpMessageReceiver.imuReceived.AddListener(OnImuHeadingReceived);
         TcpMessageReceiver.simplePositionReceived.AddListener(OnSimplePositionReceived);
-        offset = -1000;
+        //offset = -1000;
     }
 
     public float t = 3f;
@@ -53,6 +53,7 @@ public class RoverIconController : MonoBehaviour
         //Debug.Log("Received IMU heading: " + message);
         var parts = message.Split(";");
         bool succ = float.TryParse(parts[1], out float result);
+        result += offset;
         if(succ) roverIcon.rotation = Quaternion.Euler(0, 0, -result);
     }
 
