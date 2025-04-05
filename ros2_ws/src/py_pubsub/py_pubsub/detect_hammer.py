@@ -185,3 +185,14 @@ while True:
     cv2.waitKey(0)
     cv2.destroyAllWindows()
         
+
+    hue, sat, val = cv2.split(hsv)
+    # Create a base mask of all False values
+    mask = np.zeros_like(hue, dtype=np.uint8)
+    # Define threshold for "Saturation + Value must be above a certain level"
+    min_sum_sv = 20  # Adjust as needed
+    # Mask for orange range 
+    mask_yellow_orange = (hue > 1) & (hue <= 20) & (sat >= 120) & (val >= 120) & ((sat + val) >= min_sum_sv)
+    mask = (mask_yellow_orange).astype(np.uint8) * 255
+    # Find contours in the mask
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
