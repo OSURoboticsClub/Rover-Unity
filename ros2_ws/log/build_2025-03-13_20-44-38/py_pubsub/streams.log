@@ -1,0 +1,43 @@
+[1.150s] Invoking command in '/home/makemorerobot/Rover-Unity/ros2_ws/src/py_pubsub': PYTHONPATH=/home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/py_pubsub build --build-base /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build install --record /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/install.log --single-version-externally-managed install_data
+[1.362s] /home/makemorerobot/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py:289: UserWarning: Unknown distribution option: 'tests_require'
+[1.362s]   warnings.warn(msg)
+[1.479s] running egg_info
+[1.497s] writing ../../build/py_pubsub/py_pubsub.egg-info/PKG-INFO
+[1.497s] writing dependency_links to ../../build/py_pubsub/py_pubsub.egg-info/dependency_links.txt
+[1.497s] writing entry points to ../../build/py_pubsub/py_pubsub.egg-info/entry_points.txt
+[1.498s] writing requirements to ../../build/py_pubsub/py_pubsub.egg-info/requires.txt
+[1.498s] writing top-level names to ../../build/py_pubsub/py_pubsub.egg-info/top_level.txt
+[1.538s] reading manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+[1.540s] writing manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+[1.540s] running build
+[1.540s] running build_py
+[1.540s] copying py_pubsub/publisher_member_function.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.541s] copying py_pubsub/bottle_detect.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.541s] copying py_pubsub/tcp_relay.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.542s] copying py_pubsub/udp_sender_test.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.542s] copying py_pubsub/gstreamer_depth_node.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.542s] copying py_pubsub/auton_controller.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.542s] copying py_pubsub/subscriber_member_function.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.542s] copying py_pubsub/aruco_scan.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.542s] copying py_pubsub/geographic_functions.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.542s] copying py_pubsub/__init__.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.543s] copying py_pubsub/generate_aruco.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.543s] copying py_pubsub/object_train.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.543s] copying py_pubsub/simple_position.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[1.543s] running install
+[1.551s] running install_lib
+[1.570s] running install_data
+[1.571s] copying resource/py_pubsub -> /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/share/ament_index/resource_index/packages
+[1.571s] copying package.xml -> /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/share/py_pubsub
+[1.571s] running install_egg_info
+[1.590s] removing '/home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info' (and everything under it)
+[1.590s] Copying ../../build/py_pubsub/py_pubsub.egg-info to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info
+[1.591s] running install_scripts
+[1.741s] Installing auton_controller script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.742s] Installing gstreamer_depth_node script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.742s] Installing listener script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.742s] Installing simple_position script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.742s] Installing talker script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.743s] Installing tcp_relay script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.743s] writing list of installed files to '/home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/install.log'
+[1.782s] Invoked command in '/home/makemorerobot/Rover-Unity/ros2_ws/src/py_pubsub' returned '0': PYTHONPATH=/home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/py_pubsub build --build-base /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build install --record /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/install.log --single-version-externally-managed install_data

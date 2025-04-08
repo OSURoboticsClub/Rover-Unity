@@ -1,0 +1,39 @@
+running egg_info
+writing ../../build/py_pubsub/py_pubsub.egg-info/PKG-INFO
+writing dependency_links to ../../build/py_pubsub/py_pubsub.egg-info/dependency_links.txt
+writing entry points to ../../build/py_pubsub/py_pubsub.egg-info/entry_points.txt
+writing requirements to ../../build/py_pubsub/py_pubsub.egg-info/requires.txt
+writing top-level names to ../../build/py_pubsub/py_pubsub.egg-info/top_level.txt
+reading manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+writing manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+running build
+running build_py
+copying py_pubsub/publisher_member_function.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/bottle_detect.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/tcp_relay.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/udp_sender_test.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/gstreamer_depth_node.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/auton_controller.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/subscriber_member_function.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/aruco_scan.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/geographic_functions.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/__init__.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/generate_aruco.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/object_train.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+copying py_pubsub/simple_position.py -> /home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+running install
+running install_lib
+running install_data
+copying resource/py_pubsub -> /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/share/ament_index/resource_index/packages
+copying package.xml -> /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/share/py_pubsub
+running install_egg_info
+removing '/home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/py_pubsub/py_pubsub.egg-info to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info
+running install_scripts
+Installing auton_controller script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+Installing gstreamer_depth_node script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+Installing listener script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+Installing simple_position script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+Installing talker script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+Installing tcp_relay script to /home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub/lib/py_pubsub
+writing list of installed files to '/home/makemorerobot/Rover-Unity/ros2_ws/build/py_pubsub/install.log'
