@@ -1,8 +1,0 @@
-{
-  "package_name": "customMsg",
-  "non_idl_tuples": [
-    "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/src/customMsg:msg/Num.msg",
-    "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/src/customMsg:msg/Sphere.msg",
-    "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/src/customMsg:srv/AddThreeInts.srv"
-  ]
-}

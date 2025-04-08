@@ -25,6 +25,7 @@ setup(
             'tcp_relay = py_pubsub.tcp_relay:main',
             'auton_controller = py_pubsub.auton_controller:main',
             'simple_position = py_pubsub.simple_position:main',
+            'gstreamer_depth_node = py_pubsub.gstreamer_depth_node:main'
         ],
     },
 )

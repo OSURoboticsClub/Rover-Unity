@@ -1,0 +1,64 @@
+[0.320s] Invoking command in '/home/makemorerobot/Rover-Unity/ros2_ws/build/custom_msg': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub:/home/makemorerobot/Rover-Unity/ros2_ws/install/AutonControlNode:/opt/ros/humble /usr/bin/cmake /home/makemorerobot/Rover-Unity/ros2_ws/src/custom_msg -DCMAKE_INSTALL_PREFIX=/home/makemorerobot/Rover-Unity/ros2_ws/install/custom_msg
+[0.475s] -- The C compiler identification is GNU 11.4.0
+[0.613s] -- The CXX compiler identification is GNU 11.4.0
+[0.630s] -- Detecting C compiler ABI info
+[0.770s] -- Detecting C compiler ABI info - done
+[0.784s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.785s] -- Detecting C compile features
+[0.786s] -- Detecting C compile features - done
+[0.792s] -- Detecting CXX compiler ABI info
+[0.954s] -- Detecting CXX compiler ABI info - done
+[0.969s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.970s] -- Detecting CXX compile features
+[0.971s] -- Detecting CXX compile features - done
+[0.977s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[1.741s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[1.944s] -- Found geometry_msgs: 4.2.4 (/opt/ros/humble/share/geometry_msgs/cmake)
+[2.033s] -- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[2.046s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[2.067s] -- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[2.095s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.132s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.223s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[2.789s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[3.390s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[3.624s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[3.662s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[3.664s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[3.705s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[3.705s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[3.706s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[3.706s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[3.743s] -- Found PythonExtra: .so  
+[3.827s] -- Found ament_lint_auto: 0.12.11 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[3.857s] -- Found rclcpp: 16.0.11 (/opt/ros/humble/share/rclcpp/cmake)
+[3.926s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[3.931s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[4.073s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[4.115s] -- Found FastRTPS: /opt/ros/humble/include  
+[4.177s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[4.196s] -- Looking for pthread.h
+[4.325s] -- Looking for pthread.h - found
+[4.325s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[4.441s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[4.443s] -- Found Threads: TRUE  
+[4.541s] [31mCMake Error at CMakeLists.txt:38 (find_package):
+[4.541s]   By not providing "Findcustom_msg.cmake" in CMAKE_MODULE_PATH this project
+[4.541s]   has asked CMake to find a package configuration file provided by
+[4.541s]   "custom_msg", but CMake did not find one.
+[4.541s] 
+[4.541s]   Could not find a package configuration file provided by "custom_msg" with
+[4.541s]   any of the following names:
+[4.541s] 
+[4.541s]     custom_msgConfig.cmake
+[4.541s]     custom_msg-config.cmake
+[4.542s] 
+[4.542s]   Add the installation prefix of "custom_msg" to CMAKE_PREFIX_PATH or set
+[4.542s]   "custom_msg_DIR" to a directory containing one of the above files.  If
+[4.542s]   "custom_msg" provides a separate development package or SDK, be sure it has
+[4.542s]   been installed.
+[4.542s] 
+[4.542s] [0m
+[4.542s] -- Configuring incomplete, errors occurred!
+[4.542s] See also "/home/makemorerobot/Rover-Unity/ros2_ws/build/custom_msg/CMakeFiles/CMakeOutput.log".
+[4.556s] Invoked command in '/home/makemorerobot/Rover-Unity/ros2_ws/build/custom_msg' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/makemorerobot/Rover-Unity/ros2_ws/install/py_pubsub:/home/makemorerobot/Rover-Unity/ros2_ws/install/AutonControlNode:/opt/ros/humble /usr/bin/cmake /home/makemorerobot/Rover-Unity/ros2_ws/src/custom_msg -DCMAKE_INSTALL_PREFIX=/home/makemorerobot/Rover-Unity/ros2_ws/install/custom_msg
