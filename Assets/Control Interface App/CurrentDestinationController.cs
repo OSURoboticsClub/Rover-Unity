@@ -31,7 +31,21 @@ public class CurrentDestinationController : MonoBehaviour
     {
         script.SetActive();
         string message = $"autonomous/auton_control;GOTO;{script.lat.text};{script.lon.text}";
-        TcpController.inst.Publish(message);
+        WaypointList waypointList = new(){
+            list = new()
+        };
+        foreach(var x in script.waypoints){
+            Waypoint point = new(){
+                lat = x.transform.position.x.ToString(),
+                lon = x.transform.position.y.ToString()
+            };
+            waypointList.list.Add(point);
+        }
+        string json = JsonUtility.ToJson(waypointList);
+        Debug.Log(json);
+
+        //string message = $"autonomous/auton_control;FIND;ARUCO";
+        //TcpController.inst.Publish(message);
         //StatusIndicator.instance.SetIndicator(Status.Activated, script);
         // this should be done on callback from the rover
 
@@ -46,5 +60,14 @@ public class CurrentDestinationController : MonoBehaviour
 
         //StatusIndicator.instance.SetIndicator(Status.NotActivated, script);
         // this should be done on callback from the rover
+    }
+
+    class WaypointList{
+        public List<Waypoint> list;
+    }
+
+    class Waypoint{
+        public string lat;
+        public string lon;
     }
 }
