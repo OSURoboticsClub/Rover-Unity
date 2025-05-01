@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class SelectDestination : MonoBehaviour
 {
     [SerializeField] Image bg;
+    public bool isSelected = false;
     public void SetBgColor()
     {
         bg.color = new Color(0, 134/255f, 1f, 33 / 255f);
+        isSelected = true;
         SetIconGreen();
 
         Transform listParent = transform.parent;
@@ -22,9 +24,21 @@ public class SelectDestination : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (!isSelected) return;
+        if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("Ctrl + R detected");
+            GetComponent<GpsLocation>().ClearWaypoints();
+            // Your logic here
+        }
+    }
+
     public void ResetBackgroundColor()
     {
         bg.color = new Color(0, 1f, 14 / 255f, 0);
+        isSelected = false;
     }
 
     public void UnhighlightIcon()

@@ -89,7 +89,7 @@ public class WaypointAdder : MonoBehaviour
         Transform parent = MapController.instance.iconsParent;
         GameObject newObject = Instantiate(waypointIcon, worldPos, Quaternion.identity);
         newObject.transform.SetParent(parent, true);  // 'true' keeps the current world position
-        currentLocationBeingModified.waypoints.Add(newObject);
+        currentLocationBeingModified.AddWaypoint(newObject);
         CameraControl.inst.RescaleIcons();
         currentLocationBeingModified.SetLine();
     }

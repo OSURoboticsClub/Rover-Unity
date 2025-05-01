@@ -22,11 +22,28 @@ public class GpsLocation : MonoBehaviour
     public GameObject iconObject;
     public List<GameObject> waypoints = new();
 
+
     public void UpdateLabels()
     {
         desc.text = description;
         lat.text = latitude.ToString();
         lon.text = longitude.ToString();
+        waypointCountText.text = waypoints.Count.ToString();
+    }
+
+    public void ClearWaypoints()
+    {
+        foreach(var x in waypoints)
+        {
+            Destroy(x);
+        }
+        waypoints.Clear();
+        waypointCountText.text = "0";
+    }
+
+    public void AddWaypoint(GameObject newObject)
+    {
+        waypoints.Add(newObject);
         waypointCountText.text = waypoints.Count.ToString();
     }
 
