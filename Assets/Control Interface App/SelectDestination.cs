@@ -31,7 +31,6 @@ public class SelectDestination : MonoBehaviour
         {
             Debug.Log("Ctrl + R detected");
             GetComponent<GpsLocation>().ClearWaypoints();
-            // Your logic here
         }
     }
 

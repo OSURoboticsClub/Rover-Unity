@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,15 @@ using UnityEngine;
 public class CurrentDestinationController : MonoBehaviour
 {
     public static CurrentDestinationController inst;
-    GpsLocation currentTarget;
+    [SerializeField] GpsLocation currentTarget;
+    [SerializeField] List<Coordinate> waypoints = new();
+    [SerializeField] int waypointIndex = 0;
+
+    struct Coordinate
+    {
+        public double lat;
+        public double lon;
+    }
 
     private void Awake()
     {
@@ -30,35 +39,50 @@ public class CurrentDestinationController : MonoBehaviour
     public void SetDestination(GpsLocation script)
     {
         script.SetActive();
-        //string message = $"autonomous/auton_control;GOTO;{script.lat.text};{script.lon.text}";
-        WaypointList waypointList = new(){
-            list = new()
-        };
-        foreach(var x in script.waypoints){
+        currentTarget = script;
+        //WaypointList waypointList = new(){
+        //    list = new()
+        //};
+        waypoints.Clear();
+        waypointIndex = 0;
+        foreach (var x in script.waypoints) {
             var coords = MapController.instance.GetLatLonFromWorldPosition(x.transform.position);
-            Waypoint point = new(){
-                lat = coords[0].ToString("F5"),
-                lon = coords[1].ToString("F5")
-            };
-            waypointList.list.Add(point);
+            waypoints.Add(new Coordinate() { 
+                lat = Math.Round(coords[0], 6),
+                lon = Math.Round(coords[1], 6) });
+            //Waypoint point = new() {
+            //    lat = coords[0].ToString("F5"),
+            //    lon = coords[1].ToString("F5")
+            //};
+            //waypointList.list.Add(point);
         }
-        Waypoint finalPoint = new()
-        {
-            lat = script.lat.text,
-            lon = script.lon.text
+        var finalDestination = new Coordinate() {
+            lat = Math.Round(double.Parse(script.lat.text), 6),
+            lon = Math.Round(double.Parse(script.lon.text), 6)
         };
-        waypointList.list.Add(finalPoint);
-        string json = JsonUtility.ToJson(waypointList);
-        json = "autonomous/auton_control;GOTO;" + json;
-        Debug.Log("json: " +json);
+        waypoints.Add(finalDestination);
+        //Waypoint finalPoint = new() {
+        //    lat = script.lat.text,
+        //    lon = script.lon.text
+        //};
+        //waypointList.list.Add(finalPoint);
+        //string json = JsonUtility.ToJson(waypointList);
+        //json = "autonomous/auton_control;GOTO;" + json;
+        //Debug.Log("json: " +json);
 
         //string message = $"autonomous/auton_control;FIND;ARUCO";
-        TcpController.inst.Publish(json);
+        SendNextWaypoint();
         StatusIndicator.instance.SetIndicator(Status.Activated, script);
         // this should be done on callback from the rover
 
         //MapController.instance.SetLinePosition(script.iconObject.transform.position);
     }
+
+    void SendNextWaypoint() {
+        string message = $"autonomous/auton_control;GOTO;{waypoints[waypointIndex].lat};{waypoints[waypointIndex].lon}";
+        TcpController.inst.Publish(message);
+    }
+
 
     public void Stop(GpsLocation script)
     {
@@ -67,6 +91,7 @@ public class CurrentDestinationController : MonoBehaviour
         TcpController.inst.Publish(message);
 
         StatusIndicator.instance.SetIndicator(Status.NotActivated, script);
+        currentTarget = null;
         // this should be done on callback from the rover
     }
 
