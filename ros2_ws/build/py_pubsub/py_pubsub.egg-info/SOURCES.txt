@@ -12,12 +12,12 @@ py_pubsub/__init__.py
 py_pubsub/aruco_scan.py
 py_pubsub/auton_controller.py
 py_pubsub/bottle_detect.py
+py_pubsub/detect_hammer.py
 py_pubsub/generate_aruco.py
 py_pubsub/geographic_functions.py
+py_pubsub/hammer_detector.py
 py_pubsub/object_train.py
-py_pubsub/publisher_member_function.py
 py_pubsub/simple_position.py
-py_pubsub/subscriber_member_function.py
 py_pubsub/tcp_relay.py
 py_pubsub/udp_sender_test.py
 py_pubsub.egg-info/PKG-INFO
