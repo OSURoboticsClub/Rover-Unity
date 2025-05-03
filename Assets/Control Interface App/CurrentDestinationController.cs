@@ -9,6 +9,7 @@ public class CurrentDestinationController : MonoBehaviour
     [SerializeField] GpsLocation currentTarget;
     [SerializeField] List<Coordinate> waypoints = new();
     [SerializeField] int waypointIndex = 0;
+    [SerializeField] float distanceCutoff = .1f;
 
     struct Coordinate
     {
@@ -83,7 +84,6 @@ public class CurrentDestinationController : MonoBehaviour
         TcpController.inst.Publish(message);
     }
 
-
     public void Stop(GpsLocation script)
     {
         script.SetInactive();
@@ -93,6 +93,27 @@ public class CurrentDestinationController : MonoBehaviour
         StatusIndicator.instance.SetIndicator(Status.NotActivated, script);
         currentTarget = null;
         // this should be done on callback from the rover
+    }
+
+    public void ReceivePositionUpdate(double lat, double lon) {
+        if (currentTarget == null) return;
+
+        var worldPos = MapController.instance.GetWorldPosition(lat, lon);
+        var targetWorldPos = waypoints[waypointIndex];
+        Vector2 targetVect = MapController.instance.GetWorldPosition(targetWorldPos.lat, targetWorldPos.lon);
+        var dist = Vector2.Distance(worldPos, targetVect);
+        Debug.Log("Distance to target: " + dist);
+        if (dist < distanceCutoff) {
+            waypointIndex++;
+            if(waypointIndex >= waypoints.Count) {
+                Debug.Log("Reached destination");
+                Stop(currentTarget);
+            }
+            else {
+                Debug.Log("Send next waypoint");
+                SendNextWaypoint();
+            }
+        }
     }
 
     [System.Serializable]

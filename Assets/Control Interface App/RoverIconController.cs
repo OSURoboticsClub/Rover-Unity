@@ -64,6 +64,7 @@ public class RoverIconController : MonoBehaviour
         double lon = double.Parse(parts[2]);
         Vector2 worldPos = MapController.instance.GetWorldPosition(lat, lon);
         roverIcon.position = worldPos;
+        CurrentDestinationController.inst.ReceivePositionUpdate(lat, lon);
     }
 
     void OnImuReceived(string message)
@@ -79,18 +80,18 @@ public class RoverIconController : MonoBehaviour
         Quaternion quaternion = new Quaternion(x, y, z, w);
 
         float heading = GetHeading(quaternion);
-        if(offset == -1000){
-            Debug.Log("Current heading: " + heading);
-            float headingAdjusted = heading;
-            if(heading > 180f) headingAdjusted -= 360f;
-            float targetInitialHeading = 360f - buildingAngle;
-            Debug.Log("Target initial heading: " + targetInitialHeading);
-            offset = headingAdjusted - targetInitialHeading;
-            if(offset < -180) offset += 360;
-            offset *= -1;
+        //if(offset == -1000){
+        //    Debug.Log("Current heading: " + heading);
+        //    float headingAdjusted = heading;
+        //    if(heading > 180f) headingAdjusted -= 360f;
+        //    float targetInitialHeading = 360f - buildingAngle;
+        //    Debug.Log("Target initial heading: " + targetInitialHeading);
+        //    offset = headingAdjusted - targetInitialHeading;
+        //    if(offset < -180) offset += 360;
+        //    offset *= -1;
 
-            Debug.Log("Offset is now: " + offset);
-        }
+        //    Debug.Log("Offset is now: " + offset);
+        //}
 
         if(useOffset) heading += offset;
         if(heading < 0) heading += 360f;
