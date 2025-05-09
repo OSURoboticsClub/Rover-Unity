@@ -101,13 +101,14 @@ class auton_controller(Node):
                     angular_speed *= -1
                 #if abs(heading_error) < 30: # slow down on approach
                     #angular_speed *= 0.6
+                self.get_logger().info("Angular is " + str(angular_speed))
                 self.publish_drive_message(0.0, angular_speed) 
 
         elif self.state == "driving":
-            self.target_heading = geographic_functions.get_target_heading(self.rover_position, self.curr_point_destination)
+            self.target_heading = geographic_functions.get_target_heading(self.rover_position, self.target_coordinate)
             #distance_to_nearest_point = geographic_functions.get_distance_to_location(self.rover_position, self.curr_point_destination)
             distance_to_waypoint = geographic_functions.get_distance_to_location(self.rover_position, self.target_coordinate)
-            curvature = geographic_functions.compute_curvature(self.curr_point_destination, self.get_heading_error())
+            curvature = geographic_functions.compute_curvature(self.rover_position, self.target_coordinate, self.get_heading_error())
 
 
             if distance_to_waypoint < 9.0:
@@ -263,17 +264,21 @@ class auton_controller(Node):
         if command == "GOTO":
             lat = float(parts[1])
             lon = float(parts[2])
-            self.get_logger().info(f"GOTO received with target lat: {lat}, lon: {lon}")
+            turn = parts[3]
+            self.get_logger().info(f"GOTO received with target lat: {lat}, lon: {lon}, {turn}")
             self.target_coordinate = Location(lat, lon)
             self.publish_led_message(255, 0, 0)
-            if self.state != "driving":
+            if turn == "True":
                 self.state = "turning"
-                if self.led_timer is not None:
-                    self.led_timer.cancel()
-                    self.led_timer = None
-                
-                if self.control_timer is None:
-                    self.control_timer = self.create_timer(0.1, self.control_loop)
+            else:
+                self.state = "driving"
+
+            if self.led_timer is not None:
+                self.led_timer.cancel()
+                self.led_timer = None
+            
+            if self.control_timer is None:
+                self.control_timer = self.create_timer(0.1, self.control_loop)
             
             self.target_heading = geographic_functions.get_target_heading(self.rover_position, self.target_coordinate)
             #self.subpoints = geographic_functions.get_points_along_line(self.rover_position, self.waypoint_destination, self.target_heading)

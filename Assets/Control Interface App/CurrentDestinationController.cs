@@ -72,15 +72,15 @@ public class CurrentDestinationController : MonoBehaviour
         //Debug.Log("json: " +json);
 
         //string message = $"autonomous/auton_control;FIND;ARUCO";
-        SendNextWaypoint();
+        SendNextWaypoint(true);
         StatusIndicator.instance.SetIndicator(Status.Activated, script);
         // this should be done on callback from the rover
 
         //MapController.instance.SetLinePosition(script.iconObject.transform.position);
     }
 
-    void SendNextWaypoint() {
-        string message = $"autonomous/auton_control;GOTO;{waypoints[waypointIndex].lat};{waypoints[waypointIndex].lon}";
+    void SendNextWaypoint(bool turnFirst = false) {
+        string message = $"autonomous/auton_control;GOTO;{waypoints[waypointIndex].lat};{waypoints[waypointIndex].lon};{turnFirst}";
         TcpController.inst.Publish(message);
     }
 
