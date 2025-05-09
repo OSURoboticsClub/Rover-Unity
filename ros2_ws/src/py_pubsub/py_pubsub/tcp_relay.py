@@ -5,6 +5,7 @@ from threading import Thread
 from std_msgs.msg import String
 from std_msgs.msg import Float32
 from rover2_control_interface.msg import GPSStatusMessage
+from rover2_control_interface.msg import DriveCommandMessage
 from sensor_msgs.msg import Imu
 from functools import partial
 from sensor_msgs.msg import Image
@@ -14,6 +15,7 @@ import struct
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float32MultiArray
+from geometry_msgs.msg import Twist
 
 
 
@@ -176,6 +178,10 @@ class TCPServer(Node):
                 publisher = self.get_or_create_publisher(topic_name)
                 if not publisher:
                     continue
+                
+                if topic_name == "taranisenable":
+                    self.enable_taranis()
+                    
 
                 # Create and publish the message based on its type.
                 message_type = self.message_type_map.get(topic_name, String)
@@ -229,6 +235,20 @@ class TCPServer(Node):
             finally:
                 if rclpy.ok():
                     self.get_logger().info("Shutting down TCP server.")
+
+    def enable_taranis(self):
+        twist_msg = Twist()
+        twist_msg.linear.x = 0.0
+        twist_msg.linear.y = 0.0
+        twist_msg.linear.z = 0.0
+        twist_msg.angular.x = 0.0
+        twist_msg.angular.y = 0.0
+        twist_msg.angular.z = 0.0
+        custom_msg = DriveCommandMessage()
+        custom_msg.controller_present = False
+        custom_msg.ignore_drive_control = False
+        custom_msg.drive_twist = twist_msg
+        self.drive_publisher.publish(custom_msg)
 
 shutdown_called = False
 
