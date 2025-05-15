@@ -25,9 +25,11 @@ public class MapController : MonoBehaviour
     [SerializeField] TMP_InputField descText;
     [SerializeField] TMP_InputField latText;
     [SerializeField] TMP_InputField longText;
-    [SerializeField] Toggle homeIconToggle;
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Sprite homeIcon;
+    [SerializeField] Sprite hammerIcon;
+    [SerializeField] Sprite arucoIcon;
+    [SerializeField] TMP_Dropdown iconDropdown;
 
     void Awake()
     {
@@ -67,18 +69,16 @@ public class MapController : MonoBehaviour
         script.latitude = lat;
         script.longitude = lon;
         script.description = descText.text;
-        if (homeIconToggle.isOn)
-        {
-            SpriteRenderer sr = newObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
-            sr.sprite = homeIcon;
-            sr.color = new Color(12 / 255f, 1f, 0f);
-            newObject.transform.GetChild(0).localPosition = new Vector3();
-        }
+
+        SpriteRenderer sr = newObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        sr.sprite = homeIcon;
+        if (iconDropdown.value == 1) sr.sprite = arucoIcon;
+        else if (iconDropdown.value == 2) sr.sprite = hammerIcon;
+        else if (iconDropdown.value == 3) sr.sprite = homeIcon;
+
         newListingMenu.SetActive(false);
         CameraControl.inst.RescaleIcons();
     }
-
-    
 
     public void MoveIcon(Transform obj, double lat, double lon)
     {
