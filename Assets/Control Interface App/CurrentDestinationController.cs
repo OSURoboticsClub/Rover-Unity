@@ -127,7 +127,7 @@ public class CurrentDestinationController : MonoBehaviour
                 Stop(currentTarget);
                 //if(item == ItemToFind.none) {
                 //    SendDriveForwards10Feet();
-                //    string scanCommand = $"autonomous/auton_control;scan;aruco";
+                //    string scanCommand = $"autonomous/auton_control;FIND;aruco";
                 //    StartCoroutine(WaitTwoSecondsThenSendCommand(scanCommand));
                 //}
                 //else Stop(currentTarget);
