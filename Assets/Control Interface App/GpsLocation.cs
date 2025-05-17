@@ -15,6 +15,7 @@ public class GpsLocation : MonoBehaviour
     public TextMeshProUGUI lat;
     public TextMeshProUGUI lon;
     public TextMeshProUGUI waypointCountText;
+    public Image rowIcon;
 
     [SerializeField] Image goBtn;
     [SerializeField] TextMeshProUGUI goTxt;
@@ -60,6 +61,11 @@ public class GpsLocation : MonoBehaviour
             x.SetActive(status);
         }
         line.enabled = status;
+    }
+
+    public void ReturnToOrigin()
+    {
+        CurrentDestinationController.inst.ReturnToStart();
     }
 
     public void SetInactive()

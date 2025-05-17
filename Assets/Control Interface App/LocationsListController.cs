@@ -22,6 +22,7 @@ public class LocationsListController : MonoBehaviour
         locationScript.latitude = icon.latitude;
         locationScript.longitude = icon.longitude;
         locationScript.iconObject = icon.gameObject;
+        locationScript.rowIcon.sprite = icon.icon;
         locationScript.UpdateLabels();
         newListingButton.SetAsLastSibling();
     }

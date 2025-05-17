@@ -10,6 +10,7 @@ public class CurrentDestinationController : MonoBehaviour
     [SerializeField] List<Coordinate> waypoints = new();
     [SerializeField] int waypointIndex = 0;
     [SerializeField] float distanceCutoff = .1f;
+    [SerializeField] bool isInReverse;
 
     struct Coordinate
     {
@@ -20,6 +21,14 @@ public class CurrentDestinationController : MonoBehaviour
     private void Awake()
     {
         inst = this;
+    }
+
+    public void ReturnToStart()
+    {
+        isInReverse = true;
+        if (waypointIndex == 0) return;
+        waypointIndex--;
+        SendNextWaypoint(true);
     }
 
     public void ClickBtn(GpsLocation script)
@@ -39,11 +48,9 @@ public class CurrentDestinationController : MonoBehaviour
 
     public void SetDestination(GpsLocation script)
     {
-        script.SetActive();
+        script.SetActive(); // makes the Go button turn red and say stop
         currentTarget = script;
-        //WaypointList waypointList = new(){
-        //    list = new()
-        //};
+        isInReverse = false;
         waypoints.Clear();
         waypointIndex = 0;
         foreach (var x in script.waypoints) {
@@ -51,32 +58,15 @@ public class CurrentDestinationController : MonoBehaviour
             waypoints.Add(new Coordinate() { 
                 lat = Math.Round(coords[0], 6),
                 lon = Math.Round(coords[1], 6) });
-            //Waypoint point = new() {
-            //    lat = coords[0].ToString("F5"),
-            //    lon = coords[1].ToString("F5")
-            //};
-            //waypointList.list.Add(point);
         }
         var finalDestination = new Coordinate() {
             lat = Math.Round(double.Parse(script.lat.text), 6),
             lon = Math.Round(double.Parse(script.lon.text), 6)
         };
         waypoints.Add(finalDestination);
-        //Waypoint finalPoint = new() {
-        //    lat = script.lat.text,
-        //    lon = script.lon.text
-        //};
-        //waypointList.list.Add(finalPoint);
-        //string json = JsonUtility.ToJson(waypointList);
-        //json = "autonomous/auton_control;GOTO;" + json;
-        //Debug.Log("json: " +json);
-
-        //string message = $"autonomous/auton_control;FIND;ARUCO";
         SendNextWaypoint(true);
         StatusIndicator.instance.SetIndicator(Status.Activated, script);
         // this should be done on callback from the rover
-
-        //MapController.instance.SetLinePosition(script.iconObject.transform.position);
     }
 
     void SendNextWaypoint(bool turnFirst = false) {
@@ -103,10 +93,18 @@ public class CurrentDestinationController : MonoBehaviour
         Vector2 targetVect = MapController.instance.GetWorldPosition(targetWorldPos.lat, targetWorldPos.lon);
         var dist = Vector2.Distance(worldPos, targetVect);
         Debug.Log("Distance to target: " + dist);
+
         if (dist < distanceCutoff) {
-            waypointIndex++;
+            if (isInReverse) waypointIndex--;
+            else waypointIndex++;
+
             if(waypointIndex >= waypoints.Count) {
                 Debug.Log("Reached destination");
+                Stop(currentTarget);
+            }
+            else if(waypointIndex < 0)
+            {
+                Debug.Log("Returned");
                 Stop(currentTarget);
             }
             else {

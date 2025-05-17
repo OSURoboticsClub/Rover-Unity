@@ -17,7 +17,7 @@ public class MapController : MonoBehaviour
     [SerializeField] double scaleY;
     [SerializeField] float width;
     [SerializeField] float height;
-    [SerializeField] Vector2 lineTarget;
+    public Vector2 lineTarget;
 
     public GameObject icon;
     public Transform iconsParent;
@@ -26,6 +26,7 @@ public class MapController : MonoBehaviour
     [SerializeField] TMP_InputField latText;
     [SerializeField] TMP_InputField longText;
     [SerializeField] LineRenderer lineRenderer;
+    [SerializeField] Sprite gnssIcon;
     [SerializeField] Sprite homeIcon;
     [SerializeField] Sprite hammerIcon;
     [SerializeField] Sprite arucoIcon;
@@ -63,21 +64,26 @@ public class MapController : MonoBehaviour
 
         Vector2 position = GetWorldPosition(lat, lon);
         Transform parent = iconsParent;
-        GameObject newObject = Instantiate(icon, position, Quaternion.identity);
-        newObject.transform.SetParent(parent, true);  // 'true' keeps the current world position
-        PreloadedIcon script = newObject.GetComponent<PreloadedIcon>();
+        GameObject iconOnMap = Instantiate(icon, position, Quaternion.identity);
+        iconOnMap.transform.SetParent(parent, true);  // 'true' keeps the current world position
+        PreloadedIcon script = iconOnMap.GetComponent<PreloadedIcon>();
         script.latitude = lat;
         script.longitude = lon;
         script.description = descText.text;
 
-        SpriteRenderer sr = newObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
-        sr.sprite = homeIcon;
-        if (iconDropdown.value == 1) sr.sprite = arucoIcon;
-        else if (iconDropdown.value == 2) sr.sprite = hammerIcon;
-        else if (iconDropdown.value == 3) sr.sprite = homeIcon;
+        
+
+        SpriteRenderer sr = iconOnMap.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        Sprite sprite = gnssIcon;
+        if (iconDropdown.value == 1) sprite = arucoIcon;
+        else if (iconDropdown.value == 2) sprite = hammerIcon;
+        else if (iconDropdown.value == 3) sprite = homeIcon;
+        sr.sprite = sprite;
 
         newListingMenu.SetActive(false);
         CameraControl.inst.RescaleIcons();
+
+        // the row in the table for the location is created in Start() in PreloadedIcon
     }
 
     public void MoveIcon(Transform obj, double lat, double lon)
