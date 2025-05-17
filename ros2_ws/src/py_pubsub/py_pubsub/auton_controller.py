@@ -154,7 +154,7 @@ class auton_controller(Node):
             
             item_location_in_img = None
             width = None
-            if self.item_searching_for == "ARUCO":
+            if self.item_searching_for == "aruco":
                 item_location_in_img, width = aruco_scan.detect_first_aruco_marker(self, self.latest_img_frame)
             # elif self.item_searching_for == "bottle":
             #     item_location_in_img, width = self.bottle_detector.get_bottle(self.latest_img_frame)
@@ -200,7 +200,7 @@ class auton_controller(Node):
             linear_vel = 0.3
             angular = 0.0
             item_location_in_img, width = None, None
-            if self.item_searching_for == "ARUCO":
+            if self.item_searching_for == "aruco":
                 item_location_in_img, width = aruco_scan.detect_first_aruco_marker(self, self.latest_img_frame)
             # elif self.item_searching_for == "bottle":
             #     item_location_in_img, width = self.bottle_detector.get_bottle(self.latest_img_frame)
@@ -211,6 +211,8 @@ class auton_controller(Node):
                 return
             
             width_threshold = 0.16
+            # width_threshold is used for determining when the item is so big in the image
+            # that the rover should stop
             if self.item_searching_for == "bottle":
                 width_threshold = 0.12
             if width > width_threshold:
@@ -237,7 +239,7 @@ class auton_controller(Node):
 
             msg = f"Driving towards {self.item_searching_for}. Location: {item_location_in_img:.2f}. Width: {width:0.2f}. Angular: {angular:.2f}"
             self.get_logger().info(msg)
-            # self.publish_drive_message(linear_vel, angular) 
+            self.publish_drive_message(linear_vel, angular) 
 
     def vel_control_loop(self):
         if self.curr_turning_velocity < self.target_turning_velocity:

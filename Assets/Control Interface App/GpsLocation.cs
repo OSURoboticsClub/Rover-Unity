@@ -22,6 +22,7 @@ public class GpsLocation : MonoBehaviour
     public LineRenderer line;
     public GameObject iconObject;
     public List<GameObject> waypoints = new();
+    public ItemToFind itemAtDestination;
 
 
     public void UpdateLabels()
@@ -68,11 +69,10 @@ public class GpsLocation : MonoBehaviour
         CurrentDestinationController.inst.ReturnToStart();
     }
 
-    public void SetInactive()
+    public void SetInactiveUI()
     {
         goBtn.color = new Color(143 / 255f, 1f, 143 / 255f);
         goTxt.text = "Go";
-        MapController.instance.TurnOffLine();
     }
 
     public void ToggleActive()

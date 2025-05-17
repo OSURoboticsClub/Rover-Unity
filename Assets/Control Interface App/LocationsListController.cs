@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class LocationsListController : MonoBehaviour
 {
+    // sorry this has gotten so confusing
     public static LocationsListController inst;
     [SerializeField] GameObject listingObject;
     [SerializeField] Transform listingParent;
     [SerializeField] Transform newListingButton;
+    [SerializeField] Sprite aruco;
+    [SerializeField] Sprite hammer;
 
     private void Awake()
     {
@@ -23,6 +26,9 @@ public class LocationsListController : MonoBehaviour
         locationScript.longitude = icon.longitude;
         locationScript.iconObject = icon.gameObject;
         locationScript.rowIcon.sprite = icon.icon;
+        locationScript.itemAtDestination = ItemToFind.none;
+        if(icon.icon == aruco) locationScript.itemAtDestination = ItemToFind.aruco;
+        else if(icon.icon == hammer) locationScript.itemAtDestination = ItemToFind.hammer;
         locationScript.UpdateLabels();
         newListingButton.SetAsLastSibling();
     }

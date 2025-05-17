@@ -3,6 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ItemToFind
+{
+    none,
+    hammer,
+    bottle,
+    aruco
+}
+
 public class CurrentDestinationController : MonoBehaviour
 {
     public static CurrentDestinationController inst;
@@ -11,6 +19,7 @@ public class CurrentDestinationController : MonoBehaviour
     [SerializeField] int waypointIndex = 0;
     [SerializeField] float distanceCutoff = .1f;
     [SerializeField] bool isInReverse;
+    public ItemToFind item;
 
     struct Coordinate
     {
@@ -37,11 +46,11 @@ public class CurrentDestinationController : MonoBehaviour
         {
             currentTarget = null;
             Stop(script);
+            MapController.instance.TurnOffLine();
         }
         else
         {
-            if(currentTarget != null) currentTarget.SetInactive();
-            currentTarget = script;
+            if(currentTarget != null) currentTarget.SetInactiveUI();
             SetDestination(script);
         }
     }
@@ -50,6 +59,7 @@ public class CurrentDestinationController : MonoBehaviour
     {
         script.SetActive(); // makes the Go button turn red and say stop
         currentTarget = script;
+        item = script.itemAtDestination;
         isInReverse = false;
         waypoints.Clear();
         waypointIndex = 0;
@@ -66,23 +76,36 @@ public class CurrentDestinationController : MonoBehaviour
         waypoints.Add(finalDestination);
         SendNextWaypoint(true);
         StatusIndicator.instance.SetIndicator(Status.Activated, script);
-        // this should be done on callback from the rover
+        // TODO: this should be done on callback from the rover
     }
 
     void SendNextWaypoint(bool turnFirst = false) {
         string message = $"autonomous/auton_control;GOTO;{waypoints[waypointIndex].lat};{waypoints[waypointIndex].lon};{turnFirst}";
+        var worldPos = MapController.instance.GetWorldPosition(waypoints[waypointIndex].lat, waypoints[waypointIndex].lon);
+        MapController.instance.lineTarget = worldPos;
+
         TcpController.inst.Publish(message);
     }
 
     public void Stop(GpsLocation script)
     {
-        script.SetInactive();
+        script.SetInactiveUI();
         string message = $"autonomous/auton_control;STOP;{script.lat.text};{script.lon.text}";
         TcpController.inst.Publish(message);
 
         StatusIndicator.instance.SetIndicator(Status.NotActivated, script);
         currentTarget = null;
         // this should be done on callback from the rover
+    }
+
+    void SendDriveForwards10Feet() {
+        string message = $"autonomous/auton_control;drive2seconds";
+        TcpController.inst.Publish(message);
+    }
+
+    IEnumerator WaitTwoSecondsThenSendCommand(string cmd) {
+        yield return new WaitForSeconds(2f);
+        TcpController.inst.Publish(cmd);
     }
 
     public void ReceivePositionUpdate(double lat, double lon) {
@@ -99,8 +122,15 @@ public class CurrentDestinationController : MonoBehaviour
             else waypointIndex++;
 
             if(waypointIndex >= waypoints.Count) {
-                Debug.Log("Reached destination");
+                Debug.Log($"Reached destination. Target: {item}");
+
                 Stop(currentTarget);
+                //if(item == ItemToFind.none) {
+                //    SendDriveForwards10Feet();
+                //    string scanCommand = $"autonomous/auton_control;scan;aruco";
+                //    StartCoroutine(WaitTwoSecondsThenSendCommand(scanCommand));
+                //}
+                //else Stop(currentTarget);
             }
             else if(waypointIndex < 0)
             {

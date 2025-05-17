@@ -135,6 +135,7 @@ public class MapController : MonoBehaviour
 
     public void SetLinePosition()
     {
+        lineRenderer.enabled = true;
         Vector3 target = lineTarget;
         target.z = 0.5f;
         Vector3 roverPos = roverIcon.position;
