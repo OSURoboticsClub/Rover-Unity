@@ -14,7 +14,7 @@ class SimplePosition(Node):
     current_longitude = None
     latest_gps_latitude = None
     latest_gps_longitude = None
-    pwm_to_meter_per_sec_multiplier = 2.0 # 2 m/s at 100% power
+    pwm_to_meter_per_sec_multiplier = 2.3 # 2 m/s at 100% power
     current_speed = 0.0
 
     def __init__(self):
@@ -23,7 +23,7 @@ class SimplePosition(Node):
         self.gps_subscription = self.create_subscription(GPSStatusMessage, 'tower/status/gps', self.gps_listener_callback, 10)
         self.imu_subscription = self.create_subscription(Float32, 'imu/data/heading', self.imu_heading_listener_callback, 10)
         self.drive_subscription = self.create_subscription(DriveCommandMessage, 'command_control/iris_drive', self.drive_listener_callback, 10)
-        self.drive_subscription = self.create_subscription(DriveCommandMessage, 'command_control/ground_station_drive', self.drive_listener_callback, 10)
+        self.drive_subscription2 = self.create_subscription(DriveCommandMessage, 'command_control/ground_station_drive', self.drive_listener_callback, 10)
         self.manual_position_subscription = self.create_subscription(String, 'autonomous/manually_set_position', self.manual_set_position_listener_callback, 10)
 
         self.publisher = self.create_publisher(String, 'autonomous/simple_position', 10)
@@ -32,7 +32,7 @@ class SimplePosition(Node):
         #self.current_heading = 45.0
         #self.current_speed = 1.0
 
-        self.control_timer = self.create_timer(0.1, self.publish_loop)
+        self.control_timer = self.create_timer(1.0, self.publish_loop)
         self.gps_midpoint_timer = self.create_timer(3.3, self.gps_midpoint_loop)
 
     def gps_midpoint_loop(self):
@@ -53,7 +53,7 @@ class SimplePosition(Node):
         if self.current_heading == None:
             self.get_logger().info("Heading not set")
             return
-        distance_covered = 0.1 * self.current_speed
+        distance_covered = 1.0 * self.current_speed
         geod = Geodesic.WGS84
 
         self.get_logger().info(f"Current speed: {self.current_speed}. Current heading: {self.current_heading}")
@@ -98,7 +98,11 @@ class SimplePosition(Node):
         self.current_heading = msg.data
 
     def drive_listener_callback(self, msg):
-        self.current_speed = msg.drive_twist.linear.x * self.pwm_to_meter_per_sec_multiplier
+        self.get_logger().info(f"Received twist, controller present = {msg.controller_present}")
+        if msg.controller_present:
+            speed = msg.drive_twist.linear.x * self.pwm_to_meter_per_sec_multiplier
+            self.get_logger().info(f"Setting speed to {speed}")
+            self.current_speed = speed
         
     def manual_set_position_listener_callback(self, msg):
         parts = msg.data.split(';')

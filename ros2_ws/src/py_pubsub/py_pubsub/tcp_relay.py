@@ -181,6 +181,7 @@ class TCPServer(Node):
                 
                 if topic_name == "taranisenable":
                     self.enable_taranis()
+                    continue
                     
 
                 # Create and publish the message based on its type.

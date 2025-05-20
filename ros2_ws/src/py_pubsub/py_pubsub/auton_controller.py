@@ -19,6 +19,7 @@ from dataclasses import dataclass
 import json
 from dataclasses import asdict
 import cv2
+import math
 #import bottle_detect
 
 @dataclass
@@ -44,8 +45,12 @@ class auton_controller(Node):
     target_turning_velocity = 0.0
     curr_turning_velocity = 0.0
     pause_time = None
+
     bottle_detector = None
     camera = None
+
+    # for the "drive forward for 2 seconds thing"
+    time_driving_forward = 0.0
 
     control_timer = None 
     vel_control_loop_timer = None
@@ -96,7 +101,7 @@ class auton_controller(Node):
                 self.publish_log_msg("Reached target heading. Now driving")
                 self.state = "driving"
             else:
-                angular_speed = 0.4 # rad/s
+                angular_speed = 0.2 # rad/s
                 if heading_error > 0:
                     angular_speed *= -1
                 #if abs(heading_error) < 30: # slow down on approach
@@ -111,25 +116,38 @@ class auton_controller(Node):
             curvature = geographic_functions.compute_curvature(self.rover_position, self.target_coordinate, self.get_heading_error())
 
 
-            if distance_to_waypoint < 9.0:
-                self.set_next_dest()
-                if self.curr_point_destination is None:
-                    # send message to unity
-                    # maybe get back the FIND command
-                    self.state = "stopped"
-                    self.get_logger().info("Reached destination. Stopping...")
-                    self.publish_log_msg("stopped")
-                    return
-            elif distance_to_waypoint < 13.0:
-                self.get_logger().info("getting_close")
-                self.publish_log_msg("getting_close")
+            # if distance_to_waypoint < 9.0:
+            #     self.set_next_dest()
+            #     if self.curr_point_destination is None:
+            #         # send message to unity
+            #         # maybe get back the FIND command
+            #         self.state = "stopped"
+            #         self.get_logger().info("Reached destination. Stopping...")
+            #         self.publish_log_msg("stopped")
+            #         return
+            # elif distance_to_waypoint < 13.0:
+            #     self.get_logger().info("getting_close")
+            #     self.publish_log_msg("getting_close")
 
-            linear = 0.65
-            angular = -curvature * linear * 1.7
-            if angular > 0.6:
-                angular = 0.6
-            elif angular < -0.6:
-                angular = -0.6
+            heading_error = abs(self.target_heading - self.current_heading)
+            heading_error_percent = heading_error / 30.0 # if 30 deg off from target, reach max angular velocity
+            if heading_error_percent > 1.0:
+                heading_error_percent = 1.0
+            elif heading_error_percent < -1.0:
+                heading_error_percent = -1.0
+            if self.target_heading > self.current_heading:
+                heading_error_percent *= -1.0
+            self.get_logger().info(f"Heading error % is {heading_error_percent * 100.0}")
+            
+            max_angular = 0.2
+            # convert heading error to a percentage
+            angular = heading_error_percent * max_angular
+
+            linear = 0.25
+            if angular > 0.2:
+                angular = 0.2
+            elif angular < -0.2:
+                angular = -0.2
             
             log1 = "Driving. Dist to target: " + f"{distance_to_waypoint:.0f}. Curv: " + f"{curvature:0.1f}" + ". Angular: " + str(angular) + ". "
             heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}"
@@ -241,6 +259,16 @@ class auton_controller(Node):
             self.get_logger().info(msg)
             self.publish_drive_message(linear_vel, angular) 
 
+        elif self.state == "drive_forward":
+            self.time_driving_forward += 0.1
+            self.get_logger().info(f"Driving forward for {self.time_driving_forward} sec")
+            self.publish_drive_message(0.25, 0.0)
+
+            if self.time_driving_forward > 2.0:
+                self.get_logger().info(f"Stopping")
+                self.state = "stopped"
+                self.time_driving_forward = 0.0
+
     def vel_control_loop(self):
         if self.curr_turning_velocity < self.target_turning_velocity:
             self.curr_turning_velocity += 0.03
@@ -288,11 +316,15 @@ class auton_controller(Node):
             #self.publish_log_msg(msg)
             #self.set_next_dest()
         elif command == "FIND":
+            # for finding water bottle, hammer, aruco tag, etc.
             self.item_searching_for = parts[1]
             self.state = "scanning"
             self.get_logger().info(f"Finding " + self.item_searching_for)
             if self.control_timer is None:
                 self.control_timer = self.create_timer(0.1, self.control_loop)
+        elif command == "DRIVEFORWARD":
+            self.get_logger().info("Command received: Drive forward for 2 seconds")
+            self.state = "drive_forward"
         elif command == "STOP":
             self.get_logger().info("STOP command received. Stopping autonomous navigation.")
             self.publish_led_message(0, 0, 255)
@@ -367,10 +399,10 @@ class auton_controller(Node):
     def imu_heading_listener_callback(self, msg):
         """Listens to auton_control topic for commands"""
         self.current_heading = msg.data
-        if self.current_heading > 360.0:
-            self.current_heading -= 360.0
-        elif self.current_heading < 0.0:
-            self.current_heading += 360.0
+        # if self.current_heading > 360.0:
+        #     self.current_heading -= 360.0
+        # elif self.current_heading < 0.0:
+        #     self.current_heading += 360.0
         #self.get_logger().info(f"Received heading: " + str(self.current_heading))
 
     def gps_listener_callback(self, msg):

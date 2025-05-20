@@ -20,7 +20,7 @@ public class RoverIconController : MonoBehaviour
     void Start()
     {
         inst = this;
-        TcpMessageReceiver.gpsReceived.AddListener(OnGpsReceived);
+        // TcpMessageReceiver.gpsReceived.AddListener(OnGpsReceived);
         TcpMessageReceiver.imuReceived.AddListener(OnImuHeadingReceived);
         TcpMessageReceiver.simplePositionReceived.AddListener(OnSimplePositionReceived);
         //offset = -1000;

@@ -99,7 +99,7 @@ public class CurrentDestinationController : MonoBehaviour
     }
 
     void SendDriveForwards10Feet() {
-        string message = $"autonomous/auton_control;drive2seconds";
+        string message = $"autonomous/auton_control;DRIVEFORWARD";
         TcpController.inst.Publish(message);
     }
 
