@@ -152,6 +152,7 @@ public class MapController : MonoBehaviour
 
     public void TurnOffLine()
     {
+        lineTarget = Vector2.zero;
         lineRenderer.enabled = false;
     }
 }

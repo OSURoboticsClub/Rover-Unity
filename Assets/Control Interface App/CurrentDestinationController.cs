@@ -14,7 +14,7 @@ public enum ItemToFind
 public class CurrentDestinationController : MonoBehaviour
 {
     public static CurrentDestinationController inst;
-    [SerializeField] GpsLocation currentTarget;
+    public GpsLocation currentTarget;
     [SerializeField] List<Coordinate> waypoints = new();
     [SerializeField] int waypointIndex = 0;
     [SerializeField] float distanceCutoff = .1f;
@@ -47,36 +47,37 @@ public class CurrentDestinationController : MonoBehaviour
             currentTarget = null;
             Stop(script);
             MapController.instance.TurnOffLine();
+            script.line.enabled = false;
         }
         else
         {
             if(currentTarget != null) currentTarget.SetInactiveUI();
-            SetDestination(script);
-        }
-    }
 
-    public void SetDestination(GpsLocation script)
-    {
-        script.SetActive(); // makes the Go button turn red and say stop
-        currentTarget = script;
-        item = script.itemAtDestination;
-        isInReverse = false;
-        waypoints.Clear();
-        waypointIndex = 0;
-        foreach (var x in script.waypoints) {
-            var coords = MapController.instance.GetLatLonFromWorldPosition(x.transform.position);
-            waypoints.Add(new Coordinate() { 
-                lat = Math.Round(coords[0], 6),
-                lon = Math.Round(coords[1], 6) });
+            script.SetActive(); // makes the Go button turn red and say stop
+            currentTarget = script;
+            item = script.itemAtDestination;
+            isInReverse = false;
+            waypoints.Clear();
+            waypointIndex = 0;
+            foreach (var x in script.waypoints)
+            {
+                var coords = MapController.instance.GetLatLonFromWorldPosition(x.transform.position);
+                waypoints.Add(new Coordinate()
+                {
+                    lat = Math.Round(coords[0], 6),
+                    lon = Math.Round(coords[1], 6)
+                });
+            }
+            var finalDestination = new Coordinate()
+            {
+                lat = Math.Round(double.Parse(script.lat.text), 6),
+                lon = Math.Round(double.Parse(script.lon.text), 6)
+            };
+            waypoints.Add(finalDestination);
+            SendNextWaypoint(true);
+            StatusIndicator.instance.SetIndicator(Status.Activated, script);
+            // TODO: this should be done on callback from the rover
         }
-        var finalDestination = new Coordinate() {
-            lat = Math.Round(double.Parse(script.lat.text), 6),
-            lon = Math.Round(double.Parse(script.lon.text), 6)
-        };
-        waypoints.Add(finalDestination);
-        SendNextWaypoint(true);
-        StatusIndicator.instance.SetIndicator(Status.Activated, script);
-        // TODO: this should be done on callback from the rover
     }
 
     void SendNextWaypoint(bool turnFirst = false) {
@@ -87,15 +88,17 @@ public class CurrentDestinationController : MonoBehaviour
         TcpController.inst.Publish(message);
     }
 
-    public void Stop(GpsLocation script)
+    public void Stop(GpsLocation script = null)
     {
-        script.SetInactiveUI();
-        string message = $"autonomous/auton_control;STOP;{script.lat.text};{script.lon.text}";
-        TcpController.inst.Publish(message);
+        TcpController.inst.Publish("autonomous/auton_control;STOP");
 
-        StatusIndicator.instance.SetIndicator(Status.NotActivated, script);
-        currentTarget = null;
-        // this should be done on callback from the rover
+        if(script != null)
+        {
+            script.SetInactiveUI();
+            StatusIndicator.instance.SetIndicator(Status.NotActivated, script);
+            currentTarget = null;
+            // this should be done on callback from the rover
+        }
     }
 
     void SendDriveForwards10Feet() {
@@ -106,6 +109,11 @@ public class CurrentDestinationController : MonoBehaviour
     IEnumerator WaitTwoSecondsThenSendCommand(string cmd) {
         yield return new WaitForSeconds(2f);
         TcpController.inst.Publish(cmd);
+    }
+
+    public void ManuallyFindItem(string item)
+    {
+        TcpController.inst.Publish($"autonomous/auton_control;FIND;{item}");
     }
 
     public void ReceivePositionUpdate(double lat, double lon) {
@@ -124,13 +132,13 @@ public class CurrentDestinationController : MonoBehaviour
             if(waypointIndex >= waypoints.Count) {
                 Debug.Log($"Reached destination. Target: {item}");
 
-                Stop(currentTarget);
-                //if(item == ItemToFind.none) {
-                //    SendDriveForwards10Feet();
-                //    string scanCommand = $"autonomous/auton_control;FIND;aruco";
-                //    StartCoroutine(WaitTwoSecondsThenSendCommand(scanCommand));
-                //}
-                //else Stop(currentTarget);
+                if (item != ItemToFind.none)
+                {
+                    SendDriveForwards10Feet();
+                    string scanCommand = $"autonomous/auton_control;FIND;{item}";
+                    StartCoroutine(WaitTwoSecondsThenSendCommand(scanCommand));
+                }
+                else Stop(currentTarget);
             }
             else if(waypointIndex < 0)
             {

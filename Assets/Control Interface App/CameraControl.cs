@@ -26,7 +26,7 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] Vector2 worldPosOfMouseDown;
     [SerializeField] Vector2 offset;
     [SerializeField] float iconScale = 1f;
-    [SerializeField] float lineScale = 1f;
+    public float lineScale = 1f;
     public float iconScaleForZoom = 1f;
     public float mapImageScaleFactor = 1f;
 
@@ -43,7 +43,6 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
         if (scrollInput == 0f) return;
         if(!IsMouseOverMap()) return;
-
 
         //Vector2 oldMousePos = GetWorldPositionOfMouse(Input.mousePosition);
         //Vector2 oldMouseScreenPos = Input.mousePosition;

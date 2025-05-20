@@ -20,7 +20,7 @@ public class RoverIconController : MonoBehaviour
     void Start()
     {
         inst = this;
-        // TcpMessageReceiver.gpsReceived.AddListener(OnGpsReceived);
+        TcpMessageReceiver.gpsReceived.AddListener(OnGpsReceived);
         TcpMessageReceiver.imuReceived.AddListener(OnImuHeadingReceived);
         TcpMessageReceiver.simplePositionReceived.AddListener(OnSimplePositionReceived);
         //offset = -1000;
@@ -45,6 +45,8 @@ public class RoverIconController : MonoBehaviour
         var parts = message.Split(";");
         latestlat = double.Parse(parts[1]);
         latestlon = double.Parse(parts[2]);
+        var obj = Instantiate(circle, gpsCircleParent);
+        obj.transform.position = MapController.instance.GetWorldPosition(latestlon, latestlon);
         //roverIcon.position = worldPos;
     }
 
@@ -116,6 +118,7 @@ public class RoverIconController : MonoBehaviour
     void OnDestroy()
     {
         TcpMessageReceiver.gpsReceived.RemoveListener(OnGpsReceived);
-        TcpMessageReceiver.gpsReceived.RemoveListener(OnImuHeadingReceived);
+        TcpMessageReceiver.imuReceived.RemoveListener(OnImuHeadingReceived);
+        TcpMessageReceiver.simplePositionReceived.RemoveListener(OnSimplePositionReceived);
     }
 }

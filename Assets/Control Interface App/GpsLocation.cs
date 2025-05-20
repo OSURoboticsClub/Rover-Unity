@@ -25,6 +25,14 @@ public class GpsLocation : MonoBehaviour
     public ItemToFind itemAtDestination;
 
 
+    private void Update()
+    {
+        if (line.enabled)
+        {
+            line.widthMultiplier = 2f * CameraControl.inst.secondCamera.orthographicSize * CameraControl.inst.lineScale;
+        }
+    }
+
     public void UpdateLabels()
     {
         desc.text = description;
