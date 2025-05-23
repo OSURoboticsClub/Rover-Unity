@@ -127,16 +127,21 @@ class auton_controller(Node):
             #     self.get_logger().info("getting_close")
             #     self.publish_log_msg("getting_close")
 
-            heading_error = abs(self.target_heading - self.current_heading + 180.0)
-            if heading_error < 2.1:
+            heading_error = self.current_heading - self.target_heading
+            heading_error = (heading_error + 180.0) % 360.0
+            if heading_error < 0.0:
+                heading_error += 360.0
+            heading_error -= 180.0
+
+            if abs(heading_error) < 2.1:
                 self.get_logger().info(f"Heading error is <2.1 deg")
                 heading_error = 0.0
-            heading_error_percent = heading_error / 30.0 # if 30 deg off from target, reach max angular velocity
+            heading_error_percent = abs(heading_error) / 30.0 # if 30 deg off from target, reach max angular velocity
 
             if heading_error_percent > 1.0:
                 heading_error_percent = 1.0
-            if self.target_heading > self.current_heading:
-                heading_error_percent *= -1.0
+            elif heading_error_percent < -1.0:
+                heading_error_percent = -1.0
             self.get_logger().info(f"Heading error % is {heading_error_percent * 100.0}")
             
             max_angular = 0.2
