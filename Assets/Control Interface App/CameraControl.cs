@@ -34,6 +34,7 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     {
         inst = this;
         mapImageScaleFactor = Screen.height / map.rectTransform.sizeDelta.y;
+        iconScaleForZoom = 2f * secondCamera.orthographicSize;
     }
 
 

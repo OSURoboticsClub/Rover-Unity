@@ -45,9 +45,9 @@ public class TcpController : MonoBehaviour
             disconnected = true;
         }
 
-        if(!disconnected){
-            streamListener.inst.timeSinceLastPacket = 0;
-        }
+        // if(!disconnected){
+        //     streamListener.inst.timeSinceLastPacket = 0;
+        // }
     }
 
     public void Publish(string message)

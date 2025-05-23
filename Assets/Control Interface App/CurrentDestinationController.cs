@@ -132,13 +132,16 @@ public class CurrentDestinationController : MonoBehaviour
             if(waypointIndex >= waypoints.Count) {
                 Debug.Log($"Reached destination. Target: {item}");
 
-                if (item != ItemToFind.none)
-                {
-                    SendDriveForwards10Feet();
-                    string scanCommand = $"autonomous/auton_control;FIND;{item}";
-                    StartCoroutine(WaitTwoSecondsThenSendCommand(scanCommand));
-                }
-                else Stop(currentTarget);
+                SendDriveForwards10Feet();
+                string scanCommand = $"autonomous/auton_control;STOP";
+                StartCoroutine(WaitTwoSecondsThenSendCommand(scanCommand));
+                // if (item != ItemToFind.none)
+                // {
+                //     SendDriveForwards10Feet();
+                //     string scanCommand = $"autonomous/auton_control;FIND;{item}";
+                //     StartCoroutine(WaitTwoSecondsThenSendCommand(scanCommand));
+                // }
+                // else Stop(currentTarget);
             }
             else if(waypointIndex < 0)
             {

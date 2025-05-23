@@ -97,13 +97,15 @@ public class MapController : MonoBehaviour
         double xFromBLCornerInDeg = lon - bottomLeftCornerLong;
         double yFromBLCornerInDeg = lat - bottomLeftCornerLat;
 
-        float xFromBLCornerInM = (float)(xFromBLCornerInDeg * scaleX);
-        float yFromBLCornerInM = (float)(yFromBLCornerInDeg * scaleY);
+        double xFromBLCornerInM = xFromBLCornerInDeg * scaleX;
+        double yFromBLCornerInM = yFromBLCornerInDeg * scaleY;
 
-        float worldUnitsX = xFromBLCornerInM - width / 2f;
-        float worldUnitsY = yFromBLCornerInM - height / 2f;
-        return new Vector2(worldUnitsX, worldUnitsY);
+        double worldUnitsX = xFromBLCornerInM - width / 2.0;
+        double worldUnitsY = yFromBLCornerInM - height / 2.0;
+
+        return new Vector2((float)worldUnitsX, (float)worldUnitsY);
     }
+
 
     public List<double> GetLatLonFromWorldPosition(Vector2 worldPos)
     {

@@ -16,11 +16,8 @@ from dataclasses import dataclass
 #from rclpy.qos import QoSProfile, QoSReliabilityPolicy
 #from sensor_msgs.msg import Image
 #from cv_bridge import CvBridge
-import json
 from dataclasses import asdict
 import cv2
-import math
-#import bottle_detect
 
 @dataclass
 class Location:
@@ -72,6 +69,7 @@ class auton_controller(Node):
         self.drive_publisher = self.create_publisher(DriveCommandMessage, 'command_control/ground_station_drive', 10)
         self.led_publisher = self.create_publisher(LED, 'autonomous_LED/color', 10)
         #self.publish_led_message(,0,0)
+        self.driving_angular = 0.0
 
         self.camera_timer = self.create_timer(0.05, self.camera_loop)
         self.get_logger().info("Auton controller initialized")
@@ -129,12 +127,14 @@ class auton_controller(Node):
             #     self.get_logger().info("getting_close")
             #     self.publish_log_msg("getting_close")
 
-            heading_error = abs(self.target_heading - self.current_heading)
+            heading_error = abs(self.target_heading - self.current_heading + 180.0)
+            if heading_error < 2.1:
+                self.get_logger().info(f"Heading error is <2.1 deg")
+                heading_error = 0.0
             heading_error_percent = heading_error / 30.0 # if 30 deg off from target, reach max angular velocity
+
             if heading_error_percent > 1.0:
                 heading_error_percent = 1.0
-            elif heading_error_percent < -1.0:
-                heading_error_percent = -1.0
             if self.target_heading > self.current_heading:
                 heading_error_percent *= -1.0
             self.get_logger().info(f"Heading error % is {heading_error_percent * 100.0}")
@@ -143,16 +143,24 @@ class auton_controller(Node):
             # convert heading error to a percentage
             angular = heading_error_percent * max_angular
 
-            linear = 0.25
+            linear = 0.35
             if angular > 0.2:
                 angular = 0.2
             elif angular < -0.2:
                 angular = -0.2
+
+            if abs(abs(self.driving_angular) - abs(angular)) >= 0.03:
+                #  difference between current and target angular velocities must be >= .03 %
+                if self.driving_angular < angular:
+                    self.driving_angular += .02
+                elif self.driving_angular > angular:
+                    self.driving_angular -= .02
             
-            log1 = "Driving. Dist to target: " + f"{distance_to_waypoint:.0f}. Curv: " + f"{curvature:0.1f}" + ". Angular: " + str(angular) + ". "
+            
+            log1 = "Driving. Dist to target: " + f"{distance_to_waypoint:.0f}. Angular: " + str(angular) + ". "
             heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}"
             self.get_logger().info(log1 + heading_log)
-            self.publish_drive_message(linear, angular)
+            self.publish_drive_message(linear, self.driving_angular)
         
         elif self.state == "scanning":
             # turn until an aruco tag is found
@@ -194,7 +202,7 @@ class auton_controller(Node):
                 angular_vel = 0.0
                 if self.pause_time is not None:
                     if self.pause_time >= 1.0:
-                        self.state = "driving to item"
+                        self.state = "stopped"
                         self.get_logger().info(f"Now driving to {self.item_searching_for}")
                         self.vel_control_loop_timer.cancel()
                         self.vel_control_loop_timer = None
@@ -290,6 +298,7 @@ class auton_controller(Node):
             return
 
         command = parts[0]
+        self.driving_angular = 0.0
 
         if command == "GOTO":
             lat = float(parts[1])

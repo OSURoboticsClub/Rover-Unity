@@ -17,6 +17,8 @@ public class RoverIconController : MonoBehaviour
     [SerializeField] double latestlon = 0;
     [SerializeField] Transform gpsCircleParent;
 
+    public Vector3 latestGps;
+
     void Start()
     {
         inst = this;
@@ -30,23 +32,26 @@ public class RoverIconController : MonoBehaviour
     private void Update()
     {
         if (latestlat == 0) return;
+
+        t += Time.deltaTime;
         if(t > 2f)
         {
             t = 0;
-            Vector2 worldPos = MapController.instance.GetWorldPosition(latestlat, latestlon);
-            var obj = Instantiate(circle, worldPos, Quaternion.identity, null);
-            obj.transform.SetParent(gpsCircleParent);
+            if (latestGps == Vector3.zero) return;
+            var obj = Instantiate(circle, gpsCircleParent);
+            obj.transform.position = latestGps;
+            latestGps = Vector3.zero;
         }
     }
 
     void OnGpsReceived(string message)
     {
-        // Debug.Log($"Received message: {message}");
         var parts = message.Split(";");
         latestlat = double.Parse(parts[1]);
         latestlon = double.Parse(parts[2]);
-        var obj = Instantiate(circle, gpsCircleParent);
-        obj.transform.position = MapController.instance.GetWorldPosition(latestlon, latestlon);
+        latestGps = MapController.instance.GetWorldPosition(latestlon, latestlon);
+        latestGps.y = 0;
+        Debug.Log($"GPS: {latestlat}, {latestlon}\nWorld pos: {latestGps}");
         //roverIcon.position = worldPos;
     }
 
@@ -65,6 +70,7 @@ public class RoverIconController : MonoBehaviour
         double lat = double.Parse(parts[1]);
         double lon = double.Parse(parts[2]);
         Vector2 worldPos = MapController.instance.GetWorldPosition(lat, lon);
+        Debug.Log($"SP: {lat}, {lon}\n" + "Set pos to " + worldPos);
         roverIcon.position = worldPos;
         CurrentDestinationController.inst.ReceivePositionUpdate(lat, lon);
     }

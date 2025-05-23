@@ -2307,7 +2307,7 @@ Transform:
   m_GameObject: {fileID: 284135379}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.759838, y: -12.264458, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6400,6 +6400,7 @@ MonoBehaviour:
   latestlat: 0
   latestlon: 0
   gpsCircleParent: {fileID: 2079480241}
+  latestGps: {x: 0, y: 0, z: 0}
   t: 3
 --- !u!114 &830746685
 MonoBehaviour:
@@ -16163,7 +16164,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1074.38, y: -963.04}
+  m_AnchoredPosition: {x: 1074.38, y: -963.04004}
   m_SizeDelta: {x: 109.6, y: 37.86}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1671855542
@@ -19431,7 +19432,7 @@ Transform:
   m_GameObject: {fileID: 2079480239}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -42.09745, y: 2.8259737, z: -25.113134}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
