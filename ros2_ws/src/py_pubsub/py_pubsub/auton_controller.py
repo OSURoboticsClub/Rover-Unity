@@ -325,15 +325,11 @@ class auton_controller(Node):
                 self.control_timer = self.create_timer(0.1, self.control_loop)
             
             self.target_heading = geographic_functions.get_target_heading(self.rover_position, self.target_coordinate)
-            #self.subpoints = geographic_functions.get_points_along_line(self.rover_position, self.waypoint_destination, self.target_heading)
-            #msg = "subpoints;" + json.dumps([asdict(loc) for loc in self.subpoints])
-            #self.publish_log_msg(msg)
-            #self.set_next_dest()
         elif command == "FIND":
             # for finding water bottle, hammer, aruco tag, etc.
             self.item_searching_for = parts[1]
             self.state = "scanning"
-            self.get_logger().info(f"Finding " + self.item_searching_for)
+            self.get_logger().info(f"Received FIND " + self.item_searching_for)
             if self.control_timer is None:
                 self.control_timer = self.create_timer(0.1, self.control_loop)
         elif command == "DRIVEFORWARD":
