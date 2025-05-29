@@ -45,6 +45,7 @@ class auton_controller(Node):
 
     bottle_detector = None
     camera = None
+    arrived_at_destination = False
 
     # for the "drive forward for 2 seconds thing"
     time_driving_forward = 0.0
@@ -86,6 +87,11 @@ class auton_controller(Node):
             self.target_heading = None
             self.time_looking_for_item = None
             self.pause_time = None
+            if self.arrived_at_destination:
+                self.led_timer = self.create_timer(0.6, self.blinking_led_loop)
+                self.arrived_at_destination = False
+            else:
+                self.publish_led_message(0, 0, 255)
             self.get_logger().info("Stopped")
             self.publish_log_msg("Stopped autonomous control")
             return
@@ -328,17 +334,19 @@ class auton_controller(Node):
             self.target_heading = geographic_functions.get_target_heading(self.rover_position, self.target_coordinate)
         elif command == "FIND":
             # for finding water bottle, hammer, aruco tag, etc.
+            self.publish_led_message(255, 0, 0)
             self.item_searching_for = parts[1]
             self.state = "scanning"
             self.get_logger().info(f"Received FIND " + self.item_searching_for)
             if self.control_timer is None:
                 self.control_timer = self.create_timer(0.1, self.control_loop)
         elif command == "DRIVEFORWARD":
+            self.publish_led_message(255, 0, 0)
             self.get_logger().info("Command received: Drive forward for 2 seconds")
             self.state = "drive_forward"
         elif command == "STOP":
             self.get_logger().info("STOP command received. Stopping autonomous navigation.")
-            self.publish_led_message(0, 0, 255)
+            self.arrived_at_destination = parts[1].strip().lower() in ("true", "1", "yes")
             if self.led_timer is not None:
                 self.led_timer.cancel()
                 self.led_timer = None

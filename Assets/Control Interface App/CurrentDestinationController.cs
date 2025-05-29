@@ -123,9 +123,9 @@ public class CurrentDestinationController : MonoBehaviour
         TcpController.inst.Publish(message);
     }
 
-    public void Stop(GpsLocation script = null)
+    public void Stop(GpsLocation script = null, bool haveLedBlink = false)
     {
-        TcpController.inst.Publish("autonomous/auton_control;STOP");
+        TcpController.inst.Publish($"autonomous/auton_control;STOP;{haveLedBlink}");
 
         if(script != null)
         {
@@ -166,9 +166,10 @@ public class CurrentDestinationController : MonoBehaviour
 
             if (waypointIndex >= waypoints.Count) {
                 Debug.Log($"Reached destination. Target: {item}");
+                bool haveLedBlink = true;
 
                 SendDriveForwards10Feet();
-                string scanCommand = $"autonomous/auton_control;STOP";
+                string scanCommand = $"autonomous/auton_control;STOP;{haveLedBlink}";
                 if (item != ItemToFind.none) {
                     scanCommand = $"autonomous/auton_control;FIND;{item}";
                 }
@@ -176,7 +177,7 @@ public class CurrentDestinationController : MonoBehaviour
             }
             else if (waypointIndex < 0) {
                 Debug.Log("Returned");
-                Stop(currentTarget);
+                Stop(currentTarget, true);
             }
             else {
                 Debug.Log("Send next waypoint");
