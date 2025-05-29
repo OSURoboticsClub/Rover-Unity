@@ -19,7 +19,14 @@ public class CurrentDestinationController : MonoBehaviour
     [SerializeField] int waypointIndex = 0;
     [SerializeField] float distanceCutoff = .1f;
     [SerializeField] bool isInReverse;
+    [SerializeField] GameObject circle;
     public ItemToFind item;
+    List<GameObject> circleIcons = new();
+    [SerializeField] Transform iconParent;
+
+    public List<Vector2> squarePoints = new();
+    int squarePointIndex = -1;
+
 
     struct Coordinate
     {
@@ -42,7 +49,13 @@ public class CurrentDestinationController : MonoBehaviour
 
     public void ClickBtn(GpsLocation script)
     {
-        if(currentTarget == script)
+        squarePoints.Clear();
+        squarePointIndex = -1;
+        foreach (var x in circleIcons) {
+            Destroy(x);
+        }
+        circleIcons.Clear();
+        if (currentTarget == script)
         {
             currentTarget = null;
             Stop(script);
@@ -74,6 +87,28 @@ public class CurrentDestinationController : MonoBehaviour
                 lon = Math.Round(double.Parse(script.lon.text), 6)
             };
             waypoints.Add(finalDestination);
+            float dist = .9f;
+            Vector2 finalDestWorldPos = MapController.instance.GetWorldPosition(finalDestination.lat, finalDestination.lon);
+            squarePoints.Add(new Vector2(finalDestWorldPos.x + dist, finalDestWorldPos.y - dist));
+            squarePoints.Add(new Vector2(finalDestWorldPos.x - dist, finalDestWorldPos.y - dist));
+            squarePoints.Add(new Vector2(finalDestWorldPos.x - dist, finalDestWorldPos.y + dist));
+            squarePoints.Add(new Vector2(finalDestWorldPos.x + dist, finalDestWorldPos.y + dist));
+            dist = 1.8f;
+            squarePoints.Add(new Vector2(finalDestWorldPos.x + dist, finalDestWorldPos.y + dist));
+            squarePoints.Add(new Vector2(finalDestWorldPos.x, finalDestWorldPos.y + dist));
+            squarePoints.Add(new Vector2(finalDestWorldPos.x - dist, finalDestWorldPos.y + dist));
+            squarePoints.Add(new Vector2(finalDestWorldPos.x - dist, finalDestWorldPos.y));
+            squarePoints.Add(new Vector2(finalDestWorldPos.x - dist, finalDestWorldPos.y - dist));
+            squarePoints.Add(new Vector2(finalDestWorldPos.x, finalDestWorldPos.y - dist));
+
+            squarePoints.Add(new Vector2(finalDestWorldPos.x + dist, finalDestWorldPos.y - dist));
+            squarePoints.Add(new Vector2(finalDestWorldPos.x + dist, finalDestWorldPos.y));
+            foreach (var x in squarePoints) {
+                var obj = Instantiate(circle, iconParent);
+                obj.transform.position = x;
+                circleIcons.Add(obj);
+            }
+            CameraControl.inst.RescaleIcons();
             SendNextWaypoint(true);
             StatusIndicator.instance.SetIndicator(Status.Activated, script);
             // TODO: this should be done on callback from the rover
@@ -129,22 +164,17 @@ public class CurrentDestinationController : MonoBehaviour
             if (isInReverse) waypointIndex--;
             else waypointIndex++;
 
-            if(waypointIndex >= waypoints.Count) {
+            if (waypointIndex >= waypoints.Count) {
                 Debug.Log($"Reached destination. Target: {item}");
 
                 SendDriveForwards10Feet();
                 string scanCommand = $"autonomous/auton_control;STOP";
+                if (item != ItemToFind.none) {
+                    scanCommand = $"autonomous/auton_control;FIND;{item}";
+                }
                 StartCoroutine(WaitTwoSecondsThenSendCommand(scanCommand));
-                // if (item != ItemToFind.none)
-                // {
-                //     SendDriveForwards10Feet();
-                //     string scanCommand = $"autonomous/auton_control;FIND;{item}";
-                //     StartCoroutine(WaitTwoSecondsThenSendCommand(scanCommand));
-                // }
-                // else Stop(currentTarget);
             }
-            else if(waypointIndex < 0)
-            {
+            else if (waypointIndex < 0) {
                 Debug.Log("Returned");
                 Stop(currentTarget);
             }
@@ -152,6 +182,25 @@ public class CurrentDestinationController : MonoBehaviour
                 Debug.Log("Send next waypoint");
                 SendNextWaypoint();
             }
+        }
+    }
+
+    public void ReceiveFeedback(string response) {
+
+        var parts = response.Split(";");
+        Debug.Log(parts[1]);
+        if(parts[1] == "scan failed") {
+            squarePointIndex++;
+            if (squarePointIndex > 11) {
+                Stop(currentTarget);
+                return;
+            }
+
+            var pos = squarePoints[squarePointIndex];
+            var coords = MapController.instance.GetLatLonFromWorldPosition(pos);
+            string message = $"autonomous/auton_control;GOTO;{coords[0]};{coords[1]};True";
+            MapController.instance.lineTarget = pos;
+            TcpController.inst.Publish(message);
         }
     }
 

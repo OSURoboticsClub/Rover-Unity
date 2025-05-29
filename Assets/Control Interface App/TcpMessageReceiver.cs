@@ -49,7 +49,7 @@ public class TcpMessageReceiver : MonoBehaviour
         }
         else if (parts[0] == "autonomous/auton_control_response")
         {
-
+            CurrentDestinationController.inst.ReceiveFeedback(message);
         }
         else if(parts[0] == "/joint_states"){
             RobotArmController.inst.Receive(message);

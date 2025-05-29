@@ -180,6 +180,7 @@ class auton_controller(Node):
                 self.time_looking_for_item = 0.0
             if self.time_looking_for_item >= 11.0:
                 self.get_logger().info(f"Timed out looking for a(n) {self.item_searching_for}")
+                self.publish_log_msg("scan failed")
                 self.state = "stopped"
                 return
             

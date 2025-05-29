@@ -2522,7 +2522,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 07caa173ed1fe64428d126eb106d1778, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f243218bd28f5a24a8c79a1b567aea9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.50980395}
   m_FlipX: 0
   m_FlipY: 0
@@ -6411,7 +6411,10 @@ MonoBehaviour:
   waypointIndex: 0
   distanceCutoff: 0.2
   isInReverse: 0
+  circle: {fileID: 8694830898222518311, guid: fe875ad1888787d4e94859d47736b59c, type: 3}
   item: 0
+  iconParent: {fileID: 284135380}
+  squarePoints: []
 --- !u!114 &830746686
 MonoBehaviour:
   m_ObjectHideFlags: 0
