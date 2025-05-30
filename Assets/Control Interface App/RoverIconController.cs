@@ -31,6 +31,7 @@ public class RoverIconController : MonoBehaviour
     public float t = 3f;
     private void Update()
     {
+        return;
         if (latestlat == 0) return;
 
         t += Time.deltaTime;
@@ -51,7 +52,7 @@ public class RoverIconController : MonoBehaviour
         latestlon = double.Parse(parts[2]);
         latestGps = MapController.instance.GetWorldPosition(latestlon, latestlon);
         latestGps.y = 0;
-        Debug.Log($"GPS: {latestlat}, {latestlon}\nWorld pos: {latestGps}");
+        //Debug.Log($"GPS: {latestlat}, {latestlon}\nWorld pos: {latestGps}");
         //roverIcon.position = worldPos;
     }
 
@@ -70,7 +71,7 @@ public class RoverIconController : MonoBehaviour
         double lat = double.Parse(parts[1]);
         double lon = double.Parse(parts[2]);
         Vector2 worldPos = MapController.instance.GetWorldPosition(lat, lon);
-        Debug.Log($"SP: {lat}, {lon}\n" + "Set pos to " + worldPos);
+        //Debug.Log($"SP: {lat}, {lon}\n" + "Set pos to " + worldPos);
         roverIcon.position = worldPos;
         CurrentDestinationController.inst.ReceivePositionUpdate(lat, lon);
     }

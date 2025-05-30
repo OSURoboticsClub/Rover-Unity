@@ -16,8 +16,9 @@ public class RobotArmController : MonoBehaviour
     }
 
     public void Receive(string message){
+        if(message.Contains("nan")) return;
+
         var parts = message.Split(";");
-        //Debug.Log("Received " + message);
 
         joints[0].localRotation = Quaternion.Euler(0, float.Parse(parts[1]) * 57.2958f * multipliers[0] + offsets[0], 0);
         joints[1].localRotation = Quaternion.Euler(0, 0, float.Parse(parts[2]) * 57.2958f * multipliers[1] + offsets[1]);

@@ -29,11 +29,12 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public float lineScale = 1f;
     public float iconScaleForZoom = 1f;
     public float mapImageScaleFactor = 1f;
+    [SerializeField] float draggingMultiplier;
 
     void Awake()
     {
         inst = this;
-        mapImageScaleFactor = Screen.height / map.rectTransform.sizeDelta.y;
+        //mapImageScaleFactor = Screen.height / map.rectTransform.sizeDelta.y;
         iconScaleForZoom = 2f * secondCamera.orthographicSize;
     }
 
@@ -45,14 +46,14 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         if (scrollInput == 0f) return;
         if(!IsMouseOverMap()) return;
 
-        //Vector2 oldMousePos = GetWorldPositionOfMouse(Input.mousePosition);
-        //Vector2 oldMouseScreenPos = Input.mousePosition;
+        Vector2 oldMousePos = GetWorldPositionOfMouse(Input.mousePosition);
+        Vector2 oldMouseScreenPos = Input.mousePosition;
         secondCamera.orthographicSize -= scrollInput * zoomSpeed * secondCamera.orthographicSize;
         secondCamera.orthographicSize = Mathf.Clamp(secondCamera.orthographicSize, minOrthoSize, maxOrthoSize);
 
-        //Vector2 newMousepos = GetWorldPositionOfMouse(oldMouseScreenPos);
-        //Vector3 diff = newMousepos - oldMousePos;
-        //secondCamera.transform.position -= diff * mapImageScaleFactor;
+        Vector2 newMousepos = GetWorldPositionOfMouse(oldMouseScreenPos);
+        Vector3 diff = newMousepos - oldMousePos;
+        secondCamera.transform.position -= diff * mapImageScaleFactor;
 
         RescaleIcons();
 
@@ -110,7 +111,7 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         {
             Vector3 worldDelta = Camera.main.ScreenToWorldPoint(Input.mousePosition) - initialMouseWorldPosition;
             float proportion = secondCamera.orthographicSize / Camera.main.orthographicSize;
-            worldDelta = new Vector2(worldDelta.x, worldDelta.y) * proportion * mapImageScaleFactor;
+            worldDelta = new Vector2(worldDelta.x, worldDelta.y) * proportion * draggingMultiplier * 2;
             delta = worldDelta;
             secondCamera.transform.position = initialSecondCameraPosition - worldDelta;
         }
