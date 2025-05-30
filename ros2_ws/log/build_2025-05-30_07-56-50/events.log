@@ -1,0 +1,7 @@
+[0.000000] (-) TimerEvent: {}
+[0.001349] (-) JobUnselected: {'identifier': 'AutonControlNode'}
+[0.001511] (-) JobUnselected: {'identifier': 'custom_msg'}
+[0.002159] (py_pubsub) JobQueued: {'identifier': 'py_pubsub', 'dependencies': OrderedDict()}
+[0.003151] (py_pubsub) JobStarted: {'identifier': 'py_pubsub'}
+[0.051470] (py_pubsub) JobEnded: {'identifier': 'py_pubsub', 'rc': 0}
+[0.054266] (-) EventReactorShutdown: {}

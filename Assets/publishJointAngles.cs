@@ -15,6 +15,18 @@ public class publishJointAngles : MonoBehaviour
         msg += ";" + angles[3];
         msg += ";" + angles[4];
         msg += ";" + angles[5];
+        //TcpController.inst.Publish(msg);
+
+        StartCoroutine(SendAngles(msg));
+    }
+
+    IEnumerator SendAngles(string msg){
+        TcpController.inst.Publish("joy2;0");
+        yield return new WaitForSeconds(0.15f);
+
         TcpController.inst.Publish(msg);
+
+        yield return new WaitForSeconds(5f);
+        TcpController.inst.Publish("joy2;0");
     }
 }

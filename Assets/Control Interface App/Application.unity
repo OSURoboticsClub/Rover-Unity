@@ -1278,7 +1278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   secondCamera: {fileID: 404434355}
   roverIcon: {fileID: 450525840}
-  destIcon: {fileID: 271320677}
+  destIcon: {fileID: 0}
   iconsParent: {fileID: 284135380}
   camCornerGameobject: {fileID: 1367039430}
   delta: {x: 0, y: 0}
@@ -1856,11 +1856,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 263456413}
   m_CullTransparentMesh: 1
---- !u!4 &271320677 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-  m_PrefabInstance: {fileID: 3933447179462563035}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &271842736
 GameObject:
   m_ObjectHideFlags: 0
@@ -2313,7 +2308,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 450525840}
-  - {fileID: 271320677}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &290987131
@@ -2523,7 +2517,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f243218bd28f5a24a8c79a1b567aea9f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8cc48896fad9b9ba0815eb3ba7f9dfad, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.50980395}
   m_FlipX: 0
   m_FlipY: 0
@@ -6145,10 +6139,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapSprite: {fileID: 299123440}
   roverIcon: {fileID: 450525840}
-  bottomLeftCornerLat: 38.370705
-  bottomLeftCornerLong: -110.706189
-  topRightCornerLat: 38.372491
-  topRightCornerLong: -110.702397
+  bottomLeftCornerLat: 38.40421
+  bottomLeftCornerLong: -110.79581
+  topRightCornerLat: 38.4087
+  topRightCornerLong: -110.78656
   scaleX: 0
   scaleY: 0
   width: 0
@@ -16065,11 +16059,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 830746685}
         m_TargetAssemblyTypeName: CurrentDestinationController, Assembly-CSharp
-        m_MethodName: Stop
-        m_Mode: 2
+        m_MethodName: Stop2
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: GpsLocation, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -19929,83 +19923,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &3933447179462563035
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 284135380}
-    m_Modifications:
-    - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.93
-      objectReference: {fileID: 0}
-    - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.88
-      objectReference: {fileID: 0}
-    - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2.6474712
-      objectReference: {fileID: 0}
-    - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 448807617987900982, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 980054023813013849, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: icon
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 980054023813013849, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: latitude
-      value: 38.371665
-      objectReference: {fileID: 0}
-    - target: {fileID: 980054023813013849, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: longitude
-      value: -110.704425
-      objectReference: {fileID: 0}
-    - target: {fileID: 980054023813013849, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: description
-      value: Walkway
-      objectReference: {fileID: 0}
-    - target: {fileID: 3644992011115711974, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 610a884ced6e27a488c41290831fbce1, type: 3}
-    - target: {fileID: 9158389078652303773, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
-      propertyPath: m_Name
-      value: Merryfield path
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a0baa3fef047a3241b74ba9f2d23bee1, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

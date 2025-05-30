@@ -150,6 +150,11 @@ public class CurrentDestinationController : MonoBehaviour
         }
     }
 
+    public void Stop2(){
+        // for some reason I cant drag the original Stop script onto button in unity
+        Stop();
+    }
+
     void SendDriveForwards10Feet() {
         string message = $"autonomous/auton_control;DRIVEFORWARD";
         TcpController.inst.Publish(message);

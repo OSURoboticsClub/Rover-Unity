@@ -16,6 +16,7 @@ from rclpy.qos import QoSProfile, QoSReliabilityPolicy
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float32MultiArray
 from geometry_msgs.msg import Twist
+from sensor_msgs.msg import Joy
 
 
 
@@ -35,7 +36,8 @@ class TCPServer(Node):
         super().__init__('tcp_server_with_ros2')
         self.topic_publishers = {}  # Dictionary to store topic_name -> publisher
         self.message_type_map = {
-            'set_joint_angles': Float32MultiArray
+            'set_joint_angles': Float32MultiArray,
+            'joy2': Joy
         }  # Map of topic names to message types
         self.subscribers = []
         self.tcp_client = None
@@ -175,15 +177,23 @@ class TCPServer(Node):
 
                 topic_name = parts[0]
                 content = ';'.join(parts[1:])
+
                 publisher = self.get_or_create_publisher(topic_name)
                 if not publisher:
                     continue
-                
-                if topic_name == "taranisenable":
-                    self.enable_taranis()
-                    continue
-                    
 
+                if topic_name == "joy2":
+                    ros_msg = Joy()
+                    ros_msg.axes = [0.0]
+                    ros_msg.buttons = [0,0,0,0,0,0,0,0,0,0,0]
+                    publisher.publish(ros_msg)
+                    self.get_logger().info(f"Published to joy2")
+
+                    ros_msg.buttons = [0,0,0,0,0,0,0,0,1,0,0]
+                    publisher.publish(ros_msg)
+                    self.get_logger().info(f"Published to joy2")
+                    continue
+                
                 # Create and publish the message based on its type.
                 message_type = self.message_type_map.get(topic_name, String)
                 if message_type == String:
