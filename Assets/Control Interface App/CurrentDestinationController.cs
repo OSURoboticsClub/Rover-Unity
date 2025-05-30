@@ -15,6 +15,7 @@ public class CurrentDestinationController : MonoBehaviour
 {
     public static CurrentDestinationController inst;
     public GpsLocation currentTarget;
+    Vector2 currentVector2Target;
     [SerializeField] List<Coordinate> waypoints = new();
     [SerializeField] int waypointIndex = 0;
     [SerializeField] float distanceCutoff = .1f;
@@ -27,6 +28,8 @@ public class CurrentDestinationController : MonoBehaviour
     public List<Vector2> squarePoints = new();
     int squarePointIndex = -1;
 
+    public float distToTarget = 1000f;
+    bool searchingForAruco = false;
 
     struct Coordinate
     {
@@ -37,6 +40,15 @@ public class CurrentDestinationController : MonoBehaviour
     private void Awake()
     {
         inst = this;
+    }
+
+    void Update()
+    {
+        if (currentTarget != null)
+        {
+            distToTarget = Vector2.Distance(currentTarget.iconObject.transform.position, RoverIconController.inst.roverIcon.position);
+        }
+        else distToTarget = 10000f;
     }
 
     public void ReturnToStart()
@@ -116,6 +128,8 @@ public class CurrentDestinationController : MonoBehaviour
     }
 
     void SendNextWaypoint(bool turnFirst = false) {
+        Coordinate target = waypoints[waypointIndex];
+        currentVector2Target = MapController.instance.GetWorldPosition(target.lat, target.lon);
         string message = $"autonomous/auton_control;GOTO;{waypoints[waypointIndex].lat};{waypoints[waypointIndex].lon};{turnFirst}";
         var worldPos = MapController.instance.GetWorldPosition(waypoints[waypointIndex].lat, waypoints[waypointIndex].lon);
         MapController.instance.lineTarget = worldPos;
@@ -126,12 +140,12 @@ public class CurrentDestinationController : MonoBehaviour
     public void Stop(GpsLocation script = null, bool haveLedBlink = false)
     {
         TcpController.inst.Publish($"autonomous/auton_control;STOP;{haveLedBlink}");
+        currentTarget = null;
 
         if(script != null)
         {
             script.SetInactiveUI();
             StatusIndicator.instance.SetIndicator(Status.NotActivated, script);
-            currentTarget = null;
             // this should be done on callback from the rover
         }
     }
@@ -152,34 +166,54 @@ public class CurrentDestinationController : MonoBehaviour
     }
 
     public void ReceivePositionUpdate(double lat, double lon) {
-        if (currentTarget == null) return;
+        if (currentTarget == null && squarePointIndex == -1) return;
+        if (searchingForAruco) return;
 
         var worldPos = MapController.instance.GetWorldPosition(lat, lon);
-        var targetWorldPos = waypoints[waypointIndex];
-        Vector2 targetVect = MapController.instance.GetWorldPosition(targetWorldPos.lat, targetWorldPos.lon);
-        var dist = Vector2.Distance(worldPos, targetVect);
+        //var targetWorldPos = waypoints[waypointIndex];
+        //Vector2 targetVect = MapController.instance.GetWorldPosition(targetWorldPos.lat, targetWorldPos.lon);
+        var dist = Vector2.Distance(worldPos, currentVector2Target);
         Debug.Log("Distance to target: " + dist);
 
         if (dist < distanceCutoff) {
             if (isInReverse) waypointIndex--;
             else waypointIndex++;
 
-            if (waypointIndex >= waypoints.Count) {
-                Debug.Log($"Reached destination. Target: {item}");
-                bool haveLedBlink = true;
-
+            string nextCommand;
+            if (squarePointIndex >= 0 && !searchingForAruco)
+            {
+                Debug.Log($"Reached search point. Target: {item}");
                 SendDriveForwards10Feet();
-                string scanCommand = $"autonomous/auton_control;STOP;{haveLedBlink}";
-                if (item != ItemToFind.none) {
-                    scanCommand = $"autonomous/auton_control;FIND;{item}";
-                }
-                StartCoroutine(WaitTwoSecondsThenSendCommand(scanCommand));
+                nextCommand = $"autonomous/auton_control;FIND;{item}";
+                searchingForAruco = true;
+                StartCoroutine(WaitTwoSecondsThenSendCommand(nextCommand));
             }
-            else if (waypointIndex < 0) {
+            else if (waypointIndex >= waypoints.Count)
+            {
+                Debug.Log($"Reached destination. Target: {item}");
+                SendDriveForwards10Feet();
+                if (item != ItemToFind.none)
+                {
+                    nextCommand = $"autonomous/auton_control;FIND;{item}";
+                    searchingForAruco = true;
+                }
+                else
+                {
+                    currentTarget.SetInactiveUI();
+                    StatusIndicator.instance.SetIndicator(Status.NotActivated, currentTarget);
+                    bool haveLedBlink = true;
+                    nextCommand = $"autonomous/auton_control;STOP;{haveLedBlink}";
+                }
+                StartCoroutine(WaitTwoSecondsThenSendCommand(nextCommand));
+                currentTarget = null;
+            }
+            else if (waypointIndex < 0)
+            {
                 Debug.Log("Returned");
                 Stop(currentTarget, true);
             }
-            else {
+            else
+            {
                 Debug.Log("Send next waypoint");
                 SendNextWaypoint();
             }
@@ -200,6 +234,8 @@ public class CurrentDestinationController : MonoBehaviour
             var pos = squarePoints[squarePointIndex];
             var coords = MapController.instance.GetLatLonFromWorldPosition(pos);
             string message = $"autonomous/auton_control;GOTO;{coords[0]};{coords[1]};True";
+            searchingForAruco = false;
+            currentVector2Target = pos;
             MapController.instance.lineTarget = pos;
             TcpController.inst.Publish(message);
         }
