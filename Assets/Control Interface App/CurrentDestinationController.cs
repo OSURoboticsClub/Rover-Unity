@@ -171,6 +171,7 @@ public class CurrentDestinationController : MonoBehaviour
         TcpController.inst.Publish($"autonomous/auton_control;FIND;{item}");
     }
 
+
     public void ReceivePositionUpdate(double lat, double lon) {
         if (currentTarget == null && squarePointIndex == -1) return;
         if (searchingForAruco) return;
