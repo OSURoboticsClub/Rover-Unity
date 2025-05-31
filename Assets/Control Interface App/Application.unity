@@ -2798,8 +2798,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f243218bd28f5a24a8c79a1b567aea9f, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.72156864}
+  m_Sprite: {fileID: 21300000, guid: 3eabda6d4431e9240bb7e69b952227b4, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3185,7 +3185,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.79
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -4191,7 +4191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &450334802
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6573,10 +6573,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapSprite: {fileID: 299123440}
   roverIcon: {fileID: 450525840}
-  bottomLeftCornerLat: 38.370704
-  bottomLeftCornerLong: -110.706195
-  topRightCornerLat: 38.372473
-  topRightCornerLong: -110.702356
+  bottomLeftCornerLat: 38.416771
+  bottomLeftCornerLong: -110.790596
+  topRightCornerLat: 38.424538
+  topRightCornerLong: -110.776611
   scaleX: 0
   scaleY: 0
   width: 0
