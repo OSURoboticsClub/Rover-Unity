@@ -63,6 +63,7 @@ public class CurrentDestinationController : MonoBehaviour
     {
         squarePoints.Clear();
         squarePointIndex = -1;
+        searchingForAruco = false;
         foreach (var x in circleIcons) {
             Destroy(x);
         }
@@ -228,7 +229,7 @@ public class CurrentDestinationController : MonoBehaviour
     public void ReceiveFeedback(string response) {
 
         var parts = response.Split(";");
-        Debug.Log(parts[1]);
+        //Debug.Log(parts[1]);
         if(parts[1] == "scan failed") {
             squarePointIndex++;
             if (squarePointIndex > 11) {
@@ -243,6 +244,13 @@ public class CurrentDestinationController : MonoBehaviour
             currentVector2Target = pos;
             MapController.instance.lineTarget = pos;
             TcpController.inst.Publish(message);
+        }
+        else if(parts[1] == "arrived"){
+            if(currentTarget != null)
+            {
+                currentTarget.SetInactiveUI();
+                StatusIndicator.instance.SetIndicator(Status.NotActivated, currentTarget);
+            }
         }
     }
 

@@ -99,7 +99,6 @@ class auton_controller(Node):
         if self.state == "turning":
 
             heading_error = self.get_heading_error()
-            self.get_logger().info("Turning. Target: " + f"{self.target_heading:.1f}" + ". Current: " + f"{self.current_heading:.1f}" + ", Error: " + f"{heading_error:.1f}")
             if abs(heading_error) < 5.5:  # Example threshold
                 self.get_logger().info("Target heading reached.")
                 self.publish_log_msg("Reached target heading. Now driving")
@@ -110,8 +109,9 @@ class auton_controller(Node):
                     angular_speed *= -1
                 #if abs(heading_error) < 30: # slow down on approach
                     #angular_speed *= 0.6
-                self.get_logger().info("Angular is " + str(angular_speed))
+                log = f"Turning. Target: {self.target_heading:.1f}. Current: {self.current_heading:.1f}, Error: {heading_error:.1f}. Angular: {str(angular_speed)}"
                 self.publish_drive_message(0.0, angular_speed) 
+                self.get_logger().info(log)
 
         elif self.state == "driving":
             self.target_heading = geographic_functions.get_target_heading(self.rover_position, self.target_coordinate)
@@ -139,6 +139,11 @@ class auton_controller(Node):
                 heading_error += 360.0
             heading_error -= 180.0
 
+            # if abs(heading_error) >= 90.0:
+            #     self.state = "turning"
+            #     self.get_logger().info(f"Really far off course, turning towards path")
+            #     return
+
             if abs(heading_error) < 2.1:
                 self.get_logger().info(f"Heading error is <2.1 deg")
                 heading_error = 0.0
@@ -148,13 +153,12 @@ class auton_controller(Node):
                 heading_error_percent = 1.0
             elif heading_error_percent < -1.0:
                 heading_error_percent = -1.0
-            self.get_logger().info(f"Heading error % is {(heading_error_percent * 100.0):1f}")
             
             max_angular = 0.2
             # convert heading error to a percentage
             angular = heading_error_percent * max_angular
 
-            linear = 0.35
+            linear = 0.45
             if angular > max_angular:
                 angular = max_angular
             elif angular < max_angular * -1:
@@ -169,7 +173,8 @@ class auton_controller(Node):
             
             #Curr Angular: {self.driving_angular:3f}
             log1 = f"Driving. Dist to target: {distance_to_waypoint:.0f}. Angular: {angular:3f}, "
-            heading_log = "Target H: " + f"{self.target_heading:.1f}, " + "Current H: " + f"{self.current_heading:.1f}"
+            heading_log = f"Target H: {self.target_heading:.1f}, Current H: {self.current_heading:.1f}. "
+            heading_log += f"Heading error % is {(heading_error_percent * 100.0):1f}"
             self.get_logger().info(log1 + heading_log)
             self.publish_drive_message(linear, angular)
         
@@ -256,6 +261,7 @@ class auton_controller(Node):
             if width > width_threshold:
                 self.get_logger().info(f"Arrived")
                 self.led_timer = self.create_timer(0.6, self.blinking_led_loop)
+                self.publish_log_msg("arrived")
                 self.state = "stopped"
                 return
 
@@ -280,9 +286,9 @@ class auton_controller(Node):
         elif self.state == "drive_forward":
             self.time_driving_forward += 0.1
             self.get_logger().info(f"Driving forward for {self.time_driving_forward:1f} sec")
-            self.publish_drive_message(0.25, 0.0)
+            self.publish_drive_message(0.45, 0.0)
 
-            if self.time_driving_forward > 2.0:
+            if self.time_driving_forward > 3.0:
                 self.get_logger().info(f"Stopping")
                 self.state = "stopped"
                 self.time_driving_forward = 0.0
@@ -338,13 +344,14 @@ class auton_controller(Node):
             # for finding water bottle, hammer, aruco tag, etc.
             self.publish_led_message(255, 0, 0)
             self.item_searching_for = parts[1]
+            self.time_searching_for = 0.0
             self.state = "scanning"
             self.get_logger().info(f"Received FIND " + self.item_searching_for)
             if self.control_timer is None:
                 self.control_timer = self.create_timer(0.1, self.control_loop)
         elif command == "DRIVEFORWARD":
             self.publish_led_message(255, 0, 0)
-            self.get_logger().info("Command received: Drive forward for 2 seconds")
+            self.get_logger().info("Command received: Drive forward for 3 seconds")
             self.state = "drive_forward"
         elif command == "STOP":
             self.arrived_at_destination = parts[1].strip().lower() in ("true", "1", "yes")

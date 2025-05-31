@@ -17,6 +17,7 @@ from sensor_msgs.msg import JointState
 from std_msgs.msg import Float32MultiArray
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
+from rover2_status_interface.msg import LED
 
 
 
@@ -37,7 +38,8 @@ class TCPServer(Node):
         self.topic_publishers = {}  # Dictionary to store topic_name -> publisher
         self.message_type_map = {
             'set_joint_angles': Float32MultiArray,
-            'joy2': Joy
+            'joy2': Joy,
+            'autonomous_LED/color': LED
         }  # Map of topic names to message types
         self.subscribers = []
         self.tcp_client = None
@@ -208,6 +210,12 @@ class TCPServer(Node):
                     ang5 = float(parts[5])
                     ang6 = float(parts[6])
                     ros_msg.data = [ang1, ang2, ang3, ang4, ang5, ang6]
+                elif message_type == LED:
+                    led_msg = LED()
+                    led_msg.red = 255
+                    led_msg.green = 0
+                    led_msg.blue = 0
+                    self.led_publisher.publish(led_msg)
                 else:
                     self.get_logger().error(f"Unsupported message type for topic: {topic_name}")
                     continue
