@@ -100,13 +100,13 @@ public class CurrentDestinationController : MonoBehaviour
                 lon = Math.Round(double.Parse(script.lon.text), 6)
             };
             waypoints.Add(finalDestination);
-            float dist = .9f;
+            float dist = .75f;
             Vector2 finalDestWorldPos = MapController.instance.GetWorldPosition(finalDestination.lat, finalDestination.lon);
             squarePoints.Add(new Vector2(finalDestWorldPos.x + dist, finalDestWorldPos.y - dist));
             squarePoints.Add(new Vector2(finalDestWorldPos.x - dist, finalDestWorldPos.y - dist));
             squarePoints.Add(new Vector2(finalDestWorldPos.x - dist, finalDestWorldPos.y + dist));
             squarePoints.Add(new Vector2(finalDestWorldPos.x + dist, finalDestWorldPos.y + dist));
-            dist = 1.8f;
+            dist = 1.6f;
             squarePoints.Add(new Vector2(finalDestWorldPos.x + dist, finalDestWorldPos.y + dist));
             squarePoints.Add(new Vector2(finalDestWorldPos.x, finalDestWorldPos.y + dist));
             squarePoints.Add(new Vector2(finalDestWorldPos.x - dist, finalDestWorldPos.y + dist));
@@ -206,13 +206,14 @@ public class CurrentDestinationController : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log("Set UI inactive");
                     currentTarget.SetInactiveUI();
                     StatusIndicator.instance.SetIndicator(Status.NotActivated, currentTarget);
                     bool haveLedBlink = true;
                     nextCommand = $"autonomous/auton_control;STOP;{haveLedBlink}";
+                    currentTarget = null;
                 }
                 StartCoroutine(WaitTwoSecondsThenSendCommand(nextCommand));
-                currentTarget = null;
             }
             else if (waypointIndex < 0)
             {
@@ -247,6 +248,7 @@ public class CurrentDestinationController : MonoBehaviour
             TcpController.inst.Publish(message);
         }
         else if(parts[1] == "arrived"){
+            Debug.Log("rover says it arrived. Current target: " + currentTarget);
             if(currentTarget != null)
             {
                 currentTarget.SetInactiveUI();
