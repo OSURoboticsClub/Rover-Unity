@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,14 +10,6 @@ public class MapController : MonoBehaviour
     public static MapController instance;
     [SerializeField] SpriteRenderer mapSprite;
     [SerializeField] Transform roverIcon;
-    [SerializeField] double bottomLeftCornerLat;
-    [SerializeField] double bottomLeftCornerLong;
-    [SerializeField] double topRightCornerLat;
-    [SerializeField] double topRightCornerLong;
-    [SerializeField] double scaleX; //world units per degree
-    [SerializeField] double scaleY;
-    [SerializeField] float width;
-    [SerializeField] float height;
     public Vector2 lineTarget;
 
     public GameObject icon;
@@ -31,21 +24,28 @@ public class MapController : MonoBehaviour
     [SerializeField] Sprite hammerIcon;
     [SerializeField] Sprite arucoIcon;
     [SerializeField] TMP_Dropdown iconDropdown;
+    [SerializeField] Transform mapsParent;
+    MapData currMap;
 
     void Awake()
     {
         instance = this;
 
-        width = mapSprite.bounds.size.x;
-        height = mapSprite.bounds.size.y;
+        //width = mapSprite.bounds.size.x;
+        //height = mapSprite.bounds.size.y;
 
-        double widthInDegrees = topRightCornerLong - bottomLeftCornerLong;
-        scaleX = (double)width / widthInDegrees;
+        //double widthInDegrees = topRightCornerLong - bottomLeftCornerLong;
+        //scaleX = (double)width / widthInDegrees;
 
-        double heightInDegrees = topRightCornerLat - bottomLeftCornerLat;
-        scaleY = (double)height / heightInDegrees;
+        //double heightInDegrees = topRightCornerLat - bottomLeftCornerLat;
+        //scaleY = (double)height / heightInDegrees;
         //AddCoordinate(44.565631d, -123.276036d);
         lineTarget = Vector3.zero;
+
+        foreach(Transform child in mapsParent) {
+            if (!child.gameObject.activeSelf) continue;
+            currMap = child.GetComponent<MapData>();
+        }
     }
 
     private void Update()
@@ -92,36 +92,50 @@ public class MapController : MonoBehaviour
         obj.position = position;
     }
 
-    public Vector2 GetWorldPosition(double lat, double lon)
-    {
-        double xFromBLCornerInDeg = lon - bottomLeftCornerLong;
-        double yFromBLCornerInDeg = lat - bottomLeftCornerLat;
+    public Vector2 GetWorldPosition(double lat, double lon) {
+        const double centerLat = 44.56479;
+        const double centerLon = -123.27381;
+        const int zoom = 19;
+        const float unityUnitsPerTile = 1.0f;
 
-        double xFromBLCornerInM = xFromBLCornerInDeg * scaleX;
-        double yFromBLCornerInM = yFromBLCornerInDeg * scaleY;
+        double iconTileX = LonToTileX(lon, zoom);
+        double iconTileY = LatToTileY(lat, zoom);
+        double centerTileX = LonToTileX(centerLon, zoom);
+        double centerTileY = LatToTileY(centerLat, zoom);
 
-        double worldUnitsX = xFromBLCornerInM - width / 2.0;
-        double worldUnitsY = yFromBLCornerInM - height / 2.0;
+        // Subtract 0.5 to align tile centers to Unity (0,0)
+        double deltaX = (iconTileX - centerTileX) * unityUnitsPerTile;
+        double deltaY = (iconTileY - centerTileY) * unityUnitsPerTile;
 
-        return new Vector2((float)worldUnitsX, (float)worldUnitsY);
+        return new Vector2((float)deltaX, (float)-deltaY);
+    }
+
+
+    double LonToTileX(double lon, int zoom) {
+        return (lon + 180.0) / 360.0 * (1 << zoom);
+    }
+
+    double LatToTileY(double lat, int zoom) {
+        double latRad = lat * Math.PI / 180.0;
+        return (1.0 - Math.Log(Math.Tan(latRad) + 1.0 / Math.Cos(latRad)) / Math.PI) / 2.0 * (1 << zoom);
     }
 
 
     public List<double> GetLatLonFromWorldPosition(Vector2 worldPos)
     {
         // Convert world coordinates to meters
-        float xFromBLCornerInM = worldPos.x + width / 2f;
-        float yFromBLCornerInM = worldPos.y + height / 2f;
+        //float xFromBLCornerInM = worldPos.x + width / 2f;
+        //float yFromBLCornerInM = worldPos.y + height / 2f;
 
-        // Convert meters to degrees
-        double xFromBLCornerInDeg = xFromBLCornerInM / scaleX;
-        double yFromBLCornerInDeg = yFromBLCornerInM / scaleY;
+        //// Convert meters to degrees
+        //double xFromBLCornerInDeg = xFromBLCornerInM / scaleX;
+        //double yFromBLCornerInDeg = yFromBLCornerInM / scaleY;
 
         // Compute latitude and longitude
-        double lon = bottomLeftCornerLong + xFromBLCornerInDeg;
-        double lat = bottomLeftCornerLat + yFromBLCornerInDeg;
+        //double lon = bottomLeftCornerLong + xFromBLCornerInDeg;
+        //double lat = bottomLeftCornerLat + yFromBLCornerInDeg;
 
-        List<double> results = new List<double>() { lat, lon };
+        List<double> results = new List<double>() { 0, 0 };
         return results;
     }
 

@@ -17,11 +17,6 @@ public class MapLoader : MonoBehaviour
     }
 
     public void Run() {
-        Start();
-    }
-
-
-    private void Start() {
 #if UNITY_EDITOR
         for (int i = activeMap.childCount - 1; i >= 0; i--) {
             Transform child = activeMap.GetChild(i);
@@ -29,7 +24,7 @@ public class MapLoader : MonoBehaviour
         }
 #endif
 
-            string[] files = Directory.GetFiles(folderPath);
+        string[] files = Directory.GetFiles(folderPath);
         List<string> filteredFiles = new();
         foreach (var x in files) {
             if (x.Contains(".meta")) continue;
@@ -41,21 +36,30 @@ public class MapLoader : MonoBehaviour
         int fileCount = (int)Mathf.Sqrt(filteredFiles.Count);
         Debug.Log("Map is " + fileCount + "x" + fileCount);
 
-        foreach(var x in filteredFiles) {
-            Debug.Log(x);
+        foreach (var filename in filteredFiles) {
+            var parts = filename.Split("~");
+            var coords = parts[1].Split(",");
+            //Debug.Log(coords[0] + ", " + coords[1]);
+            int x = int.Parse(coords[0]);
+            int y = int.Parse(coords[1]);
+            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(filename);
+            Vector3 currPos = new Vector3(x, -y, 0);
+            var obj = Instantiate(mapTile, activeMap);
+            obj.transform.position = currPos;
+            obj.GetComponent<SpriteRenderer>().sprite = sprite;
         }
+
+        int half = fileCount / 2;
+
 
         for (int x = 0; x < fileCount; x++) {
             for (int y = 0; y < fileCount; y++) {
-                int spriteIndex = y + x * fileCount;
-                Debug.Log(spriteIndex);
-                Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(filteredFiles[spriteIndex]);
-                Vector3 currPos = new Vector3(x, -y, 0);
-                var obj = Instantiate(mapTile, activeMap);
-                obj.transform.position = currPos;
-                obj.GetComponent<SpriteRenderer>().sprite = sprite;
             }
         }
+    }
+
+
+    private void Start() {
     }
 }
 
@@ -68,5 +72,12 @@ public class MyComponentEditor : Editor {
         if (GUILayout.Button("Import")) {
             myTarget.Run();
         }
+    }
+}
+
+public class CustomImporter : AssetPostprocessor {
+    void OnPreprocessTexture() {
+        TextureImporter importer = (TextureImporter)assetImporter;
+        importer.spritePixelsPerUnit = 256f; // Set your preferred default here
     }
 }
