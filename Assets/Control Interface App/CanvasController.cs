@@ -4,6 +4,7 @@ public class CanvasController : MonoBehaviour
 {
     public GameObject MainCanvas;
     public GameObject CameraCanvas;
+    public GameObject StatusCanvas;
 
     public void SwitchToMainCanvas()
     {
@@ -11,6 +12,7 @@ public class CanvasController : MonoBehaviour
 
         MainCanvas.SetActive(true);
         CameraCanvas.SetActive(false);
+        StatusCanvas.SetActive(false);
     }
 
     public void SwitchToCameraCanvas()
@@ -19,6 +21,15 @@ public class CanvasController : MonoBehaviour
 
         MainCanvas.SetActive(false);
         CameraCanvas.SetActive(true);
+        StatusCanvas.SetActive(false);
+    }
+    public void SwitchToStatusCanvas()
+    {
+        Debug.Log("Switching to Status Canvas");
+
+        MainCanvas.SetActive(false);
+        CameraCanvas.SetActive(false);
+        StatusCanvas.SetActive(true);
     }
 }
 

@@ -6,7 +6,13 @@ using UnityEngine.UI;
 public class MJPEGUdpReceiverNoThread : MonoBehaviour
 {
     public int listenPort = 5000;
-    public RawImage targetRawImage;
+    public int timeoutCount = 60;
+    public Texture timeoutTexture;
+    public RawImage cameraImage;
+    
+    
+    private int count = 0;
+    
 
     private UdpClient udpClient;
     private IPEndPoint remoteEP;
@@ -15,7 +21,7 @@ public class MJPEGUdpReceiverNoThread : MonoBehaviour
 
     void Start()
     {
-        if (targetRawImage == null)
+        if (cameraImage == null)
         {
             Debug.LogError("Please assign a RawImage UI element to display the video.");
             enabled = false;
@@ -35,17 +41,18 @@ public class MJPEGUdpReceiverNoThread : MonoBehaviour
         {
             if (udpClient.Available > 0)
             {
+                count = 0;
                 byte[] data = udpClient.Receive(ref remoteEP);
                 if (data != null && data.Length > 0)
                 {
                     bool loaded = receivedTexture.LoadImage(data);
                     if (loaded)
                     {
-                        targetRawImage.texture = receivedTexture;
+                        cameraImage.texture = receivedTexture;
 
                         // Optional: adjust aspect ratio to fit
                         float aspectRatio = (float)receivedTexture.width / receivedTexture.height;
-                        RectTransform rt = targetRawImage.GetComponent<RectTransform>();
+                        RectTransform rt = cameraImage.GetComponent<RectTransform>();
                         rt.sizeDelta = new Vector2(rt.sizeDelta.y * aspectRatio, rt.sizeDelta.y);
                     }
                     else
@@ -53,6 +60,15 @@ public class MJPEGUdpReceiverNoThread : MonoBehaviour
                         Debug.LogWarning("Failed to load JPEG image.");
                     }
                 }
+            }
+            else {
+            	count += 1;
+            	if (count >= timeoutCount){
+            	    if (cameraImage.texture != timeoutTexture) {
+            	        cameraImage.texture = timeoutTexture;
+            	    }
+            	    count = timeoutCount;
+            	}
             }
         }
         catch (SocketException)
