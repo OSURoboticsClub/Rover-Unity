@@ -36,7 +36,10 @@ public class TcpMessageReceiver : MonoBehaviour
     private void ProcessMessage(string message)
     {
         var parts = message.Split(";");
-        if (parts[0] == "tower/status/gps"){
+        if (parts[0] == "/nodetopiclisten"){
+            NodeTopicListenHandler.inst.ReceiveNodeTopicListen(message);
+        }
+        else if (parts[0] == "tower/status/gps"){
             gpsReceived.Invoke(message);
         }
         else if (parts[0] == "imu/data/heading")

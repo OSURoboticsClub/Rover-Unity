@@ -1,0 +1,45 @@
+{
+    "name": "GameController",
+    "maps": [
+        {
+            "name": "DriveControl",
+            "id": "e5e5d280-958e-44dc-b7ee-5e2d80762027",
+            "actions": [
+                {
+                    "name": "Joy",
+                    "type": "Value",
+                    "id": "7234f501-1f21-466d-8f1c-b44d38d99fcd",
+                    "expectedControlType": "Vector2",
+                    "processors": "StickDeadzone",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fe38a6ed-b9a6-4ff4-a8d4-6317f2c35cc6",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Joy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "22a68926-5f23-443c-8fb6-22e8328ae7e5",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Joy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -1,0 +1,11 @@
+{
+    "name": "GameControls",
+    "maps": [],
+    "controlSchemes": [
+        {
+            "name": "test",
+            "bindingGroup": "test",
+            "devices": []
+        }
+    ]
+}

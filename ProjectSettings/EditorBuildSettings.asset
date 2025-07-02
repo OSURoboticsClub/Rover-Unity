@@ -9,4 +9,5 @@ EditorBuildSettings:
     path: Assets/Control Interface App/Application.unity
     guid: 0c3229bafb8c8656eba79363ee1021fc
   m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 368490af23b7503cbbc6816ca3e12d2f, type: 2}
     com.unity.renderstreaming.settings: {fileID: 11400000, guid: eaaad242393318e4f85c45e69c8837f0, type: 2}

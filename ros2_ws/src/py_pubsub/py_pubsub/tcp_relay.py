@@ -17,8 +17,7 @@ from sensor_msgs.msg import JointState
 from std_msgs.msg import Float32MultiArray
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
-
-
+from rob499_rover_status_ui_interfaces.msg import NodesTopics
 
 # UDP Configuration for Image Transmission
 UDP_IP = "127.0.0.1"  # Change to the Unity application's IP
@@ -52,7 +51,8 @@ class TCPServer(Node):
         self.add_subscription('imu/data/heading', Float32)
         self.add_subscription('autonomous/simple_position', String)
         self.add_subscription('/joint_states', JointState)
-
+        self.add_subscription('/nodetopiclisten', NodesTopics)
+      
         qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
 
         self.img_subscription = self.create_subscription(
@@ -122,6 +122,9 @@ class TCPServer(Node):
             message = topic_name + ";"
             if topic_name == "tower/status/gps":
                 message += f"{msg.rover_latitude};{msg.rover_longitude}"
+            elif topic_name =="/nodetopiclisten":
+                for i in range(len(msg.topic_name)):
+                    message += f"{msg.topic_name[i]},{msg.topic_status[i]};"
             elif topic_name == "imu/data/heading":
                 message += f"{msg.data}"
             elif topic_name == "imu/data":

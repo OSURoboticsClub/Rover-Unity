@@ -1,5 +1,0 @@
-  File "/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/auton_controller.py", line 133
-    self.get_logger().info(f'Thus the offset is: ' str(18.0 - roll_degrees))
-                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-

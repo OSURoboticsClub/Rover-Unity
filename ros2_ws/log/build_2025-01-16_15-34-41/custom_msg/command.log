@@ -1,2 +1,0 @@
-Invoking command in '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg': /usr/bin/cmake --build /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg -- -j20 -l20
-Invoked command in '/home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg' returned '2': /usr/bin/cmake --build /home/matt/Documents/GitHub/Rover-Unity/ros2_ws/build/custom_msg -- -j20 -l20
