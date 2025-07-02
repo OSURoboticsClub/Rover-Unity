@@ -17,16 +17,13 @@ from sensor_msgs.msg import JointState
 from std_msgs.msg import Float32MultiArray
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
-<<<<<<< HEAD
 from rob499_rover_status_ui_interfaces.msg import NodesTopics
 
-=======
 
 # This node handles communication between the Unity app and ROS2
 # I learned that it's technically not a relay, it's a bridge, but I'm not changing the name now :)
 
 # We don't use this node for sending images to Unity anymore! We use gstreamer
->>>>>>> 821499fe86100db82084d71bc19fb673540c2dd1
 # UDP Configuration for Image Transmission
 UDP_IP = "127.0.0.1" 
 UDP_PORT = 12345
@@ -61,28 +58,10 @@ class TCPServer(Node):
         self.add_subscription('imu/data/heading', Float32)
         self.add_subscription('autonomous/simple_position', String)
         self.add_subscription('/joint_states', JointState)
-<<<<<<< HEAD
         self.add_subscription('/nodetopiclisten', NodesTopics)
       
         qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
 
-        self.img_subscription = self.create_subscription(
-            Image,
-            '/cameras/main_navigation/image_256x144',
-            self.ros_img_callback,
-            qos_profile
-        )
-=======
-
-        # qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
-        # self.img_subscription = self.create_subscription(
-        #     Image,
-        #     '/cameras/main_navigation/image_256x144',
-        #     self.ros_img_callback,
-        #     qos_profile
-        # )
->>>>>>> 821499fe86100db82084d71bc19fb673540c2dd1
-        self.frame_number = 0
 
     # def ros_img_callback(self, msg):
     #     self.send_image_over_udp(msg)
@@ -140,7 +119,7 @@ class TCPServer(Node):
             return
             
         try: # Determine message type and construct the string accordingly
-            message = "|" + topic_name + ";"
+            message = topic_name + ";"
             if topic_name == "tower/status/gps":
                 message += f"{msg.rover_latitude};{msg.rover_longitude}"
             elif topic_name =="/nodetopiclisten":
@@ -299,4 +278,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
