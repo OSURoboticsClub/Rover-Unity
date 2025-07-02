@@ -17,10 +17,18 @@ from sensor_msgs.msg import JointState
 from std_msgs.msg import Float32MultiArray
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
+<<<<<<< HEAD
 from rob499_rover_status_ui_interfaces.msg import NodesTopics
 
+=======
+
+# This node handles communication between the Unity app and ROS2
+# I learned that it's technically not a relay, it's a bridge, but I'm not changing the name now :)
+
+# We don't use this node for sending images to Unity anymore! We use gstreamer
+>>>>>>> 821499fe86100db82084d71bc19fb673540c2dd1
 # UDP Configuration for Image Transmission
-UDP_IP = "127.0.0.1"  # Change to the Unity application's IP
+UDP_IP = "127.0.0.1" 
 UDP_PORT = 12345
 PACKET_SIZE = 4096
 HEADER_SIZE = 16
@@ -32,25 +40,28 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 class TCPServer(Node):
 
     def __init__(self):
-        super().__init__('tcp_server_with_ros2')
+        super().__init__('tcp_relay')
         self.topic_publishers = {}  # Dictionary to store topic_name -> publisher
+
+        # when we receive a message from Unity, sometimes it has to be converted to a ROS2 msg
+        # this map tells what topics must be converted
         self.message_type_map = {
             'set_joint_angles': Float32MultiArray,
             'joy2': Joy
-        }  # Map of topic names to message types
+        } 
+
         self.subscribers = []
         self.tcp_client = None
         self.get_logger().info('TCP server initialized.')
         self.bridge = CvBridge()
 
-        # Add subscriptions to multiple topics
-        #self.add_subscription('imu/data', Imu)
-
+        # topics we subscribe to will automatically  have their data sent over to Unity
         self.add_subscription('autonomous/auton_control_response', String)
         self.add_subscription('tower/status/gps', GPSStatusMessage)
         self.add_subscription('imu/data/heading', Float32)
         self.add_subscription('autonomous/simple_position', String)
         self.add_subscription('/joint_states', JointState)
+<<<<<<< HEAD
         self.add_subscription('/nodetopiclisten', NodesTopics)
       
         qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
@@ -61,10 +72,20 @@ class TCPServer(Node):
             self.ros_img_callback,
             qos_profile
         )
+=======
+
+        # qos_profile = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
+        # self.img_subscription = self.create_subscription(
+        #     Image,
+        #     '/cameras/main_navigation/image_256x144',
+        #     self.ros_img_callback,
+        #     qos_profile
+        # )
+>>>>>>> 821499fe86100db82084d71bc19fb673540c2dd1
         self.frame_number = 0
 
-    def ros_img_callback(self, msg):
-        self.send_image_over_udp(msg)
+    # def ros_img_callback(self, msg):
+    #     self.send_image_over_udp(msg)
 
 
     def add_subscription(self, topic_name, message_type):
@@ -119,7 +140,7 @@ class TCPServer(Node):
             return
             
         try: # Determine message type and construct the string accordingly
-            message = topic_name + ";"
+            message = "|" + topic_name + ";"
             if topic_name == "tower/status/gps":
                 message += f"{msg.rover_latitude};{msg.rover_longitude}"
             elif topic_name =="/nodetopiclisten":
@@ -186,6 +207,7 @@ class TCPServer(Node):
                     continue
 
                 if topic_name == "joy2":
+                    # can't remember what this is for, oops!
                     ros_msg = Joy()
                     ros_msg.axes = [0.0]
                     ros_msg.buttons = [0,0,0,0,0,0,0,0,0,0,0]
@@ -216,7 +238,7 @@ class TCPServer(Node):
                     continue
 
                 publisher.publish(ros_msg)
-                self.get_logger().info(f"Published to ROS topic: {topic_name}")
+                self.get_logger().info(f"Published to {topic_name}: {ros_msg.data}")
 
         except Exception as e:
             self.get_logger().error(f"Error handling client: {e}")
@@ -249,20 +271,6 @@ class TCPServer(Node):
             finally:
                 if rclpy.ok():
                     self.get_logger().info("Shutting down TCP server.")
-
-    def enable_taranis(self):
-        twist_msg = Twist()
-        twist_msg.linear.x = 0.0
-        twist_msg.linear.y = 0.0
-        twist_msg.linear.z = 0.0
-        twist_msg.angular.x = 0.0
-        twist_msg.angular.y = 0.0
-        twist_msg.angular.z = 0.0
-        custom_msg = DriveCommandMessage()
-        custom_msg.controller_present = False
-        custom_msg.ignore_drive_control = False
-        custom_msg.drive_twist = twist_msg
-        self.drive_publisher.publish(custom_msg)
 
 shutdown_called = False
 

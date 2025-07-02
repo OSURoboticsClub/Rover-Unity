@@ -7,6 +7,10 @@ using System.Threading;
 
 public class TcpController : MonoBehaviour
 {
+    // Handles low level communication over a port (65432) with the tcp_relay node
+    // Communication is bidirectional so we can send data to the ROS2 ecosystem over this
+    //      as well as receive data from it
+
     public static TcpController inst;
     private TcpClient client;
     private NetworkStream stream;
@@ -14,7 +18,6 @@ public class TcpController : MonoBehaviour
     private bool isRunning;
     public bool disconnected;
 
-    // Start is called before the first frame update
     public void Reconnect()
     {
         Start();
@@ -31,7 +34,7 @@ public class TcpController : MonoBehaviour
             stream = client.GetStream();
             isRunning = true;
 
-            Debug.Log($"Connected to server at {server}:{port}");
+            Debug.Log($"Connected to tcp_relay at {server}:{port}");
             disconnected = false;
 
             // Start a thread to listen for incoming data
@@ -94,8 +97,8 @@ public class TcpController : MonoBehaviour
                     if (bytesRead > 0)
                     {
                         string receivedMessage = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                        // Trigger a callback or handle the received data
-                        OnDataReceived(receivedMessage);
+                        // Handle the data received from the tcp_relay node
+                        TcpMessageReceiver.inst.Receive(receivedMessage);
                     }
                 }
             }
@@ -106,11 +109,6 @@ public class TcpController : MonoBehaviour
         }
     }
 
-    private void OnDataReceived(string data)
-    {
-        // Handle the data received from the server
-        TcpMessageReceiver.inst.Receive(data);
-    }
 
     void OnDestroy()
     {
