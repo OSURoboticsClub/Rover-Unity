@@ -28,11 +28,146 @@ public partial class @GameController: IInputActionCollection2, IDisposable
             ""id"": ""e5e5d280-958e-44dc-b7ee-5e2d80762027"",
             ""actions"": [
                 {
-                    ""name"": ""Joy"",
+                    ""name"": ""leftJoy"",
                     ""type"": ""Value"",
                     ""id"": ""7234f501-1f21-466d-8f1c-b44d38d99fcd"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": ""StickDeadzone"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""rightJoy"",
+                    ""type"": ""Value"",
+                    ""id"": ""3518dbae-2f15-4a5a-b590-2aab1bddf073"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""StickDeadzone"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""buttonEast"",
+                    ""type"": ""Button"",
+                    ""id"": ""bdc69f32-fe22-4ec3-a160-cc69355646d4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""buttonWest"",
+                    ""type"": ""Button"",
+                    ""id"": ""f5303fbc-c305-40d6-abe6-08e804f78123"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""buttonNorth"",
+                    ""type"": ""Button"",
+                    ""id"": ""6d6ac9a7-98db-47fe-b401-27fb93ef6782"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""buttonSouth"",
+                    ""type"": ""Button"",
+                    ""id"": ""f2d452ea-d044-4454-b6d8-ab07ab5ea008"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""dpadEast"",
+                    ""type"": ""Button"",
+                    ""id"": ""4003e283-b131-4d35-a4d3-c8ba0f036159"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""dpadWest"",
+                    ""type"": ""Button"",
+                    ""id"": ""d23cacb8-0220-4177-b53a-2ae820af60b8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""dpadNorth"",
+                    ""type"": ""Button"",
+                    ""id"": ""6bb4788b-db16-447e-b6c4-f2a1924a9566"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""dpadSouth"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e3bfdc7-44f2-4e5c-a393-255e0168706a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""start"",
+                    ""type"": ""Button"",
+                    ""id"": ""031bfc97-93d8-4937-acd7-911b77c012c5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""select"",
+                    ""type"": ""Button"",
+                    ""id"": ""f0fd069d-e2c6-4832-b935-e458ba7711d1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""shoulderWest"",
+                    ""type"": ""Button"",
+                    ""id"": ""303f47dc-19af-4d82-8470-6c3985f9d3ad"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""shoulderEast"",
+                    ""type"": ""Button"",
+                    ""id"": ""d2a2a12c-718e-443e-af6d-749c4d926701"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""triggerEast"",
+                    ""type"": ""Value"",
+                    ""id"": ""17b8509c-d5b0-49b7-b880-6c7036064840"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""triggerWest"",
+                    ""type"": ""Value"",
+                    ""id"": ""b59e049b-c67b-4427-8123-a7b2ed3f0ae3"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 }
@@ -43,9 +178,9 @@ public partial class @GameController: IInputActionCollection2, IDisposable
                     ""id"": ""fe38a6ed-b9a6-4ff4-a8d4-6317f2c35cc6"",
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone"",
                     ""groups"": """",
-                    ""action"": ""Joy"",
+                    ""action"": ""leftJoy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -54,9 +189,191 @@ public partial class @GameController: IInputActionCollection2, IDisposable
                     ""id"": ""22a68926-5f23-443c-8fb6-22e8328ae7e5"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
+                    ""processors"": ""StickDeadzone"",
+                    ""groups"": """",
+                    ""action"": ""rightJoy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6e2d035-43a4-402c-b22e-8b3add0e8e39"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Joy"",
+                    ""action"": ""buttonEast"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f49c0a2f-6f0f-4fa6-b7a7-b0de9d7420b6"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""buttonWest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a8a6e1f-b78b-49f4-8585-8c2c93f86a18"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""buttonNorth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5dc7367a-acb9-424e-8373-18c93ec9d91e"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""buttonSouth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75579814-b70b-4bd6-a917-65c13a3a285c"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dpadEast"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f64a2dde-25e9-4c64-9618-517328ea5a63"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dpadWest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f05b85bc-afc6-4578-937b-7c5ab9af77d5"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dpadNorth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2eafde30-b418-4297-b253-7b0c4aeb8c42"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dpadSouth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3e8f8a4-4e48-4439-9b1b-8e1254550459"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoulderWest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a0881f3-a6c6-41d8-abcf-10ad4d4cb355"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoulderEast"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""995bece6-c93a-4d8e-8feb-00d91759fd1d"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""triggerEast"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3a7988ed-0d76-4510-b512-dac5ab4f469e"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""triggerWest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f7dd8ea-cdba-4753-b1d7-1dec4e0d0d5e"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""start"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f63068e-473e-4246-8533-e9928da2877c"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""BoardControl"",
+            ""id"": ""b7c0da5e-d23c-496a-aa31-8bc5a687cd54"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e5c7c35-7ace-4164-9ed6-9a39954d6e45"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9700d414-287f-416b-8e9e-b1953855a10c"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -67,7 +384,25 @@ public partial class @GameController: IInputActionCollection2, IDisposable
 }");
         // DriveControl
         m_DriveControl = asset.FindActionMap("DriveControl", throwIfNotFound: true);
-        m_DriveControl_Joy = m_DriveControl.FindAction("Joy", throwIfNotFound: true);
+        m_DriveControl_leftJoy = m_DriveControl.FindAction("leftJoy", throwIfNotFound: true);
+        m_DriveControl_rightJoy = m_DriveControl.FindAction("rightJoy", throwIfNotFound: true);
+        m_DriveControl_buttonEast = m_DriveControl.FindAction("buttonEast", throwIfNotFound: true);
+        m_DriveControl_buttonWest = m_DriveControl.FindAction("buttonWest", throwIfNotFound: true);
+        m_DriveControl_buttonNorth = m_DriveControl.FindAction("buttonNorth", throwIfNotFound: true);
+        m_DriveControl_buttonSouth = m_DriveControl.FindAction("buttonSouth", throwIfNotFound: true);
+        m_DriveControl_dpadEast = m_DriveControl.FindAction("dpadEast", throwIfNotFound: true);
+        m_DriveControl_dpadWest = m_DriveControl.FindAction("dpadWest", throwIfNotFound: true);
+        m_DriveControl_dpadNorth = m_DriveControl.FindAction("dpadNorth", throwIfNotFound: true);
+        m_DriveControl_dpadSouth = m_DriveControl.FindAction("dpadSouth", throwIfNotFound: true);
+        m_DriveControl_start = m_DriveControl.FindAction("start", throwIfNotFound: true);
+        m_DriveControl_select = m_DriveControl.FindAction("select", throwIfNotFound: true);
+        m_DriveControl_shoulderWest = m_DriveControl.FindAction("shoulderWest", throwIfNotFound: true);
+        m_DriveControl_shoulderEast = m_DriveControl.FindAction("shoulderEast", throwIfNotFound: true);
+        m_DriveControl_triggerEast = m_DriveControl.FindAction("triggerEast", throwIfNotFound: true);
+        m_DriveControl_triggerWest = m_DriveControl.FindAction("triggerWest", throwIfNotFound: true);
+        // BoardControl
+        m_BoardControl = asset.FindActionMap("BoardControl", throwIfNotFound: true);
+        m_BoardControl_Newaction = m_BoardControl.FindAction("New action", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -129,12 +464,42 @@ public partial class @GameController: IInputActionCollection2, IDisposable
     // DriveControl
     private readonly InputActionMap m_DriveControl;
     private List<IDriveControlActions> m_DriveControlActionsCallbackInterfaces = new List<IDriveControlActions>();
-    private readonly InputAction m_DriveControl_Joy;
+    private readonly InputAction m_DriveControl_leftJoy;
+    private readonly InputAction m_DriveControl_rightJoy;
+    private readonly InputAction m_DriveControl_buttonEast;
+    private readonly InputAction m_DriveControl_buttonWest;
+    private readonly InputAction m_DriveControl_buttonNorth;
+    private readonly InputAction m_DriveControl_buttonSouth;
+    private readonly InputAction m_DriveControl_dpadEast;
+    private readonly InputAction m_DriveControl_dpadWest;
+    private readonly InputAction m_DriveControl_dpadNorth;
+    private readonly InputAction m_DriveControl_dpadSouth;
+    private readonly InputAction m_DriveControl_start;
+    private readonly InputAction m_DriveControl_select;
+    private readonly InputAction m_DriveControl_shoulderWest;
+    private readonly InputAction m_DriveControl_shoulderEast;
+    private readonly InputAction m_DriveControl_triggerEast;
+    private readonly InputAction m_DriveControl_triggerWest;
     public struct DriveControlActions
     {
         private @GameController m_Wrapper;
         public DriveControlActions(@GameController wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Joy => m_Wrapper.m_DriveControl_Joy;
+        public InputAction @leftJoy => m_Wrapper.m_DriveControl_leftJoy;
+        public InputAction @rightJoy => m_Wrapper.m_DriveControl_rightJoy;
+        public InputAction @buttonEast => m_Wrapper.m_DriveControl_buttonEast;
+        public InputAction @buttonWest => m_Wrapper.m_DriveControl_buttonWest;
+        public InputAction @buttonNorth => m_Wrapper.m_DriveControl_buttonNorth;
+        public InputAction @buttonSouth => m_Wrapper.m_DriveControl_buttonSouth;
+        public InputAction @dpadEast => m_Wrapper.m_DriveControl_dpadEast;
+        public InputAction @dpadWest => m_Wrapper.m_DriveControl_dpadWest;
+        public InputAction @dpadNorth => m_Wrapper.m_DriveControl_dpadNorth;
+        public InputAction @dpadSouth => m_Wrapper.m_DriveControl_dpadSouth;
+        public InputAction @start => m_Wrapper.m_DriveControl_start;
+        public InputAction @select => m_Wrapper.m_DriveControl_select;
+        public InputAction @shoulderWest => m_Wrapper.m_DriveControl_shoulderWest;
+        public InputAction @shoulderEast => m_Wrapper.m_DriveControl_shoulderEast;
+        public InputAction @triggerEast => m_Wrapper.m_DriveControl_triggerEast;
+        public InputAction @triggerWest => m_Wrapper.m_DriveControl_triggerWest;
         public InputActionMap Get() { return m_Wrapper.m_DriveControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -144,16 +509,106 @@ public partial class @GameController: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_DriveControlActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_DriveControlActionsCallbackInterfaces.Add(instance);
-            @Joy.started += instance.OnJoy;
-            @Joy.performed += instance.OnJoy;
-            @Joy.canceled += instance.OnJoy;
+            @leftJoy.started += instance.OnLeftJoy;
+            @leftJoy.performed += instance.OnLeftJoy;
+            @leftJoy.canceled += instance.OnLeftJoy;
+            @rightJoy.started += instance.OnRightJoy;
+            @rightJoy.performed += instance.OnRightJoy;
+            @rightJoy.canceled += instance.OnRightJoy;
+            @buttonEast.started += instance.OnButtonEast;
+            @buttonEast.performed += instance.OnButtonEast;
+            @buttonEast.canceled += instance.OnButtonEast;
+            @buttonWest.started += instance.OnButtonWest;
+            @buttonWest.performed += instance.OnButtonWest;
+            @buttonWest.canceled += instance.OnButtonWest;
+            @buttonNorth.started += instance.OnButtonNorth;
+            @buttonNorth.performed += instance.OnButtonNorth;
+            @buttonNorth.canceled += instance.OnButtonNorth;
+            @buttonSouth.started += instance.OnButtonSouth;
+            @buttonSouth.performed += instance.OnButtonSouth;
+            @buttonSouth.canceled += instance.OnButtonSouth;
+            @dpadEast.started += instance.OnDpadEast;
+            @dpadEast.performed += instance.OnDpadEast;
+            @dpadEast.canceled += instance.OnDpadEast;
+            @dpadWest.started += instance.OnDpadWest;
+            @dpadWest.performed += instance.OnDpadWest;
+            @dpadWest.canceled += instance.OnDpadWest;
+            @dpadNorth.started += instance.OnDpadNorth;
+            @dpadNorth.performed += instance.OnDpadNorth;
+            @dpadNorth.canceled += instance.OnDpadNorth;
+            @dpadSouth.started += instance.OnDpadSouth;
+            @dpadSouth.performed += instance.OnDpadSouth;
+            @dpadSouth.canceled += instance.OnDpadSouth;
+            @start.started += instance.OnStart;
+            @start.performed += instance.OnStart;
+            @start.canceled += instance.OnStart;
+            @select.started += instance.OnSelect;
+            @select.performed += instance.OnSelect;
+            @select.canceled += instance.OnSelect;
+            @shoulderWest.started += instance.OnShoulderWest;
+            @shoulderWest.performed += instance.OnShoulderWest;
+            @shoulderWest.canceled += instance.OnShoulderWest;
+            @shoulderEast.started += instance.OnShoulderEast;
+            @shoulderEast.performed += instance.OnShoulderEast;
+            @shoulderEast.canceled += instance.OnShoulderEast;
+            @triggerEast.started += instance.OnTriggerEast;
+            @triggerEast.performed += instance.OnTriggerEast;
+            @triggerEast.canceled += instance.OnTriggerEast;
+            @triggerWest.started += instance.OnTriggerWest;
+            @triggerWest.performed += instance.OnTriggerWest;
+            @triggerWest.canceled += instance.OnTriggerWest;
         }
 
         private void UnregisterCallbacks(IDriveControlActions instance)
         {
-            @Joy.started -= instance.OnJoy;
-            @Joy.performed -= instance.OnJoy;
-            @Joy.canceled -= instance.OnJoy;
+            @leftJoy.started -= instance.OnLeftJoy;
+            @leftJoy.performed -= instance.OnLeftJoy;
+            @leftJoy.canceled -= instance.OnLeftJoy;
+            @rightJoy.started -= instance.OnRightJoy;
+            @rightJoy.performed -= instance.OnRightJoy;
+            @rightJoy.canceled -= instance.OnRightJoy;
+            @buttonEast.started -= instance.OnButtonEast;
+            @buttonEast.performed -= instance.OnButtonEast;
+            @buttonEast.canceled -= instance.OnButtonEast;
+            @buttonWest.started -= instance.OnButtonWest;
+            @buttonWest.performed -= instance.OnButtonWest;
+            @buttonWest.canceled -= instance.OnButtonWest;
+            @buttonNorth.started -= instance.OnButtonNorth;
+            @buttonNorth.performed -= instance.OnButtonNorth;
+            @buttonNorth.canceled -= instance.OnButtonNorth;
+            @buttonSouth.started -= instance.OnButtonSouth;
+            @buttonSouth.performed -= instance.OnButtonSouth;
+            @buttonSouth.canceled -= instance.OnButtonSouth;
+            @dpadEast.started -= instance.OnDpadEast;
+            @dpadEast.performed -= instance.OnDpadEast;
+            @dpadEast.canceled -= instance.OnDpadEast;
+            @dpadWest.started -= instance.OnDpadWest;
+            @dpadWest.performed -= instance.OnDpadWest;
+            @dpadWest.canceled -= instance.OnDpadWest;
+            @dpadNorth.started -= instance.OnDpadNorth;
+            @dpadNorth.performed -= instance.OnDpadNorth;
+            @dpadNorth.canceled -= instance.OnDpadNorth;
+            @dpadSouth.started -= instance.OnDpadSouth;
+            @dpadSouth.performed -= instance.OnDpadSouth;
+            @dpadSouth.canceled -= instance.OnDpadSouth;
+            @start.started -= instance.OnStart;
+            @start.performed -= instance.OnStart;
+            @start.canceled -= instance.OnStart;
+            @select.started -= instance.OnSelect;
+            @select.performed -= instance.OnSelect;
+            @select.canceled -= instance.OnSelect;
+            @shoulderWest.started -= instance.OnShoulderWest;
+            @shoulderWest.performed -= instance.OnShoulderWest;
+            @shoulderWest.canceled -= instance.OnShoulderWest;
+            @shoulderEast.started -= instance.OnShoulderEast;
+            @shoulderEast.performed -= instance.OnShoulderEast;
+            @shoulderEast.canceled -= instance.OnShoulderEast;
+            @triggerEast.started -= instance.OnTriggerEast;
+            @triggerEast.performed -= instance.OnTriggerEast;
+            @triggerEast.canceled -= instance.OnTriggerEast;
+            @triggerWest.started -= instance.OnTriggerWest;
+            @triggerWest.performed -= instance.OnTriggerWest;
+            @triggerWest.canceled -= instance.OnTriggerWest;
         }
 
         public void RemoveCallbacks(IDriveControlActions instance)
@@ -171,8 +626,73 @@ public partial class @GameController: IInputActionCollection2, IDisposable
         }
     }
     public DriveControlActions @DriveControl => new DriveControlActions(this);
+
+    // BoardControl
+    private readonly InputActionMap m_BoardControl;
+    private List<IBoardControlActions> m_BoardControlActionsCallbackInterfaces = new List<IBoardControlActions>();
+    private readonly InputAction m_BoardControl_Newaction;
+    public struct BoardControlActions
+    {
+        private @GameController m_Wrapper;
+        public BoardControlActions(@GameController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Newaction => m_Wrapper.m_BoardControl_Newaction;
+        public InputActionMap Get() { return m_Wrapper.m_BoardControl; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BoardControlActions set) { return set.Get(); }
+        public void AddCallbacks(IBoardControlActions instance)
+        {
+            if (instance == null || m_Wrapper.m_BoardControlActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_BoardControlActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        private void UnregisterCallbacks(IBoardControlActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        public void RemoveCallbacks(IBoardControlActions instance)
+        {
+            if (m_Wrapper.m_BoardControlActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IBoardControlActions instance)
+        {
+            foreach (var item in m_Wrapper.m_BoardControlActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_BoardControlActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public BoardControlActions @BoardControl => new BoardControlActions(this);
     public interface IDriveControlActions
     {
-        void OnJoy(InputAction.CallbackContext context);
+        void OnLeftJoy(InputAction.CallbackContext context);
+        void OnRightJoy(InputAction.CallbackContext context);
+        void OnButtonEast(InputAction.CallbackContext context);
+        void OnButtonWest(InputAction.CallbackContext context);
+        void OnButtonNorth(InputAction.CallbackContext context);
+        void OnButtonSouth(InputAction.CallbackContext context);
+        void OnDpadEast(InputAction.CallbackContext context);
+        void OnDpadWest(InputAction.CallbackContext context);
+        void OnDpadNorth(InputAction.CallbackContext context);
+        void OnDpadSouth(InputAction.CallbackContext context);
+        void OnStart(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
+        void OnShoulderWest(InputAction.CallbackContext context);
+        void OnShoulderEast(InputAction.CallbackContext context);
+        void OnTriggerEast(InputAction.CallbackContext context);
+        void OnTriggerWest(InputAction.CallbackContext context);
+    }
+    public interface IBoardControlActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }

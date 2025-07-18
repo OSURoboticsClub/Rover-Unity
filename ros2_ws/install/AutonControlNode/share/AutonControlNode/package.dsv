@@ -1,0 +1,6 @@
+source;share/AutonControlNode/hook/pythonpath.ps1
+source;share/AutonControlNode/hook/pythonpath.dsv
+source;share/AutonControlNode/hook/pythonpath.sh
+source;share/AutonControlNode/hook/ament_prefix_path.ps1
+source;share/AutonControlNode/hook/ament_prefix_path.dsv
+source;share/AutonControlNode/hook/ament_prefix_path.sh

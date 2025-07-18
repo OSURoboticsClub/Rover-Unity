@@ -87,7 +87,7 @@ public class TcpController : MonoBehaviour
     {
         try
         {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[4096];
             while (isRunning && client != null && stream != null)
             {
                 // Check if data is available
