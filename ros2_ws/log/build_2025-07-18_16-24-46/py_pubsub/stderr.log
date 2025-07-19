@@ -1,0 +1,5 @@
+  File "/home/henry/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/tcp_relay.py", line 50
+    'command_control/ground_station_drive':,
+                                          ^
+SyntaxError: expression expected after dictionary key and ':'
+

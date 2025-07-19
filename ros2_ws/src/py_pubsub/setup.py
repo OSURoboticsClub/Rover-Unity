@@ -25,6 +25,7 @@ setup(
             'tcp_relay = py_pubsub.tcp_relay:main',
             'auton_controller = py_pubsub.auton_controller:main',
             'simple_position = py_pubsub.simple_position:main',
+            'udp_relay = py_pubsub.udp_relay:main',
         ],
     },
 )

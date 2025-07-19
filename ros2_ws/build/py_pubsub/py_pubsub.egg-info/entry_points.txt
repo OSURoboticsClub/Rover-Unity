@@ -4,4 +4,5 @@ listener = py_pubsub.subscriber_member_function:main
 simple_position = py_pubsub.simple_position:main
 talker = py_pubsub.publisher_member_function:main
 tcp_relay = py_pubsub.tcp_relay:main
+udp_relay = py_pubsub.udp_relay:main
 

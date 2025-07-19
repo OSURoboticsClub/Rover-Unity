@@ -19,5 +19,6 @@ py_pubsub/hammer_detector.py
 py_pubsub/object_train.py
 py_pubsub/simple_position.py
 py_pubsub/tcp_relay.py
+py_pubsub/udp_relay.py
 py_pubsub/udp_sender_test.py
 resource/py_pubsub

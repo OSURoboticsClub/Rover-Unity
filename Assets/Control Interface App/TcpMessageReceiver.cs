@@ -36,7 +36,11 @@ public class TcpMessageReceiver : MonoBehaviour
     private void ProcessMessage(string message)
     {
         var parts = message.Split(";");
-        if (parts[0] == "/nodetopiclisten"){
+        if(parts[0] == "/odrive_telem"){
+            OdriveListenHandler.inst.ReceiveOdriveTelem(message);
+        }
+
+        else if (parts[0] == "/nodetopiclisten"){
             NodeTopicListenHandler.inst.ReceiveNodeTopicListen(message);
         }
         else if (parts[0] == "tower/status/gps"){

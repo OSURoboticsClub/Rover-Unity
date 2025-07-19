@@ -6,6 +6,7 @@ public class NodeTopicListenHandler : MonoBehaviour
     public static NodeTopicListenHandler inst;
     public GameObject[] myObjects; 
     public GameObject[] nodeObjects;
+   
 
     void Awake()
     {
