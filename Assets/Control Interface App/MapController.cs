@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class MapController : MonoBehaviour
 {
     public static MapController instance;
-    [SerializeField] SpriteRenderer mapSprite;
     [SerializeField] Transform roverIcon;
     public Vector2 lineTarget;
 
@@ -120,23 +119,34 @@ public class MapController : MonoBehaviour
         return (1.0 - Math.Log(Math.Tan(latRad) + 1.0 / Math.Cos(latRad)) / Math.PI) / 2.0 * (1 << zoom);
     }
 
+    double TileXToLon(double x, int zoom) {
+        return x / (1 << zoom) * 360.0 - 180.0;
+    }
+
+    double TileYToLat(double y, int zoom) {
+        double n = Math.PI - 2.0 * Math.PI * y / (1 << zoom);
+        return 180.0 / Math.PI * Math.Atan(Math.Sinh(n));
+    }
+
 
     public List<double> GetLatLonFromWorldPosition(Vector2 worldPos)
     {
-        // Convert world coordinates to meters
-        //float xFromBLCornerInM = worldPos.x + width / 2f;
-        //float yFromBLCornerInM = worldPos.y + height / 2f;
+        const double centerLat = 44.56479;
+        const double centerLon = -123.27381;
+        const int zoom = 19;
+        const float unityUnitsPerTile = 1.0f;
 
-        //// Convert meters to degrees
-        //double xFromBLCornerInDeg = xFromBLCornerInM / scaleX;
-        //double yFromBLCornerInDeg = yFromBLCornerInM / scaleY;
+        double centerTileX = LonToTileX(centerLon, zoom);
+        double centerTileY = LatToTileY(centerLat, zoom);
 
-        // Compute latitude and longitude
-        //double lon = bottomLeftCornerLong + xFromBLCornerInDeg;
-        //double lat = bottomLeftCornerLat + yFromBLCornerInDeg;
+        // Inverse of world position to tile delta
+        double iconTileX = worldPos.x / unityUnitsPerTile + centerTileX;
+        double iconTileY = -worldPos.y / unityUnitsPerTile + centerTileY;
 
-        List<double> results = new List<double>() { 0, 0 };
-        return results;
+        double lon = TileXToLon(iconTileX, zoom);
+        double lat = TileYToLat(iconTileY, zoom);
+
+        return new List<double>() { lat, lon };
     }
 
     public void ReceiveNextDestination(string msg)

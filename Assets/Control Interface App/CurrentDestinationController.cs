@@ -59,8 +59,11 @@ public class CurrentDestinationController : MonoBehaviour
         SendNextWaypoint(true);
     }
 
-    public void ClickBtn(GpsLocation script)
+    public void ClickGoButton(GpsLocation script)
     {
+        // what happens when you click Go on a location depends whether the location is
+        // currently "active" as an autonomy destination
+
         squarePoints.Clear();
         squarePointIndex = -1;
         searchingForAruco = false;
@@ -68,6 +71,7 @@ public class CurrentDestinationController : MonoBehaviour
             Destroy(x);
         }
         circleIcons.Clear();
+        // use currentTarget to check if the location is active
         if (currentTarget == script)
         {
             currentTarget = null;

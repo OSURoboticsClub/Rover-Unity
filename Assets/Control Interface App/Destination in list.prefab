@@ -301,6 +301,7 @@ GameObject:
   - component: {fileID: 661560476042765631}
   - component: {fileID: 7555290562527914543}
   - component: {fileID: 1838020539697149612}
+  - component: {fileID: 6096580591222983570}
   m_Layer: 5
   m_Name: Destination in list
   m_TagString: Untagged
@@ -393,6 +394,7 @@ MonoBehaviour:
   line: {fileID: 1838020539697149612}
   iconObject: {fileID: 0}
   waypoints: []
+  itemAtDestination: 0
 --- !u!114 &661560476042765631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -565,6 +567,18 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &6096580591222983570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515418651349792028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01c37a451ae8aac478fa09e038e705bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1611323525472944589
 GameObject:
   m_ObjectHideFlags: 0

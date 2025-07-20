@@ -42,6 +42,11 @@ public class ControllerManager : MonoBehaviour
         controls.DriveControl.Enable();
         debugText = debugTextObject.GetComponent<TextMeshProUGUI>();
 
+        if (Application.platform == RuntimePlatform.WindowsPlayer ||
+            Application.platform == RuntimePlatform.WindowsEditor) {
+            return;
+        }
+
         ROS2UnityCore ros2UnityCore = new ROS2UnityCore();
         if (ros2UnityCore.Ok())
         {
