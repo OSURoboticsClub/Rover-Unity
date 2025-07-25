@@ -170,6 +170,15 @@ public partial class @GameController: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""joystickEastButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""cdff8ce5-43fb-4b3f-b8d6-7d88b26334ab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -346,6 +355,17 @@ public partial class @GameController: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f14f65f-01b3-481a-b89a-caa1264c6f22"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""joystickEastButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -688,6 +708,7 @@ public partial class @GameController: IInputActionCollection2, IDisposable
         m_DriveControl_shoulderEast = m_DriveControl.FindAction("shoulderEast", throwIfNotFound: true);
         m_DriveControl_triggerEast = m_DriveControl.FindAction("triggerEast", throwIfNotFound: true);
         m_DriveControl_triggerWest = m_DriveControl.FindAction("triggerWest", throwIfNotFound: true);
+        m_DriveControl_joystickEastButton = m_DriveControl.FindAction("joystickEastButton", throwIfNotFound: true);
         // BoardControl
         m_BoardControl = asset.FindActionMap("BoardControl", throwIfNotFound: true);
         m_BoardControl_Newaction = m_BoardControl.FindAction("New action", throwIfNotFound: true);
@@ -784,6 +805,7 @@ public partial class @GameController: IInputActionCollection2, IDisposable
     private readonly InputAction m_DriveControl_shoulderEast;
     private readonly InputAction m_DriveControl_triggerEast;
     private readonly InputAction m_DriveControl_triggerWest;
+    private readonly InputAction m_DriveControl_joystickEastButton;
     public struct DriveControlActions
     {
         private @GameController m_Wrapper;
@@ -804,6 +826,7 @@ public partial class @GameController: IInputActionCollection2, IDisposable
         public InputAction @shoulderEast => m_Wrapper.m_DriveControl_shoulderEast;
         public InputAction @triggerEast => m_Wrapper.m_DriveControl_triggerEast;
         public InputAction @triggerWest => m_Wrapper.m_DriveControl_triggerWest;
+        public InputAction @joystickEastButton => m_Wrapper.m_DriveControl_joystickEastButton;
         public InputActionMap Get() { return m_Wrapper.m_DriveControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -861,6 +884,9 @@ public partial class @GameController: IInputActionCollection2, IDisposable
             @triggerWest.started += instance.OnTriggerWest;
             @triggerWest.performed += instance.OnTriggerWest;
             @triggerWest.canceled += instance.OnTriggerWest;
+            @joystickEastButton.started += instance.OnJoystickEastButton;
+            @joystickEastButton.performed += instance.OnJoystickEastButton;
+            @joystickEastButton.canceled += instance.OnJoystickEastButton;
         }
 
         private void UnregisterCallbacks(IDriveControlActions instance)
@@ -913,6 +939,9 @@ public partial class @GameController: IInputActionCollection2, IDisposable
             @triggerWest.started -= instance.OnTriggerWest;
             @triggerWest.performed -= instance.OnTriggerWest;
             @triggerWest.canceled -= instance.OnTriggerWest;
+            @joystickEastButton.started -= instance.OnJoystickEastButton;
+            @joystickEastButton.performed -= instance.OnJoystickEastButton;
+            @joystickEastButton.canceled -= instance.OnJoystickEastButton;
         }
 
         public void RemoveCallbacks(IDriveControlActions instance)
@@ -1144,6 +1173,7 @@ public partial class @GameController: IInputActionCollection2, IDisposable
         void OnShoulderEast(InputAction.CallbackContext context);
         void OnTriggerEast(InputAction.CallbackContext context);
         void OnTriggerWest(InputAction.CallbackContext context);
+        void OnJoystickEastButton(InputAction.CallbackContext context);
     }
     public interface IBoardControlActions
     {

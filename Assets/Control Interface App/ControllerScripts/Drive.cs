@@ -145,6 +145,28 @@ public class ControllerManager : MonoBehaviour
         float shoulderWest = controls.DriveControl.shoulderWest.ReadValue<float>();
         float shoulderEast = controls.DriveControl.shoulderEast.ReadValue<float>();
 
+        bool joystickEast = controls.DriveControl.joystickEastButton.triggered;
+
+        if(joystickEast)
+        {
+            float[] axes = new float[]{
+                0.0f
+            };
+            int[] buttons = new int[]{
+                0,0,0,0,0,0,0,0,0,0,0
+            };
+            sensor_msgs.msg.Joy msg = new sensor_msgs.msg.Joy();
+            msg.Axes = axes;
+            msg.Buttons = buttons;
+            joy2_pub.Publish(msg);
+            buttons = new int[]{
+                0,0,0,0,0,0,0,0,1,0,0
+            };
+            msg.Buttons = buttons;
+            joy2_pub.Publish(msg);
+
+        }
+
         string log = $@"
 ==== GameController Input ====
 Left Stick:     X = {leftJoyValue.x:F2}, Y = {leftJoyValue.y:F2}

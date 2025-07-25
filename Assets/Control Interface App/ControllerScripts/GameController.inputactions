@@ -148,6 +148,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "joystickEastButton",
+                    "type": "Button",
+                    "id": "cdff8ce5-43fb-4b3f-b8d6-7d88b26334ab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -324,6 +333,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9f14f65f-01b3-481a-b89a-caa1264c6f22",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "joystickEastButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
