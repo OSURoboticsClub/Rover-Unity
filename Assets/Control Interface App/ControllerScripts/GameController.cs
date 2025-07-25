@@ -378,6 +378,294 @@ public partial class @GameController: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""KeyboardControl"",
+            ""id"": ""5be4993b-5144-45bd-ab0b-184046fd6643"",
+            ""actions"": [
+                {
+                    ""name"": ""onekey"",
+                    ""type"": ""Button"",
+                    ""id"": ""73f06b34-76ce-47db-8342-b07e0224a1bd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""twokey"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8f6ce3f-645d-4435-b776-a3a7b3b51879"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""threekey"",
+                    ""type"": ""Button"",
+                    ""id"": ""344f5111-ec11-4477-a081-afbe0b2e5932"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""fourkey"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca827380-0198-4304-82da-be89bc095084"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""fivekey"",
+                    ""type"": ""Button"",
+                    ""id"": ""f3d9792c-ac2f-493b-b612-7255a8d7ec55"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""sixkey"",
+                    ""type"": ""Button"",
+                    ""id"": ""021d83d6-da0a-4170-a16a-57a46f59891e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""sevenkey"",
+                    ""type"": ""Button"",
+                    ""id"": ""a78b63f6-9dfb-4a5e-9452-23fa67b24867"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""eightkey"",
+                    ""type"": ""Button"",
+                    ""id"": ""ddb43dd6-7291-4fde-b6ed-7ab901dc7290"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ninekey"",
+                    ""type"": ""Button"",
+                    ""id"": ""55db3e19-ebab-47f7-bbd3-ab4c51ff52b0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""zerokey"",
+                    ""type"": ""Button"",
+                    ""id"": ""d2e6e20d-8a6e-44c8-92cd-c821d5472474"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Enter"",
+                    ""type"": ""Button"",
+                    ""id"": ""9a878c63-d281-472f-89f8-8e54758913a5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""spacekey"",
+                    ""type"": ""Button"",
+                    ""id"": ""2bb3a272-254d-40a7-8076-86b6b81e2a30"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""backspacekey"",
+                    ""type"": ""Button"",
+                    ""id"": ""af88aed1-dc94-43f9-908b-be864de67d5b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""shiftkey"",
+                    ""type"": ""Button"",
+                    ""id"": ""4aa27a3e-72d7-4ee0-8b16-8f2498e29eae"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""69743324-2ef1-4c77-93eb-7d2f2004f0e6"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""onekey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f194297a-9f0f-44e0-8c3f-ac6c2785bbd4"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""twokey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75e9d925-4aed-4181-89c7-e3f776feaa88"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""threekey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aedaa558-fdd1-45f3-8e6f-cd8a9830e5de"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""fourkey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7f9a993a-b200-44b6-a181-4915799dde07"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""fivekey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5ec3fd84-fb53-44fd-b401-bf57d638be76"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""sixkey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""563f3207-9e0f-444d-8379-c1794410ae77"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""sevenkey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2439bef1-38d1-4950-a475-0a4b69446adc"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""eightkey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c0f92fc8-e116-47ff-8a97-e125c9b80175"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ninekey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7161b7a-7110-47e5-93e2-79c934b0270a"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""zerokey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2cb5fd6d-b042-495c-b4c4-dfb521971cdd"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Enter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4f07303-3c56-41bc-9d7a-e6e6053802ab"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""spacekey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd46bb74-6c8f-43b1-bcc4-28b70a65fb55"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""backspacekey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8139c5f6-a6e0-4d93-b4b2-a9dfbc1d835c"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shiftkey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -403,6 +691,22 @@ public partial class @GameController: IInputActionCollection2, IDisposable
         // BoardControl
         m_BoardControl = asset.FindActionMap("BoardControl", throwIfNotFound: true);
         m_BoardControl_Newaction = m_BoardControl.FindAction("New action", throwIfNotFound: true);
+        // KeyboardControl
+        m_KeyboardControl = asset.FindActionMap("KeyboardControl", throwIfNotFound: true);
+        m_KeyboardControl_onekey = m_KeyboardControl.FindAction("onekey", throwIfNotFound: true);
+        m_KeyboardControl_twokey = m_KeyboardControl.FindAction("twokey", throwIfNotFound: true);
+        m_KeyboardControl_threekey = m_KeyboardControl.FindAction("threekey", throwIfNotFound: true);
+        m_KeyboardControl_fourkey = m_KeyboardControl.FindAction("fourkey", throwIfNotFound: true);
+        m_KeyboardControl_fivekey = m_KeyboardControl.FindAction("fivekey", throwIfNotFound: true);
+        m_KeyboardControl_sixkey = m_KeyboardControl.FindAction("sixkey", throwIfNotFound: true);
+        m_KeyboardControl_sevenkey = m_KeyboardControl.FindAction("sevenkey", throwIfNotFound: true);
+        m_KeyboardControl_eightkey = m_KeyboardControl.FindAction("eightkey", throwIfNotFound: true);
+        m_KeyboardControl_ninekey = m_KeyboardControl.FindAction("ninekey", throwIfNotFound: true);
+        m_KeyboardControl_zerokey = m_KeyboardControl.FindAction("zerokey", throwIfNotFound: true);
+        m_KeyboardControl_Enter = m_KeyboardControl.FindAction("Enter", throwIfNotFound: true);
+        m_KeyboardControl_spacekey = m_KeyboardControl.FindAction("spacekey", throwIfNotFound: true);
+        m_KeyboardControl_backspacekey = m_KeyboardControl.FindAction("backspacekey", throwIfNotFound: true);
+        m_KeyboardControl_shiftkey = m_KeyboardControl.FindAction("shiftkey", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -672,6 +976,156 @@ public partial class @GameController: IInputActionCollection2, IDisposable
         }
     }
     public BoardControlActions @BoardControl => new BoardControlActions(this);
+
+    // KeyboardControl
+    private readonly InputActionMap m_KeyboardControl;
+    private List<IKeyboardControlActions> m_KeyboardControlActionsCallbackInterfaces = new List<IKeyboardControlActions>();
+    private readonly InputAction m_KeyboardControl_onekey;
+    private readonly InputAction m_KeyboardControl_twokey;
+    private readonly InputAction m_KeyboardControl_threekey;
+    private readonly InputAction m_KeyboardControl_fourkey;
+    private readonly InputAction m_KeyboardControl_fivekey;
+    private readonly InputAction m_KeyboardControl_sixkey;
+    private readonly InputAction m_KeyboardControl_sevenkey;
+    private readonly InputAction m_KeyboardControl_eightkey;
+    private readonly InputAction m_KeyboardControl_ninekey;
+    private readonly InputAction m_KeyboardControl_zerokey;
+    private readonly InputAction m_KeyboardControl_Enter;
+    private readonly InputAction m_KeyboardControl_spacekey;
+    private readonly InputAction m_KeyboardControl_backspacekey;
+    private readonly InputAction m_KeyboardControl_shiftkey;
+    public struct KeyboardControlActions
+    {
+        private @GameController m_Wrapper;
+        public KeyboardControlActions(@GameController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @onekey => m_Wrapper.m_KeyboardControl_onekey;
+        public InputAction @twokey => m_Wrapper.m_KeyboardControl_twokey;
+        public InputAction @threekey => m_Wrapper.m_KeyboardControl_threekey;
+        public InputAction @fourkey => m_Wrapper.m_KeyboardControl_fourkey;
+        public InputAction @fivekey => m_Wrapper.m_KeyboardControl_fivekey;
+        public InputAction @sixkey => m_Wrapper.m_KeyboardControl_sixkey;
+        public InputAction @sevenkey => m_Wrapper.m_KeyboardControl_sevenkey;
+        public InputAction @eightkey => m_Wrapper.m_KeyboardControl_eightkey;
+        public InputAction @ninekey => m_Wrapper.m_KeyboardControl_ninekey;
+        public InputAction @zerokey => m_Wrapper.m_KeyboardControl_zerokey;
+        public InputAction @Enter => m_Wrapper.m_KeyboardControl_Enter;
+        public InputAction @spacekey => m_Wrapper.m_KeyboardControl_spacekey;
+        public InputAction @backspacekey => m_Wrapper.m_KeyboardControl_backspacekey;
+        public InputAction @shiftkey => m_Wrapper.m_KeyboardControl_shiftkey;
+        public InputActionMap Get() { return m_Wrapper.m_KeyboardControl; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(KeyboardControlActions set) { return set.Get(); }
+        public void AddCallbacks(IKeyboardControlActions instance)
+        {
+            if (instance == null || m_Wrapper.m_KeyboardControlActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_KeyboardControlActionsCallbackInterfaces.Add(instance);
+            @onekey.started += instance.OnOnekey;
+            @onekey.performed += instance.OnOnekey;
+            @onekey.canceled += instance.OnOnekey;
+            @twokey.started += instance.OnTwokey;
+            @twokey.performed += instance.OnTwokey;
+            @twokey.canceled += instance.OnTwokey;
+            @threekey.started += instance.OnThreekey;
+            @threekey.performed += instance.OnThreekey;
+            @threekey.canceled += instance.OnThreekey;
+            @fourkey.started += instance.OnFourkey;
+            @fourkey.performed += instance.OnFourkey;
+            @fourkey.canceled += instance.OnFourkey;
+            @fivekey.started += instance.OnFivekey;
+            @fivekey.performed += instance.OnFivekey;
+            @fivekey.canceled += instance.OnFivekey;
+            @sixkey.started += instance.OnSixkey;
+            @sixkey.performed += instance.OnSixkey;
+            @sixkey.canceled += instance.OnSixkey;
+            @sevenkey.started += instance.OnSevenkey;
+            @sevenkey.performed += instance.OnSevenkey;
+            @sevenkey.canceled += instance.OnSevenkey;
+            @eightkey.started += instance.OnEightkey;
+            @eightkey.performed += instance.OnEightkey;
+            @eightkey.canceled += instance.OnEightkey;
+            @ninekey.started += instance.OnNinekey;
+            @ninekey.performed += instance.OnNinekey;
+            @ninekey.canceled += instance.OnNinekey;
+            @zerokey.started += instance.OnZerokey;
+            @zerokey.performed += instance.OnZerokey;
+            @zerokey.canceled += instance.OnZerokey;
+            @Enter.started += instance.OnEnter;
+            @Enter.performed += instance.OnEnter;
+            @Enter.canceled += instance.OnEnter;
+            @spacekey.started += instance.OnSpacekey;
+            @spacekey.performed += instance.OnSpacekey;
+            @spacekey.canceled += instance.OnSpacekey;
+            @backspacekey.started += instance.OnBackspacekey;
+            @backspacekey.performed += instance.OnBackspacekey;
+            @backspacekey.canceled += instance.OnBackspacekey;
+            @shiftkey.started += instance.OnShiftkey;
+            @shiftkey.performed += instance.OnShiftkey;
+            @shiftkey.canceled += instance.OnShiftkey;
+        }
+
+        private void UnregisterCallbacks(IKeyboardControlActions instance)
+        {
+            @onekey.started -= instance.OnOnekey;
+            @onekey.performed -= instance.OnOnekey;
+            @onekey.canceled -= instance.OnOnekey;
+            @twokey.started -= instance.OnTwokey;
+            @twokey.performed -= instance.OnTwokey;
+            @twokey.canceled -= instance.OnTwokey;
+            @threekey.started -= instance.OnThreekey;
+            @threekey.performed -= instance.OnThreekey;
+            @threekey.canceled -= instance.OnThreekey;
+            @fourkey.started -= instance.OnFourkey;
+            @fourkey.performed -= instance.OnFourkey;
+            @fourkey.canceled -= instance.OnFourkey;
+            @fivekey.started -= instance.OnFivekey;
+            @fivekey.performed -= instance.OnFivekey;
+            @fivekey.canceled -= instance.OnFivekey;
+            @sixkey.started -= instance.OnSixkey;
+            @sixkey.performed -= instance.OnSixkey;
+            @sixkey.canceled -= instance.OnSixkey;
+            @sevenkey.started -= instance.OnSevenkey;
+            @sevenkey.performed -= instance.OnSevenkey;
+            @sevenkey.canceled -= instance.OnSevenkey;
+            @eightkey.started -= instance.OnEightkey;
+            @eightkey.performed -= instance.OnEightkey;
+            @eightkey.canceled -= instance.OnEightkey;
+            @ninekey.started -= instance.OnNinekey;
+            @ninekey.performed -= instance.OnNinekey;
+            @ninekey.canceled -= instance.OnNinekey;
+            @zerokey.started -= instance.OnZerokey;
+            @zerokey.performed -= instance.OnZerokey;
+            @zerokey.canceled -= instance.OnZerokey;
+            @Enter.started -= instance.OnEnter;
+            @Enter.performed -= instance.OnEnter;
+            @Enter.canceled -= instance.OnEnter;
+            @spacekey.started -= instance.OnSpacekey;
+            @spacekey.performed -= instance.OnSpacekey;
+            @spacekey.canceled -= instance.OnSpacekey;
+            @backspacekey.started -= instance.OnBackspacekey;
+            @backspacekey.performed -= instance.OnBackspacekey;
+            @backspacekey.canceled -= instance.OnBackspacekey;
+            @shiftkey.started -= instance.OnShiftkey;
+            @shiftkey.performed -= instance.OnShiftkey;
+            @shiftkey.canceled -= instance.OnShiftkey;
+        }
+
+        public void RemoveCallbacks(IKeyboardControlActions instance)
+        {
+            if (m_Wrapper.m_KeyboardControlActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IKeyboardControlActions instance)
+        {
+            foreach (var item in m_Wrapper.m_KeyboardControlActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_KeyboardControlActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public KeyboardControlActions @KeyboardControl => new KeyboardControlActions(this);
     public interface IDriveControlActions
     {
         void OnLeftJoy(InputAction.CallbackContext context);
@@ -694,5 +1148,22 @@ public partial class @GameController: IInputActionCollection2, IDisposable
     public interface IBoardControlActions
     {
         void OnNewaction(InputAction.CallbackContext context);
+    }
+    public interface IKeyboardControlActions
+    {
+        void OnOnekey(InputAction.CallbackContext context);
+        void OnTwokey(InputAction.CallbackContext context);
+        void OnThreekey(InputAction.CallbackContext context);
+        void OnFourkey(InputAction.CallbackContext context);
+        void OnFivekey(InputAction.CallbackContext context);
+        void OnSixkey(InputAction.CallbackContext context);
+        void OnSevenkey(InputAction.CallbackContext context);
+        void OnEightkey(InputAction.CallbackContext context);
+        void OnNinekey(InputAction.CallbackContext context);
+        void OnZerokey(InputAction.CallbackContext context);
+        void OnEnter(InputAction.CallbackContext context);
+        void OnSpacekey(InputAction.CallbackContext context);
+        void OnBackspacekey(InputAction.CallbackContext context);
+        void OnShiftkey(InputAction.CallbackContext context);
     }
 }

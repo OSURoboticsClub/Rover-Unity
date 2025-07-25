@@ -21,7 +21,7 @@ public class OdriveListenHandler : MonoBehaviour
 
     public void ReceiveOdriveTelem(string message)
     {
-        Debug.Log("Received /nodetopiclisten message: " + message);
+//        Debug.Log("Received /nodetopiclisten message: " + message);
         string[] splitStatusMessage = message.Split('?');
         string arbitration = splitStatusMessage[0];
         string motorId = splitStatusMessage[1];

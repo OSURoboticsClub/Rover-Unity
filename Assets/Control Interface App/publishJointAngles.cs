@@ -4,29 +4,90 @@ using UnityEngine;
 
 public class publishJointAngles : MonoBehaviour
 {
-    [SerializeField] List<float> angles;
+    RobotArmController robotArm;
+    KeyboardController keyboardController;
 
-    public void Publish()
+    Coroutine currentCoroutine = null;
+
+    List<float> preset_pose_0 = new List<float> { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+    List<float> preset_pose_1 = new List<float> { 0.0f, -0.34f, -1.98968f, 0.0f, 0.785398f, 0.0f };
+    List<float> preset_pose_2 = new List<float> { 0.0f, -0.698132f, -1.65806f, 0.0f, -0.785698f, 0.0f };
+    List<float> preset_pose_3 = new List<float> { 0.191986f, 1.23918f, -2.84489f, 0.0f, 0.0f, 0.0f };
+
+    void Awake()
     {
-        string msg = "set_joint_angles";
-        msg += ";" + angles[0];
-        msg += ";" + angles[1];
-        msg += ";" + angles[2];
-        msg += ";" + angles[3];
-        msg += ";" + angles[4];
-        msg += ";" + angles[5];
-        //TcpController.inst.Publish(msg);
-
-        StartCoroutine(SendAngles(msg));
+        robotArm = FindObjectOfType<RobotArmController>();
+        keyboardController = FindObjectOfType<KeyboardController>();
     }
 
-    IEnumerator SendAngles(string msg){
+    public void Publish(List<float> angles)
+    {
+        string msg = "set_joint_angles";
+        for (int i = 0; i < angles.Count; i++)
+        {
+            msg += ";" + angles[i];
+        }
+
+        robotArm.visualize_goal(angles);
+
+        // Stop previous coroutine if still waiting
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
+
+        currentCoroutine = StartCoroutine(SendAngles(msg));
+    }
+
+    public void publish_preset_pose_0()
+    {
+        Debug.Log(currentCoroutine);
+        Publish(preset_pose_0);
+    }
+    public void publish_preset_pose_1()
+    {
+        Debug.Log(currentCoroutine);
+
+        Publish(preset_pose_1);
+    }
+    public void publish_preset_pose_2()
+    {
+        Debug.Log(currentCoroutine);
+
+        Publish(preset_pose_2);
+    }
+    public void publish_preset_pose_3()
+    {
+        Debug.Log(currentCoroutine);
+        Publish(preset_pose_3);
+    }
+
+    public void publish_custom_pose(List<float> customPose)
+    {
+        Publish(customPose);
+    }
+
+    public void nullSendAnglesProcess()
+    {
+        StopCoroutine(currentCoroutine);
+        currentCoroutine = null;
+
+    }
+
+    IEnumerator SendAngles(string msg)
+    {
+        // Wait for confirmation
+        yield return new WaitUntil(() => keyboardController.sendArmCommand);
+
         TcpController.inst.Publish("joy2;0");
         yield return new WaitForSeconds(0.15f);
 
         TcpController.inst.Publish(msg);
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(7f);
         TcpController.inst.Publish("joy2;0");
+
+        currentCoroutine = null; // Clear coroutine reference
+        robotArm.remove_vis();
     }
 }

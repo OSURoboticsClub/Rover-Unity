@@ -23,6 +23,7 @@ public class ControllerManager : MonoBehaviour
     public Button offButton;
 
     public Slider driveSpeedSlider;
+    public Slider armSpeedSlider;
     
     private Color selectedColor = Color.green;
     private Color unselectedColor = Color.red;
@@ -31,8 +32,13 @@ public class ControllerManager : MonoBehaviour
     private ROS2Node ros2Node;
     private IPublisher<sensor_msgs.msg.Joy> joy_pub;
     private IPublisher<sensor_msgs.msg.Joy> joy2_pub;
+    
 
-    private float publishRate = 1f / 60f; // 60 Hz
+    private bool useChassisPanTilt = false;
+    private bool selectButtonPressed = false;
+    private bool wasDriveActive = false;
+
+    private float publishRate = 1f / 30f; // 30 Hz
     private Coroutine inputPublisherCoroutine;
 
     void Awake()
@@ -59,6 +65,10 @@ public class ControllerManager : MonoBehaviour
         driveSpeedSlider.value = 0.5f;
         driveSpeedSlider.minValue = 0f;
         driveSpeedSlider.maxValue = 1f;
+
+        armSpeedSlider.value = 0.5f;
+        armSpeedSlider.minValue = 0f;
+        armSpeedSlider.maxValue = 1f;
 
         driveButton.onClick.AddListener(SetDriveMode);
         armButton.onClick.AddListener(SetArmMode);
@@ -183,30 +193,63 @@ D-Pad:
         UpdateButtonColors();
     }
 
+
     void HandleDrive(Vector2 leftJoy, Vector2 rightJoy,
-        float triggerWest, float triggerEast,
-        float buttonSouth, float buttonEast, float buttonWest, float buttonNorth,
-        float dpadEast, float dpadWest, float dpadNorth, float dpadSouth,
-        float start, float select,
-        float shoulderWest, float shoulderEast)
+    float triggerWest, float triggerEast,
+    float buttonSouth, float buttonEast, float buttonWest, float buttonNorth,
+    float dpadEast, float dpadWest, float dpadNorth, float dpadSouth,
+    float start, float select,
+    float shoulderWest, float shoulderEast)
     {
-
         driveSpeedSlider.value += (triggerWest-triggerEast)*0.025f;
-
-        string drive_msg = "command_control/ground_station_drive";
-        drive_msg += ";" + (leftJoy.y != 0 || rightJoy.x != 0).ToString();
-        drive_msg += ";false";
-        drive_msg += ";" + leftJoy.y*driveSpeedSlider.value;
-        drive_msg += ";" + rightJoy.x*driveSpeedSlider.value;
-        UdpController.inst.PublishControl(drive_msg);
- 
-        string pan_tilt_msg = "tower/pan_tilt/control";
-        pan_tilt_msg += ";" + (start == 1);
-        pan_tilt_msg += ";" + ((buttonWest - buttonEast)+(shoulderWest-shoulderEast)) * 20;
-        pan_tilt_msg += ";" + (buttonNorth - buttonSouth) * 20;
-        pan_tilt_msg += ";false";
-        pan_tilt_msg += ";false";
-        UdpController.inst.PublishControl(pan_tilt_msg);
+        
+        
+        // Check if drive has input
+        bool driveHasInput = (leftJoy.y != 0 || rightJoy.x != 0);
+        
+        // Publish drive command if there's input, or send stop command once when input stops
+        if (driveHasInput || wasDriveActive)
+        {
+            string drive_msg = "command_control/ground_station_drive";
+            drive_msg += ";" + driveHasInput.ToString();
+            drive_msg += ";false";
+            drive_msg += ";" + leftJoy.y*driveSpeedSlider.value;
+            drive_msg += ";" + rightJoy.x*driveSpeedSlider.value*-1;
+            UdpController.inst.PublishControl(drive_msg);
+            
+            wasDriveActive = driveHasInput;
+        }
+        
+        // Handle select button toggle (only trigger on button press, not hold)
+        if (select == 1 && !selectButtonPressed)
+        {
+            useChassisPanTilt = !useChassisPanTilt;
+            selectButtonPressed = true;
+        }
+        else if (select == 0)
+        {
+            selectButtonPressed = false;
+        }
+        
+        // Check if pan/tilt has input
+        bool panTiltHasInput = (start == 1) || 
+                            (buttonWest != 0 || buttonEast != 0) || 
+                            (shoulderWest != 0 || shoulderEast != 0) || 
+                            (buttonNorth != 0 || buttonSouth != 0);
+        
+        // Only publish pan/tilt command if there's input
+        if (panTiltHasInput)
+        {
+            string panTiltPrefix = useChassisPanTilt ? "chassis/pan_tilt/control" : "tower/pan_tilt/control";
+            
+            string pan_tilt_msg = panTiltPrefix;
+            pan_tilt_msg += ";" + (start == 1);
+            pan_tilt_msg += ";" + ((buttonWest - buttonEast)+(shoulderWest-shoulderEast)) * 20;
+            pan_tilt_msg += ";" + (buttonNorth - buttonSouth) * 20;
+            pan_tilt_msg += ";false";
+            pan_tilt_msg += ";false";
+            UdpController.inst.PublishControl(pan_tilt_msg);
+        }
     }
 
     void HandleArm(
@@ -217,23 +260,48 @@ D-Pad:
         float start, float select,
         float shoulderWest, float shoulderEast)
     {
-        float[] axes = new float[] {
-            leftJoy.x, leftJoy.y, triggerWest,
-            rightJoy.x, rightJoy.y, triggerEast,
-            (int)dpadEast - (int)dpadWest, (int)dpadNorth - (int)dpadSouth
-        };
+        // Check if arm has any input
+        bool armHasInput = (leftJoy != Vector2.zero) ||
+                        (rightJoy != Vector2.zero) ||
+                        (triggerWest != 0) ||
+                        (triggerEast != 0) ||
+                        
+                        (buttonEast != 0) ||
+                        (buttonWest != 0) ||
+                       
+                        (dpadEast != 0) ||
+                        (dpadWest != 0) ||
+                        (dpadNorth != 0) ||
+                        (dpadSouth != 0) ||
+                        (start != 0) ||
+                        (select != 0) ||
+                        (shoulderWest != 0) ||
+                        (shoulderEast != 0);
+        armSpeedSlider.value += (buttonNorth-buttonSouth)*0.025f;
+        // Only publish if there's input
+        if (armHasInput)
+        {
+            float[] axes = new float[] {
+                leftJoy.x*armSpeedSlider.value , leftJoy.y*armSpeedSlider.value , triggerWest*armSpeedSlider.value ,
+                rightJoy.x*armSpeedSlider.value , rightJoy.y*armSpeedSlider.value , triggerEast*armSpeedSlider.value ,
+                (int)dpadEast*armSpeedSlider.value  - (int)dpadWest*armSpeedSlider.value , (int)dpadNorth*armSpeedSlider.value  - (int)dpadSouth*armSpeedSlider.value 
+            };
 
-        int[] buttons = new int[] {
-            (int)buttonSouth, (int)buttonEast, (int)buttonWest, (int)buttonNorth,
-            (int)shoulderWest, (int)shoulderEast,
-            (int)start, (int)select,
-            0, 0, 0
-        };
+            
+            
+            int[] buttons = new int[] {
+                (int)buttonSouth  , (int)buttonEast  , (int)buttonWest  , (int)buttonNorth  ,
+                (int)shoulderWest  , (int)shoulderEast  ,
+                (int)start, (int)select,
+                0, 0, 0
+            };
 
-        sensor_msgs.msg.Joy msg = new sensor_msgs.msg.Joy();
-        msg.Axes = axes;
-        msg.Buttons = buttons;
-        joy_pub.Publish(msg);
+            
+            sensor_msgs.msg.Joy msg = new sensor_msgs.msg.Joy();
+            msg.Axes = axes;
+            msg.Buttons = buttons;
+            joy_pub.Publish(msg);
+        }
     }
 
     void UpdateButtonColors()

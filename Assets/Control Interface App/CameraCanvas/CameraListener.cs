@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MJPEGUdpReceiverNoThread : MonoBehaviour
 {
     public int listenPort = 5000;
-    public int timeoutCount = 60;
+    public int timeoutCount = 120;
     public Texture timeoutTexture;
     public RawImage cameraImage;
     

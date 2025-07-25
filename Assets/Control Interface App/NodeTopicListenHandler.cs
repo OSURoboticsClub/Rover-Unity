@@ -15,7 +15,7 @@ public class NodeTopicListenHandler : MonoBehaviour
 
     public void ReceiveNodeTopicListen(string message)
     {
-        Debug.Log("Received /nodetopiclisten message: " + message);
+//        Debug.Log("Received /nodetopiclisten message: " + message);
         string[] splitTopicsNodes = message.Split('?');
         decodeNodes(splitTopicsNodes[1]);
         decodeTopics(splitTopicsNodes[0]);
