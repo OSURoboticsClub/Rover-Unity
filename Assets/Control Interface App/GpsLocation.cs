@@ -85,7 +85,7 @@ public class GpsLocation : MonoBehaviour
 
     public void ToggleActive()
     {
-        CurrentDestinationController.inst.ClickBtn(this);
+        CurrentDestinationController.inst.ClickGoButton(this);
     }
 
     public void Delete()

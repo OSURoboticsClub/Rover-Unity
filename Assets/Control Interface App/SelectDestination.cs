@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// why not have this code in the GpsLocation script? idk -matthew
+
 public class SelectDestination : MonoBehaviour
 {
     [SerializeField] Image bg;
