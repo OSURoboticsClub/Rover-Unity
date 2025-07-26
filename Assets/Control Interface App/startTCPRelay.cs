@@ -5,17 +5,17 @@ public class startTCPRelay : MonoBehaviour
 {
 
 
-    private Process tcpRelatProcess;
+    private Process tcpRelayProcess;
 
     public void LaunchTCPRelay()
     {
-        if (tcpRelatProcess == null)
+        if (tcpRelayProcess == null)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "/bin/bash";
 
 
-string command = $"source /opt/ros/humble/setup.bash && cd ~/Rover-Unity/ros2_ws && . install/setup.bash && ros2 run py_pubsub tcp_relay";
+string command = $"source /opt/ros/humble/setup.bash && cd ~/Rover-Unity/ros2_ws && . install/setup.bash && ros2 run py_pubsub tcp_Relay";
             startInfo.Arguments = $"-c \"{command}\"";
 
             startInfo.UseShellExecute = false;
@@ -26,15 +26,15 @@ string command = $"source /opt/ros/humble/setup.bash && cd ~/Rover-Unity/ros2_ws
 	    //startInfo.EnvironmentVariables["ROS_DISTRO"] = "humble";
 	   
 
-            tcpRelatProcess = new Process();
-            tcpRelatProcess.StartInfo = startInfo;
+            tcpRelayProcess = new Process();
+            tcpRelayProcess.StartInfo = startInfo;
         
             
 /*
-            tcpRelatProcess.OutputDataReceived += (sender, e) => UnityEngine.Debug.Log("[stdout] " + e.Data);
-            tcpRelatProcess.ErrorDataReceived += (sender, e) => UnityEngine.Debug.LogError("[stderr] " + e.Data);
+            tcpRelayProcess.OutputDataReceived += (sender, e) => UnityEngine.Debug.Log("[stdout] " + e.Data);
+            tcpRelayProcess.ErrorDataReceived += (sender, e) => UnityEngine.Debug.LogError("[stderr] " + e.Data);
 */
-            tcpRelatProcess.Start();
+            tcpRelayProcess.Start();
 
             UnityEngine.Debug.Log("TCP Relay launched.");
         }
@@ -42,13 +42,13 @@ string command = $"source /opt/ros/humble/setup.bash && cd ~/Rover-Unity/ros2_ws
 
     public void StopTCPRelay()
     {
-        if (tcpRelatProcess != null && !tcpRelatProcess.HasExited)
+        if (tcpRelayProcess != null && !tcpRelayProcess.HasExited)
         {
-            tcpRelatProcess.Kill();
+            tcpRelayProcess.Kill();
             
-            tcpRelatProcess.WaitForExit();
+            tcpRelayProcess.WaitForExit();
             UnityEngine.Debug.Log("TCP Relay process stopped.");
-            tcpRelatProcess = null;
+            tcpRelayProcess = null;
         }
     }
 }

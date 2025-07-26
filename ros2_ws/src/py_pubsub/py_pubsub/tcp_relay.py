@@ -19,8 +19,8 @@ from std_msgs.msg import Float32MultiArray
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
 from sensor_msgs.msg import Joy
-from rob499_rover_status_ui_interfaces.msg import NodesTopics
-from rob499_rover_status_ui_interfaces.msg import ODriveStatus
+from rover2_status_interface.msg import NodesTopics
+from rover2_status_interface.msg import ODriveStatus
 
 
 

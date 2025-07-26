@@ -33,10 +33,12 @@ public class ControllerManager : MonoBehaviour
     private IPublisher<sensor_msgs.msg.Joy> joy_pub;
     private IPublisher<sensor_msgs.msg.Joy> joy2_pub;
     
+    private publishJointAngles jointPublisher;
 
     private bool useChassisPanTilt = false;
     private bool selectButtonPressed = false;
     private bool wasDriveActive = false;
+    private bool wasArmActive = false;
 
     private float publishRate = 1f / 30f; // 30 Hz
     private Coroutine inputPublisherCoroutine;
@@ -80,6 +82,9 @@ public class ControllerManager : MonoBehaviour
         offButton.onClick.AddListener(SetOffMode);
 
         inputPublisherCoroutine = StartCoroutine(PublishInputsAtFixedRate());
+
+        jointPublisher = GetComponent<publishJointAngles>();
+
     }
 
     IEnumerator PublishInputsAtFixedRate()
@@ -117,13 +122,16 @@ public class ControllerManager : MonoBehaviour
                         start, select, shoulderWest, shoulderEast);
                     break;
                 case ControlMode.Arm:
-                    HandleArm(
+                    if (jointPublisher.getArmControlStatus())
+                    {
+                        HandleArm(
                         leftJoyValue, rightJoyValue,
                         triggerWest, triggerEast,
                         buttonSouth, buttonEast, buttonWest, buttonNorth,
                         dpadEast, dpadWest, dpadNorth, dpadSouth,
                         start, select, shoulderWest, shoulderEast
-                    );
+                        );   
+                    }
                     break;
             }
 
@@ -151,7 +159,7 @@ public class ControllerManager : MonoBehaviour
         float shoulderEast = controls.DriveControl.shoulderEast.ReadValue<float>();
 
         bool joystickEast = controls.DriveControl.joystickEastButton.triggered;
-
+        Debug.Log("Controlling...");
         if(joystickEast)
         {
             float[] axes = new float[]{
@@ -306,22 +314,23 @@ D-Pad:
                         (shoulderEast != 0);
         armSpeedSlider.value += (buttonNorth-buttonSouth)*0.025f;
         // Only publish if there's input
-        if (armHasInput)
+        if (armHasInput || wasArmActive)
         {
             float[] axes = new float[] {
                 leftJoy.x*armSpeedSlider.value , leftJoy.y*armSpeedSlider.value , triggerWest*armSpeedSlider.value ,
                 rightJoy.x*armSpeedSlider.value , rightJoy.y*armSpeedSlider.value , triggerEast*armSpeedSlider.value ,
-                (int)dpadEast*armSpeedSlider.value  - (int)dpadWest*armSpeedSlider.value , (int)dpadNorth*armSpeedSlider.value  - (int)dpadSouth*armSpeedSlider.value 
+                ((int)dpadEast*armSpeedSlider.value  - (int)dpadWest*armSpeedSlider.value) , ((int)dpadNorth*armSpeedSlider.value  - (int)dpadSouth*armSpeedSlider.value) 
             };
 
-            
-            
+            wasArmActive = armHasInput;
+
             int[] buttons = new int[] {
                 (int)buttonSouth  , (int)buttonEast  , (int)buttonWest  , (int)buttonNorth  ,
                 (int)shoulderWest  , (int)shoulderEast  ,
                 (int)start, (int)select,
                 0, 0, 0
             };
+
 
             
             sensor_msgs.msg.Joy msg = new sensor_msgs.msg.Joy();

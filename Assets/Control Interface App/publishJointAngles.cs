@@ -9,6 +9,8 @@ public class publishJointAngles : MonoBehaviour
 
     Coroutine currentCoroutine = null;
 
+    bool allowArmControl = true;
+
     List<float> preset_pose_0 = new List<float> { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
     List<float> preset_pose_1 = new List<float> { 0.0f, -0.34f, -1.98968f, 0.0f, 0.785398f, 0.0f };
     List<float> preset_pose_2 = new List<float> { 0.0f, -0.698132f, -1.65806f, 0.0f, -0.785698f, 0.0f };
@@ -73,11 +75,16 @@ public class publishJointAngles : MonoBehaviour
         currentCoroutine = null;
 
     }
+    public bool getArmControlStatus()
+    {
+        return allowArmControl;
+    }
 
     IEnumerator SendAngles(string msg)
     {
         // Wait for confirmation
         yield return new WaitUntil(() => keyboardController.sendArmCommand);
+        allowArmControl = false;
 
         TcpController.inst.Publish("joy2;0");
         yield return new WaitForSeconds(0.15f);
@@ -86,7 +93,7 @@ public class publishJointAngles : MonoBehaviour
 
         yield return new WaitForSeconds(7f);
         TcpController.inst.Publish("joy2;0");
-
+        allowArmControl = true;
         currentCoroutine = null; // Clear coroutine reference
         robotArm.remove_vis();
     }

@@ -23,7 +23,7 @@ public class KeyboardController : MonoBehaviour
 
     private GameController controls;  
     private RobotArmController armController;
-    private publishJointAngles publisher;
+    private publishJointAngles jointPublisher;
 
     private Color occupiedColor = Color.green;
     private Color unoccupiedColor = Color.red;
@@ -50,7 +50,7 @@ public class KeyboardController : MonoBehaviour
     void Start()
     {
         armController = GetComponent<RobotArmController>();
-        publisher = GetComponent<publishJointAngles>();
+        jointPublisher = GetComponent<publishJointAngles>();
     }
 
     void Update()
@@ -84,19 +84,19 @@ public class KeyboardController : MonoBehaviour
         } 
         else if(one)
         {
-            publisher.publish_preset_pose_0();
+            jointPublisher.publish_preset_pose_0();
         } 
         else if(two)
         {
-            publisher.publish_preset_pose_1();
+            jointPublisher.publish_preset_pose_1();
         } 
         else if(three)
         {
-            publisher.publish_preset_pose_2();
+            jointPublisher.publish_preset_pose_2();
         } 
         else if(four)
         {
-            publisher.publish_preset_pose_3();
+            jointPublisher.publish_preset_pose_3();
         } 
         else if(five)
         {
@@ -132,7 +132,7 @@ public class KeyboardController : MonoBehaviour
         }
         else if(shift)
         {
-            publisher.nullSendAnglesProcess();
+            jointPublisher.nullSendAnglesProcess();
             armController.remove_vis();
         }
     }
@@ -151,7 +151,7 @@ public class KeyboardController : MonoBehaviour
         else if (executeArmPose)
         {
             // Pose is already set and we want to execute it
-            publisher.publish_custom_pose(customPose);
+            jointPublisher.publish_custom_pose(customPose);
             Debug.Log("Executing custom pose");
         } 
         else 
