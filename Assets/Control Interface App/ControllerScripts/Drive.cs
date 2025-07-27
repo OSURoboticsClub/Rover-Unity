@@ -246,7 +246,7 @@ D-Pad:
         if (driveHasInput || wasDriveActive)
         {
             string drive_msg = "command_control/ground_station_drive";
-            drive_msg += ";" + driveHasInput.ToString();
+            drive_msg += ";true"; // + driveHasInput.ToString();
             drive_msg += ";false";
             drive_msg += ";" + leftJoy.y*driveSpeedSlider.value;
             drive_msg += ";" + rightJoy.x*driveSpeedSlider.value*-1;
