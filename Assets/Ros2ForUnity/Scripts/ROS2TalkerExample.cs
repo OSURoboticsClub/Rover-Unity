@@ -45,7 +45,7 @@ public class ROS2TalkerExample : MonoBehaviour
 
             i++;
             std_msgs.msg.String msg = new std_msgs.msg.String();
-            msg.Data = "Unity ROS2 sending: hello " + i;
+            msg.Data = "Unity ROS2 sending: hello 1";
             chatter_pub.Publish(msg);
         }
     }

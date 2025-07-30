@@ -159,7 +159,6 @@ public class ControllerManager : MonoBehaviour
         float shoulderEast = controls.DriveControl.shoulderEast.ReadValue<float>();
 
         bool joystickEast = controls.DriveControl.joystickEastButton.triggered;
-        Debug.Log("Controlling...");
         if(joystickEast)
         {
             float[] axes = new float[]{
@@ -316,10 +315,13 @@ D-Pad:
         // Only publish if there's input
         if (armHasInput || wasArmActive)
         {
+            //The addition of the very small float in the wrist roll is to combat unexpected arm maneuvers.
+            //More specifically, sending a 0 joint velocity for every joint after switching controllers and moving causes 
+            //the arm to rapidly swing back to the pose the original controller put it in.
             float[] axes = new float[] {
                 leftJoy.x*armSpeedSlider.value , leftJoy.y*armSpeedSlider.value , triggerWest*armSpeedSlider.value ,
                 rightJoy.x*armSpeedSlider.value , rightJoy.y*armSpeedSlider.value , triggerEast*armSpeedSlider.value ,
-                ((int)dpadEast*armSpeedSlider.value  - (int)dpadWest*armSpeedSlider.value) , ((int)dpadNorth*armSpeedSlider.value  - (int)dpadSouth*armSpeedSlider.value) 
+                ((int)dpadEast*armSpeedSlider.value  - (int)dpadWest*armSpeedSlider.value+0.0000000000001f) , ((int)dpadNorth*armSpeedSlider.value  - (int)dpadSouth*armSpeedSlider.value) 
             };
 
             wasArmActive = armHasInput;

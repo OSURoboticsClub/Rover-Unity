@@ -33,17 +33,17 @@ public class OdriveListenHandler : MonoBehaviour
         string busName = splitTopicCanNet[1];
 
         if(busName=="can0"){
-            ColorNetwork(disarm_reason,motorId,temp,driveNodes,driveText);
+            ColorNetwork(disarm_reason,motorId,temp,driveNodes,driveText,false);
         }
         if(busName=="can1"){
-            ColorNetwork(disarm_reason,motorId,temp,armNodes,armText);
+            ColorNetwork(disarm_reason,motorId,temp,armNodes,armText,true);
         }
        
         
        
         
     }
-    public void ColorNetwork(string disarm_reason, string motorId, string temp,GameObject[] nodes, GameObject[] textArray)
+    public void ColorNetwork(string disarm_reason, string motorId, string temp,GameObject[] nodes, GameObject[] textArray, bool isArm)
     {
         
         string[] reasons = disarm_reason.Split(";");
@@ -56,6 +56,7 @@ public class OdriveListenHandler : MonoBehaviour
             int int_id = -1;
             int.TryParse(str_id, out int_id);
             string reason = reasons[int_id];
+
             string display_temp = tempList[int_id];
 
             Color node_color = Color.red;
@@ -65,7 +66,7 @@ public class OdriveListenHandler : MonoBehaviour
             } 
 
             string network_name = "0."+str_id;
-            if(nodes == armNodes)
+            if(isArm)
             {
                 network_name = "1."+str_id;
             }
@@ -89,6 +90,8 @@ public class OdriveListenHandler : MonoBehaviour
                 if(text_name == node_name && reason == "NO ERROR")
                 {
                     msg.text = display_temp;
+                } else if (text_name == node_name && reason != "NO ERROR"){
+                    msg.text = reason;
                 }
 
             }
