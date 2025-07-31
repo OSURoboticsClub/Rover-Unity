@@ -13,6 +13,7 @@
   <test_depend>python3-pytest</test_depend>
   <depend>rover2_control_interface</depend>
   <depend>rover2_status_interface</depend>
+  <exec_depend>ros2launch</exec_depend>
 
   <export>
     <build_type>ament_python</build_type>

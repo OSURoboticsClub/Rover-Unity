@@ -1,5 +1,0 @@
-  File "/home/henry/Rover-Unity/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/tcp_relay.py", line 102
-    message+=:f"{msg};"
-             ^
-SyntaxError: invalid syntax
-
