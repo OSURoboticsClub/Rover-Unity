@@ -32,6 +32,8 @@ public class ControllerManager : MonoBehaviour
     private ROS2Node ros2Node;
     private IPublisher<sensor_msgs.msg.Joy> joy_pub;
     private IPublisher<sensor_msgs.msg.Joy> joy2_pub;
+
+    private IPublisher<std_msgs.msg.UInt8> light_pub;
     
     private publishJointAngles jointPublisher;
 
@@ -61,6 +63,8 @@ public class ControllerManager : MonoBehaviour
             ros2Node = ros2UnityCore.CreateNode("ROS2UnityListenerNode");
             joy_pub = ros2Node.CreatePublisher<sensor_msgs.msg.Joy>("joy");
             joy2_pub = ros2Node.CreatePublisher<sensor_msgs.msg.Joy>("joy2");
+            light_pub = ros2Node.CreatePublisher<std_msgs.msg.UInt8>("/tower/light/control");
+
         }
     }
 
@@ -235,25 +239,25 @@ D-Pad:
     float start, float select,
     float shoulderWest, float shoulderEast)
     {
-        driveSpeedSlider.value += (triggerWest-triggerEast)*0.025f;
-        
-        
+        driveSpeedSlider.value += (triggerWest - triggerEast) * 0.025f;
+
+
         // Check if drive has input
         bool driveHasInput = (leftJoy.y != 0 || rightJoy.x != 0);
-        
+
         // Publish drive command if there's input, or send stop command once when input stops
         if (driveHasInput || wasDriveActive)
         {
             string drive_msg = "command_control/ground_station_drive";
             drive_msg += ";true"; // + driveHasInput.ToString();
             drive_msg += ";false";
-            drive_msg += ";" + leftJoy.y*driveSpeedSlider.value;
-            drive_msg += ";" + rightJoy.x*driveSpeedSlider.value*-1;
+            drive_msg += ";" + leftJoy.y * driveSpeedSlider.value;
+            drive_msg += ";" + rightJoy.x * driveSpeedSlider.value * -1;
             UdpController.inst.PublishControl(drive_msg);
-            
+
             wasDriveActive = driveHasInput;
         }
-        
+
         // Handle select button toggle (only trigger on button press, not hold)
         if (select == 1 && !selectButtonPressed)
         {
@@ -264,26 +268,40 @@ D-Pad:
         {
             selectButtonPressed = false;
         }
-        
+
         // Check if pan/tilt has input
-        bool panTiltHasInput = (start == 1) || 
-                            (buttonWest != 0 || buttonEast != 0) || 
-                            (shoulderWest != 0 || shoulderEast != 0) || 
+        bool panTiltHasInput = (start == 1) ||
+                            (buttonWest != 0 || buttonEast != 0) ||
+                            (shoulderWest != 0 || shoulderEast != 0) ||
                             (buttonNorth != 0 || buttonSouth != 0);
-        
+
         // Only publish pan/tilt command if there's input
         if (panTiltHasInput)
         {
             string panTiltPrefix = useChassisPanTilt ? "chassis/pan_tilt/control" : "tower/pan_tilt/control";
-            
+
             string pan_tilt_msg = panTiltPrefix;
             pan_tilt_msg += ";" + (start == 1);
-            pan_tilt_msg += ";" + ((buttonWest - buttonEast)+(shoulderWest-shoulderEast)) * 20;
+            pan_tilt_msg += ";" + ((buttonWest - buttonEast) + (shoulderWest - shoulderEast)) * 20;
             pan_tilt_msg += ";" + (buttonNorth - buttonSouth) * 20;
             pan_tilt_msg += ";false";
             pan_tilt_msg += ";false";
             UdpController.inst.PublishControl(pan_tilt_msg);
         }
+        std_msgs.msg.UInt8 light_msg = new std_msgs.msg.UInt8();
+        if (dpadNorth == 1)
+        {
+            light_msg.Data = 2;
+            light_pub.Publish(light_msg);
+        }
+        else if (dpadSouth == 1)
+        {
+            light_msg.Data = 0;
+            light_pub.Publish(light_msg);
+
+        }
+        
+
     }
 
     void HandleArm(
