@@ -328,9 +328,9 @@ D-Pad:
 
             int[] buttons = new int[] {
                 (int)buttonSouth  , (int)buttonEast  , (int)buttonWest  , (int)buttonNorth  ,
-                (int)shoulderWest  , (int)shoulderEast  ,
+                (int)shoulderWest  , 0  ,
                 (int)start, (int)select,
-                0, 0, 0
+                0, 0, (int)shoulderEast, 0, 0
             };
 
 

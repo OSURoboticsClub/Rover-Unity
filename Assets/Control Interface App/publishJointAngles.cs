@@ -14,7 +14,7 @@ public class publishJointAngles : MonoBehaviour
     List<float> preset_pose_0 = new List<float> { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
     List<float> preset_pose_1 = new List<float> { 0.0f, -0.34f, -1.98968f, 0.0f, 0.785398f, 0.0f };
     List<float> preset_pose_2 = new List<float> { 0.0f, -0.698132f, -1.65806f, 0.0f, -0.785698f, 0.0f };
-    List<float> preset_pose_3 = new List<float> { 0.191986f, 1.23918f, -2.84489f, 0.0f, 0.0f, 0.0f };
+    List<float> preset_pose_3 = new List<float> { 0.17453f, 1.22173f, -2.61799f, 0.0f, -0.17453f, 0.0f };
 
     void Awake()
     {
