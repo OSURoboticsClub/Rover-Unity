@@ -15,6 +15,9 @@ public class publishJointAngles : MonoBehaviour
     List<float> preset_pose_1 = new List<float> { 0.0f, -0.34f, -1.98968f, 0.0f, 0.785398f, 0.0f };
     List<float> preset_pose_2 = new List<float> { 0.0f, -0.698132f, -1.65806f, 0.0f, -0.785698f, 0.0f };
     List<float> preset_pose_3 = new List<float> { 0.17453f, 1.22173f, -2.61799f, 0.0f, -0.17453f, 0.0f };
+    List<float> preset_pose_4 = new List<float> { 0.0382f, -0.9648478f, -2.1777784f,-0.01376f, 1.557087150f, 0.016154f };
+    List<float> preset_pose_5 = new List<float> { 0.0382f, -0.9648478f, -2.1777784f, -0.01376f,1.557087150f, -3.1415926f };
+
 
     void Awake()
     {
@@ -62,6 +65,16 @@ public class publishJointAngles : MonoBehaviour
     {
         Debug.Log(currentCoroutine);
         Publish(preset_pose_3);
+    }
+    public void publish_preset_pose_4()
+    {
+        Debug.Log(currentCoroutine);
+        Publish(preset_pose_4);
+    }
+        public void publish_preset_pose_5()
+    {
+        Debug.Log(currentCoroutine);
+        Publish(preset_pose_5);
     }
 
     public void publish_custom_pose(List<float> customPose)

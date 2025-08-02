@@ -100,11 +100,11 @@ public class KeyboardController : MonoBehaviour
         } 
         else if(five)
         {
-            handleCustomPose(customPose1,p5);
+            jointPublisher.publish_preset_pose_4();
         } 
         else if(six)
         {
-            handleCustomPose(customPose2,p6);
+            jointPublisher.publish_preset_pose_5();
         } 
         else if(seven)
         {
