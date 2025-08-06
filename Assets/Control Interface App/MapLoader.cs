@@ -65,7 +65,6 @@ public class MapLoader : MonoBehaviour
 }
 #if UnityEditor
 [CustomEditor(typeof(MapLoader))]
-#if UNITY_EDITOR
 
 public class MyComponentEditor : Editor
 {
