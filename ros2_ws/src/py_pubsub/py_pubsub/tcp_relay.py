@@ -33,7 +33,7 @@ from rover2_status_interface.msg import ODriveStatus
 PACKET_SIZE = 4096
 HEADER_SIZE = 16
 PAYLOAD_SIZE = PACKET_SIZE - HEADER_SIZE
-
+NO_MSG_THRESH = 60
 # Create UDP Socket
 
 class TCPServer(Node):
@@ -56,7 +56,8 @@ class TCPServer(Node):
         self.tcp_client = None
         self.get_logger().info('TCP server initialized.')
         self.bridge = CvBridge()
-
+        self.no_msg_count = 0;
+        
         # topics we subscribe to will automatically  have their data sent over to Unity
         self.add_subscription('autonomous/auton_control_response', String)
         self.add_subscription('tower/status/gps', GPSStatusMessage)
@@ -89,7 +90,10 @@ class TCPServer(Node):
 
     def ros_to_tcp_callback(self, topic_name, msg): # Callback for messages received on ROS 2 topics
         if not(self.tcp_client):
-            self.get_logger().warn("No active TCP client. Message not sent.")
+            if self.no_msg_count >= NO_MSG_THRESH:
+                self.no_msg_count = 0
+                self.get_logger().warn("No active TCP client. Message not sent.")
+            self.no_msg_count += 1
             return
             
         try: # Determine message type and construct the string accordingly
@@ -131,7 +135,7 @@ class TCPServer(Node):
                 message += msg.data # handle string messages (not custom message type)
             
             self.tcp_client.sendall(message.encode('utf-8')) # Send the constructed string over TCP
-            self.get_logger().info(f"Sent message over TCP: {message}")
+            #self.get_logger().info(f"Sent message over TCP: {message}")
         except Exception as e:
             self.get_logger().error(f"Failed to send message over TCP: {e}")
 
@@ -165,7 +169,7 @@ class TCPServer(Node):
 
                 # Process the received message.
                 message = data.decode().strip()
-                self.get_logger().info(f"Received from TCP: {message}")
+                #self.get_logger().info(f"Received from TCP: {message}")
 
                 parts = message.split(';')
                 if len(parts) < 2:
