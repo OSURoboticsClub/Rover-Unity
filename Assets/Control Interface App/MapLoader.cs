@@ -64,12 +64,17 @@ public class MapLoader : MonoBehaviour
 }
 
 [CustomEditor(typeof(MapLoader))]
-public class MyComponentEditor : Editor {
-    public override void OnInspectorGUI() {
+#if UNITY_EDITOR
+
+public class MyComponentEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
         DrawDefaultInspector();
 
         MapLoader myTarget = (MapLoader)target;
-        if (GUILayout.Button("Import")) {
+        if (GUILayout.Button("Import"))
+        {
             myTarget.Run();
         }
     }
@@ -81,3 +86,4 @@ public class CustomImporter : AssetPostprocessor {
         importer.spritePixelsPerUnit = 256f; // Set your preferred default here
     }
 }
+#endif

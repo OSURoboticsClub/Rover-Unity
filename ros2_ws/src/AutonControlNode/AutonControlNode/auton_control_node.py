@@ -1,8 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String  # Use appropriate message type
-from AutonControlNode.msg import MyCustomMessage
-
+from auton_control_interfaces.msg import MyCustomMessage
 
 class AutonomousControlNode(Node):
     def __init__(self):
