@@ -10,21 +10,20 @@ public class MapLoader : MonoBehaviour
     public static MapLoader instance;
     [SerializeField] Transform activeMap;
     [SerializeField] GameObject mapTile;
-    string folderPath = @"C:\Users\matt\Documents\GitHub\Rover-Unity\Assets\Control Interface App\Maps\Merryfield";
+    [SerializeField] string folderPath = @"C:\Users\matt\Documents\GitHub\Rover-Unity\Assets\Control Interface App\Maps\Drumheller";
 
     private void Awake() {
         instance = this;
     }
 
     public void Run() {
-#if UNITY_EDITOR
         for (int i = activeMap.childCount - 1; i >= 0; i--) {
             Transform child = activeMap.GetChild(i);
             DestroyImmediate(child.gameObject);
         }
-#endif
 
         string[] files = Directory.GetFiles(folderPath);
+        Debug.Log(folderPath);
         List<string> filteredFiles = new();
         foreach (var x in files) {
             if (x.Contains(".meta")) continue;
@@ -35,7 +34,6 @@ public class MapLoader : MonoBehaviour
 
         int fileCount = (int)Mathf.Sqrt(filteredFiles.Count);
         Debug.Log("Map is " + fileCount + "x" + fileCount);
-        #if UnityEditor
         foreach (var filename in filteredFiles) {
             var parts = filename.Split("~");
             var coords = parts[1].Split(",");
@@ -48,7 +46,6 @@ public class MapLoader : MonoBehaviour
             obj.transform.position = currPos;
             obj.GetComponent<SpriteRenderer>().sprite = sprite;
         }
-        #endif
 
         int half = fileCount / 2;
 
@@ -60,10 +57,8 @@ public class MapLoader : MonoBehaviour
     }
 
 
-    private void Start() {
-    }
+    private void Start() { }
 }
-#if UnityEditor
 [CustomEditor(typeof(MapLoader))]
 
 public class MyComponentEditor : Editor
@@ -87,4 +82,3 @@ public class CustomImporter : AssetPostprocessor {
         importer.spritePixelsPerUnit = 256f; // Set your preferred default here
     }
 }
-#endif
