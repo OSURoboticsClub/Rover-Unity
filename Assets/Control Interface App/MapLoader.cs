@@ -34,6 +34,7 @@ public class MapLoader : MonoBehaviour
 
         int fileCount = (int)Mathf.Sqrt(filteredFiles.Count);
         Debug.Log("Map is " + fileCount + "x" + fileCount);
+        #if UnityEditor
         foreach (var filename in filteredFiles) {
             var parts = filename.Split("~");
             var coords = parts[1].Split(",");
@@ -46,6 +47,7 @@ public class MapLoader : MonoBehaviour
             obj.transform.position = currPos;
             obj.GetComponent<SpriteRenderer>().sprite = sprite;
         }
+        #endif
 
         int half = fileCount / 2;
 
@@ -59,6 +61,7 @@ public class MapLoader : MonoBehaviour
 
     private void Start() { }
 }
+#if UnityEditor
 [CustomEditor(typeof(MapLoader))]
 
 public class MyComponentEditor : Editor
@@ -82,3 +85,4 @@ public class CustomImporter : AssetPostprocessor {
         importer.spritePixelsPerUnit = 256f; // Set your preferred default here
     }
 }
+#endif
