@@ -31,6 +31,7 @@ public class RoverIconController : MonoBehaviour
     public float t = 3f;
     private void Update()
     {
+        //Debug.Log(latestlat);
         return;
         if (latestlat == 0) return;
 
