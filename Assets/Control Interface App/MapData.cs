@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapData : MonoBehaviour
 {
-    [SerializeField] double lat;
-    [SerializeField] double lon;
+    public double lat;
+    public double lon;
     [SerializeField] double interTileDistance;
 }

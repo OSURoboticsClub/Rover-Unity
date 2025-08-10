@@ -92,8 +92,8 @@ public class MapController : MonoBehaviour
     }
 
     public Vector2 GetWorldPosition(double lat, double lon) {
-        const double centerLat = 44.56479;
-        const double centerLon = -123.27381;
+        double centerLat = currMap.lat;
+        double centerLon = currMap.lon;
         const int zoom = 19;
         const float unityUnitsPerTile = 1.0f;
 
