@@ -13,8 +13,8 @@ public class RoverIconController : MonoBehaviour
     [SerializeField] bool logHeading = true;
     [SerializeField] float buildingAngle = -20f;
     [SerializeField] GameObject circle;
-    [SerializeField] double latestlat = 0;
-    [SerializeField] double latestlon = 0;
+    [SerializeField] public double latestlat = 0;
+    [SerializeField] public double latestlon = 0;
     [SerializeField] Transform gpsCircleParent;
 
     public Vector3 latestGps;
