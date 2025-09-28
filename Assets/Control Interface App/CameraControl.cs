@@ -127,11 +127,13 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         if (canvas == null) return false; 
 
         Vector2 localMousePosition;
-        return RectTransformUtility.ScreenPointToLocalPointInRectangle(
+        bool isOverMap = RectTransformUtility.ScreenPointToLocalPointInRectangle(
             rectTransform,
             Input.mousePosition,
             canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main, // Handle world vs overlay canvas
             out localMousePosition)
             && rectTransform.rect.Contains(localMousePosition);
+        //Debug.Log("Mouse over map: " + isOverMap);
+        return isOverMap;
     }
 }

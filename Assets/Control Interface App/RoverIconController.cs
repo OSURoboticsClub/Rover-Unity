@@ -32,18 +32,20 @@ public class RoverIconController : MonoBehaviour
     private void Update()
     {
         //Debug.Log(latestlat);
-        return;
-        if (latestlat == 0) return;
+        //if (latestlat == 0) return;
 
-        t += Time.deltaTime;
-        if(t > 2f)
-        {
-            t = 0;
-            if (latestGps == Vector3.zero) return;
-            var obj = Instantiate(circle, gpsCircleParent);
-            obj.transform.position = latestGps;
-            latestGps = Vector3.zero;
-        }
+        //t += Time.deltaTime;
+        //if(t > 2f)
+        //{
+        //    t = 0;
+        //    if (latestGps == Vector3.zero) return;
+        //    var obj = Instantiate(circle, gpsCircleParent);
+        //    obj.transform.position = latestGps;
+        //    latestGps = Vector3.zero;
+        //}
+
+        // this was something I made to show dots on the map that represented the actual
+        // gps data that was coming in
     }
 
     void OnGpsReceived(string message)
