@@ -20,6 +20,8 @@ This is intended to be used by a minimum of 2 laptops for ease of use, but 1 can
 #### Miscellaneous
 NOTE: There is a Unity and ROS aspect to this project. Once ROS2 and Unity are installed, to get the bridge between the 2 working, you must:
 
+install colcon - https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html
+
 build in the Rover-Unity/ros2_ws directory 
 
 run . install/setup.bash, and run 
