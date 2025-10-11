@@ -43,9 +43,9 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     {
         // Get the scroll input
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        if (scrollInput == 0f) return;
-        if(!IsMouseOverMap()) return;
+        //if (scrollInput == 0f) return; // return if the user didn't scroll the mouse wheel since last frame
 
+        
         Vector2 oldMousePos = GetWorldPositionOfMouse(Input.mousePosition);
         Vector2 oldMouseScreenPos = Input.mousePosition;
         secondCamera.orthographicSize -= scrollInput * zoomSpeed * secondCamera.orthographicSize;
@@ -55,7 +55,7 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         Vector3 diff = newMousepos - oldMousePos;
         secondCamera.transform.position -= diff * mapImageScaleFactor;
 
-        RescaleIcons();
+        if (scrollInput != 0f) RescaleIcons();
 
         float height = 2f * secondCamera.orthographicSize;
         MapController.instance.SetLineScale(height * lineScale);
@@ -122,16 +122,16 @@ public class CameraControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         RawImage image = map;
         if (image == null) return false;
 
-        RectTransform rectTransform = image.rectTransform;
-        Canvas canvas = GetComponent<Canvas>(); // Get the parent canvas
-        if (canvas == null) return false; 
+        PointerEventData pointerData = new PointerEventData(EventSystem.current) {
+            position = Input.mousePosition
+        };
 
-        Vector2 localMousePosition;
-        return RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            rectTransform,
-            Input.mousePosition,
-            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main, // Handle world vs overlay canvas
-            out localMousePosition)
-            && rectTransform.rect.Contains(localMousePosition);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        if (results.Count == 0) return false;
+
+        // The topmost element is results[0]
+        return results[0].gameObject == map.gameObject;
     }
 }
