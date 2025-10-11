@@ -22,7 +22,8 @@ NOTE: There is a Unity and ROS aspect to this project. Once ROS2 and Unity are i
 
 install colcon - https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html
 
-build in the Rover-Unity/ros2_ws directory 
+build in the Rover-Unity/ros2_ws directory - 
+colcon build --packages-select py_pubsub
 
 run . install/setup.bash, and run 
 
