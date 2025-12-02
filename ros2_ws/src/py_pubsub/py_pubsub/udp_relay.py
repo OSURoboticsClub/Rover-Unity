@@ -2,7 +2,7 @@ import socket
 import rclpy
 from rclpy.node import Node
 from threading import Thread
-from rover2_control_interface.msg import DriveCommandMessage
+
 from rover2_control_interface.msg import TowerPanTiltControlMessage
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
@@ -21,7 +21,7 @@ class UDPControlRelay(Node):
         
         # Control message type mapping
         self.control_message_types = {
-            'command_control/ground_station_drive': DriveCommandMessage,
+            'cmd_vel': Twist,
             'chassis/pan_tilt/control': TowerPanTiltControlMessage,
             'tower/pan_tilt/control': TowerPanTiltControlMessage,
             'joy2': Joy,
@@ -68,7 +68,7 @@ class UDPControlRelay(Node):
             if topic_name == "joy2":
                 self.handle_joy_message(publisher)
                 
-            elif topic_name == "command_control/ground_station_drive":
+            elif topic_name == "cmd_vel":
                 self.handle_drive_command(publisher, parts)
                 
             elif topic_name in ["chassis/pan_tilt/control", "tower/pan_tilt/control"]:
@@ -99,14 +99,11 @@ class UDPControlRelay(Node):
             self.get_logger().error("Invalid drive command format")
             return
             
-        ros_msg = DriveCommandMessage()
         twist_component = Twist()
         linear = Vector3()
         angular = Vector3()
         
-        ros_msg.controller_present = parts[1].lower() == "true"
-        ros_msg.ignore_drive_control = parts[2].lower() == "true"
-        
+
         linear.x = float(parts[3])
         linear.y = 0.0
         linear.z = 0.0
@@ -117,12 +114,10 @@ class UDPControlRelay(Node):
         
         twist_component.linear = linear
         twist_component.angular = angular
-        ros_msg.drive_twist = twist_component
         
-        publisher.publish(ros_msg)
-        self.get_logger().debug(f"Published drive command: controller={ros_msg.controller_present}, "
-                              f"ignore={ros_msg.ignore_drive_control}, "
-                              f"linear_x={linear.x}, angular_z={angular.z}")
+        
+        publisher.publish(twist_component)
+        self.get_logger().debug(f"Published drive command: linear_x={linear.x}, angular_z={angular.z}")
     
     def handle_pan_tilt_command(self, publisher, parts):
         """Handle pan/tilt control messages"""
