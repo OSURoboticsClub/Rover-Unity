@@ -248,7 +248,7 @@ D-Pad:
         // Publish drive command if there's input, or send stop command once when input stops
         if (driveHasInput || wasDriveActive)
         {
-            string drive_msg = "command_control/ground_station_drive";
+            string drive_msg = "cmd_vel";
             drive_msg += ";true"; // + driveHasInput.ToString();
             drive_msg += ";false";
             drive_msg += ";" + leftJoy.y * driveSpeedSlider.value;
@@ -282,8 +282,8 @@ D-Pad:
 
             string pan_tilt_msg = panTiltPrefix;
             pan_tilt_msg += ";" + (start == 1);
-            pan_tilt_msg += ";" + ((buttonWest - buttonEast) + (shoulderWest - shoulderEast)) * 20;
-            pan_tilt_msg += ";" + (buttonNorth - buttonSouth) * 20;
+            pan_tilt_msg += ";" + ((buttonWest - buttonEast) + (shoulderWest - shoulderEast)) * 100;
+            pan_tilt_msg += ";" + (buttonNorth - buttonSouth) * 100;
             pan_tilt_msg += ";false";
             pan_tilt_msg += ";false";
             UdpController.inst.PublishControl(pan_tilt_msg);
