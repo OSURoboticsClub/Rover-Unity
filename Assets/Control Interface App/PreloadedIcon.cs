@@ -8,6 +8,7 @@ public class PreloadedIcon : MonoBehaviour
     public double longitude;
     public string description;
     public Sprite icon;
+    public ObjectType objectType;
 
     public void Start()
     {

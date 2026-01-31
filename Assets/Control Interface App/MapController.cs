@@ -20,11 +20,17 @@ public class MapController : MonoBehaviour
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Sprite gnssIcon;
     [SerializeField] Sprite homeIcon;
-    [SerializeField] Sprite hammerIcon;
+    [SerializeField] Sprite objectIcon;
     [SerializeField] Sprite arucoIcon;
     [SerializeField] TMP_Dropdown iconDropdown;
+    [SerializeField] TMP_Dropdown objectsDropdown;
+    [SerializeField] GameObject objectDetectionPanel;
     [SerializeField] Transform mapsParent;
     MapData currMap;
+
+    public ObjectType objectType;
+    public enum IconType {gnssIcon, arucoIcon, objectIcon, homeIcon}
+    public IconType iconType;
 
     void Awake()
     {
@@ -70,18 +76,19 @@ public class MapController : MonoBehaviour
         script.longitude = lon;
         script.description = descText.text;
 
-        
+        script.objectType = (ObjectType)objectsDropdown.value;
 
         SpriteRenderer sr = iconOnMap.transform.GetChild(0).GetComponent<SpriteRenderer>();
         Sprite sprite = gnssIcon;
         if (iconDropdown.value == 1) sprite = arucoIcon;
-        else if (iconDropdown.value == 2) sprite = hammerIcon;
+        else if (iconDropdown.value == 2) sprite = objectIcon;
         else if (iconDropdown.value == 3) sprite = homeIcon;
         sr.sprite = sprite;
 
         newListingMenu.SetActive(false);
         CameraControl.inst.RescaleIcons();
 
+        CheckObjectDetectionPanel();
         // the row in the table for the location is created in Start() in PreloadedIcon
     }
 
@@ -180,5 +187,15 @@ public class MapController : MonoBehaviour
     {
         lineTarget = Vector2.zero;
         lineRenderer.enabled = false;
+    }
+
+    public void CheckObjectDetectionPanel() 
+    {
+        IconType iconType = (IconType)iconDropdown.value;
+        ObjectType objectType = (ObjectType)objectsDropdown.value;
+        bool isObjectIcon = iconType == IconType.objectIcon;
+        bool hasObject = objectType != ObjectType.None;
+        bool showPanel = isObjectIcon && hasObject;
+        objectDetectionPanel.SetActive(showPanel);
     }
 }
