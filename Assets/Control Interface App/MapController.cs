@@ -31,6 +31,8 @@ public class MapController : MonoBehaviour
     public ObjectType objectType;
     public enum IconType {gnssIcon, arucoIcon, objectIcon, homeIcon}
     public IconType iconType;
+    public ObjectDetectionImageDisplay imageDisplay;
+    private bool panelWasOpen = false;
 
     void Awake()
     {
@@ -197,5 +199,14 @@ public class MapController : MonoBehaviour
         bool hasObject = objectType != ObjectType.None;
         bool showPanel = isObjectIcon && hasObject;
         objectDetectionPanel.SetActive(showPanel);
+
+        if (showPanel && !panelWasOpen) {
+            imageDisplay.Open();
+        } else if (!showPanel && panelWasOpen) {
+            imageDisplay.Close();
+        }
+
+        panelWasOpen = showPanel;
     }
 }
+
