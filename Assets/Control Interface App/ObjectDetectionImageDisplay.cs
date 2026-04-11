@@ -1,49 +1,41 @@
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ObjectDetectionImageDisplay : MonoBehaviour
 {
-    public static ObjectDetectionImageDisplay Instance;
-
-    [SerializeField] private RawImage display;
-    [SerializeField] private RectTransform boundingBox;
-    [SerializeField] private TMP_Text label;
+    [SerializeField] RawImage display;
     [SerializeField] AspectRatioFitter aspectRatioFitter;
+    
+    private Texture2D texture;
+    private bool isActive;
 
-    public void Awake()
+    public void Open()
     {
-        Instance = this;
+        Debug.Log("Opening Object Display");
+        isActive = true;
+        display.enabled = true;
     }
 
-    public void DisplayDetection(
-        Texture2D frame,
-        Vector2 topLeft,
-        Vector2 bottomRight,
-        float confidence,
-        string objectName) 
+    public void Close()
     {
-        display.texture = frame;
-        DrawBoundingBox(frame.width, frame.height, topLeft, bottomRight);
-        label.text = $"{objectName} ({confidence * 100f:F1})";
+        Debug.Log("Closing Object Display");
+
+        isActive = false;
+        display.enabled = false;
     }
 
-    void DrawBoundingBox(int width, int height, Vector2 tl, Vector2 br) 
+    public void UpdateImage(byte[] imageData, int width, int height, TextureFormat format) 
     {
-        float x = tl.x;
-        float y = tl.y;
-        float boxWidth = br.x - tl.x;
-        float boxHeight = br.y - tl.y;
-        // convert pixel space to UI space
-        float uiX = x - width / 2f;
-        float uiY = height / 2f - y;
-        
-        boundingBox.anchoredPosition = new Vector2 (
-            uiX + boxWidth / 2f,
-            uiY - boxHeight / 2f
-        );
-        
-        boundingBox.sizeDelta = new Vector2(boxWidth, boxHeight);
+        if (!isActive) return;
+        if (texture == null || texture.width != width || texture.height != height) 
+        {
+            texture = new Texture2D(width, height, format, false);
+            display.texture = texture;
+
+            aspectRatioFitter.aspectRatio = (float)width/height;
+        }
+
+        texture.LoadRawTextureData(imageData);
+        texture.Apply();
     }
 }

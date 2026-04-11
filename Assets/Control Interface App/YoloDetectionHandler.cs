@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,20 +23,22 @@ public class YoloDetectionHandler : MonoBehaviour
             frame,
             msg.top_left,
             msg.bottom_right,
-            msg.confidence,
-            GetObjectName(msg.object_type)
+            msg.confidence
+            //GetObjectName(msg.object_type)
         );
     }
-
+    
     void GetObjectName(int id) 
     {
-        return id switch 
+        return id switch;
         {
             1 => "Mallet",
-            2 => "Hammer"
-            3 => "Waterbottle"
+            2 => "Hammer",
+            3 => "Waterbottle",
             4 => "ArUco",
             _ => "Unknown"
         };
     }
+    
 }
+*/
