@@ -15,7 +15,7 @@ public class startTCPRelay : MonoBehaviour
             startInfo.FileName = "/bin/bash";
 
 
-string command = $"source /opt/ros/humble/setup.bash && cd ~/Rover-Unity/ros2_ws && . install/setup.bash && ros2 run py_pubsub tcp_Relay";
+            string command = $"source /opt/ros/humble/setup.bash && cd ~/Rover-Unity/ros2_ws && . install/setup.bash && ros2 run py_pubsub tcp_Relay";
             startInfo.Arguments = $"-c \"{command}\"";
 
             startInfo.UseShellExecute = false;

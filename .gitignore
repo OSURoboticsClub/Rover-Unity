@@ -101,3 +101,5 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+mono_crash.*
