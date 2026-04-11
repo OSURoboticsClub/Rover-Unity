@@ -21,11 +21,19 @@ public class MapController : MonoBehaviour
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Sprite gnssIcon;
     [SerializeField] Sprite homeIcon;
-    [SerializeField] Sprite hammerIcon;
+    [SerializeField] Sprite objectIcon;
     [SerializeField] Sprite arucoIcon;
     [SerializeField] TMP_Dropdown iconDropdown;
+    [SerializeField] TMP_Dropdown objectsDropdown;
+    [SerializeField] GameObject objectDetectionPanel;
     [SerializeField] Transform mapsParent;
     MapData currMap;
+
+    public ObjectType objectType;
+    public enum IconType {gnssIcon, arucoIcon, objectIcon, homeIcon}
+    public IconType iconType;
+    public ObjectDetectionImageDisplay imageDisplay;
+    private bool panelWasOpen = false;
 
     void Awake()
     {
@@ -71,18 +79,19 @@ public class MapController : MonoBehaviour
         script.longitude = lon;
         script.description = descText.text;
 
-        
+        script.objectType = (ObjectType)objectsDropdown.value;
 
         SpriteRenderer sr = iconOnMap.transform.GetChild(0).GetComponent<SpriteRenderer>();
         Sprite sprite = gnssIcon;
         if (iconDropdown.value == 1) sprite = arucoIcon;
-        else if (iconDropdown.value == 2) sprite = hammerIcon;
+        else if (iconDropdown.value == 2) sprite = objectIcon;
         else if (iconDropdown.value == 3) sprite = homeIcon;
         sr.sprite = sprite;
 
         newListingMenu.SetActive(false);
         CameraControl.inst.RescaleIcons();
 
+        CheckObjectDetectionPanel();
         // the row in the table for the location is created in Start() in PreloadedIcon
     }
 
@@ -106,7 +115,7 @@ public class MapController : MonoBehaviour
 	    // Assign sprite based on the passed index
 	    Sprite sprite = gnssIcon;
 	    if (iconTypeIndex == 1) sprite = arucoIcon;
-	    else if (iconTypeIndex == 2) sprite = hammerIcon;
+	    else if (iconTypeIndex == 2) sprite = objectIcon;
 	    else if (iconTypeIndex == 3) sprite = homeIcon;
 	    sr.sprite = sprite;
 
@@ -238,4 +247,22 @@ public class MapController : MonoBehaviour
 
 	public double GetCurrMapLat() => currMap != null ? currMap.lat : 44.566; // Fallback to Oregon
 	public double GetCurrMapLon() => currMap != null ? currMap.lon : -123.272;
+
+    public void CheckObjectDetectionPanel() 
+    {
+        IconType iconType = (IconType)iconDropdown.value;
+        ObjectType objectType = (ObjectType)objectsDropdown.value;
+        bool isObjectIcon = iconType == IconType.objectIcon;
+        bool hasObject = objectType != ObjectType.None;
+        bool showPanel = isObjectIcon && hasObject;
+        objectDetectionPanel.SetActive(showPanel);
+
+        if (showPanel && !panelWasOpen) {
+            imageDisplay.Open();
+        } else if (!showPanel && panelWasOpen) {
+            imageDisplay.Close();
+        }
+
+        panelWasOpen = showPanel;
+    }
 }
