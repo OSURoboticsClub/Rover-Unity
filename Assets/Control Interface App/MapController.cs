@@ -27,6 +27,7 @@ public class MapController : MonoBehaviour
     [SerializeField] TMP_Dropdown objectsDropdown;
     [SerializeField] GameObject objectDetectionPanel;
     [SerializeField] Transform mapsParent;
+    [SerializeField] private List<ObjectButtonHandler> buttons;
     MapData currMap;
 
     public ObjectType objectType;
@@ -34,6 +35,7 @@ public class MapController : MonoBehaviour
     public IconType iconType;
     public ObjectDetectionImageDisplay imageDisplay;
     private bool panelWasOpen = false;
+    private ObjectType? currentSelectedObject = null;
 
     void Awake()
     {
@@ -264,5 +266,19 @@ public class MapController : MonoBehaviour
         }
 
         panelWasOpen = showPanel;
+    }
+
+    public void OnObjectButtonClicked(ObjectType type, bool isOn)
+    {
+        // if clicking new button :: toggle true
+        if (isOn)
+        {
+            objectDetectionPanel.SetActive(true);
+            imageDisplay?.Open();
+        } else {
+            // if clicking same button :: toggle false
+            objectDetectionPanel.SetActive(false);
+            imageDisplay?.Close();
+        }
     }
 }
