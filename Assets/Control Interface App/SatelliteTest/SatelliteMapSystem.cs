@@ -29,6 +29,7 @@ public class LocalTileLoader : ITileLoader
     {
 #if UNITY_EDITOR
         string path = $"Assets/{_baseFolder}/~{x},{y}~.png";
+        Debug.Log($"Loading tile: {path}");
         Texture2D tex = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(path);
         
         if (tex != null)
@@ -306,9 +307,14 @@ public class SatelliteMapSystem : MonoBehaviour
         );
     }
 
-    private void Start()
+    private void OnEnable()
     {
         GenerateMap();
+    }
+
+    private void Start()
+    {
+        //GenerateMap();
 
         _markers = new GameObject("Markers");
         _markers.transform.parent = this.transform;
@@ -410,6 +416,7 @@ _previousMarkerScale = markerScale;
         Renderer r = tile.GetComponent<Renderer>();
         r.material = baseMaterial != null ? baseMaterial : new Material(Shader.Find("Unlit/Texture"));
         r.material.mainTexture = tex;
+        r.material.color = Color.red;   // for debugging
         
         Destroy(tile.GetComponent<Collider>());
     }
