@@ -307,9 +307,12 @@ public class SatelliteMapSystem : MonoBehaviour
         );
     }
 
-    private void OnEnable()
+    private bool _initalized = false;
+    public void InitializeMap() 
     {
+        if (_initalized) return;
         GenerateMap();
+        _initalized = true;
     }
 
     private void Start()
