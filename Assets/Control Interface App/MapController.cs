@@ -27,6 +27,7 @@ public class MapController : MonoBehaviour
     [SerializeField] TMP_Dropdown objectsDropdown;
     [SerializeField] GameObject objectDetectionPanel;
     [SerializeField] Transform mapsParent;
+    [SerializeField] private SatelliteMapSystem satelliteMapSystem;
     [SerializeField] private List<ObjectButtonHandler> buttons;
     MapData currMap;
 
@@ -268,17 +269,48 @@ public class MapController : MonoBehaviour
         panelWasOpen = showPanel;
     }
 
-    public void OnObjectButtonClicked(ObjectType type, bool isOn)
+    public void OnObjectButtonClicked(ObjectType objectType, bool isSelected)
     {
         // if clicking new button :: toggle true
-        if (isOn)
-        {
-            objectDetectionPanel.SetActive(true);
-            imageDisplay?.Open();
-        } else {
+        if (!isSelected) {
             // if clicking same button :: toggle false
             objectDetectionPanel.SetActive(false);
             imageDisplay?.Close();
+            return;
         }
+
+        objectDetectionPanel.SetActive(true);
+        imageDisplay?.Open();
+        MissionConfig.SearchObject buttonSearchObject;
+
+        foreach (var btn in buttons)
+        {
+            if (btn.objectType != objectType)
+            {
+                btn.SetSelected(false);
+            }
+        }
+
+        switch (objectType) 
+        {
+            case ObjectType.Aruco:
+                buttonSearchObject = MissionConfig.SearchObject.Aruco;
+                break;
+            case ObjectType.Mallet:
+                buttonSearchObject = MissionConfig.SearchObject.Mallet;
+                break;
+            case ObjectType.Hammer:
+                buttonSearchObject = MissionConfig.SearchObject.Hammer;
+                break;
+            case ObjectType.Waterbottle:
+                buttonSearchObject = MissionConfig.SearchObject.Waterbottle;
+                break;
+            default:
+                buttonSearchObject = MissionConfig.SearchObject.Aruco;
+                return;
+        }
+
+        satelliteMapSystem.SetSearchObject(buttonSearchObject);
     }
+    
 }

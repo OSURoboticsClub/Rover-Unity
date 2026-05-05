@@ -7,5 +7,6 @@ public enum ObjectType
     None,
     Mallet, 
     Hammer, 
-    Waterbottle
+    Waterbottle,
+    Aruco
 }

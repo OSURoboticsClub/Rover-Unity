@@ -77,7 +77,7 @@ public class WaypointUIController : MonoBehaviour
         {
             return searchObject switch
             {
-                MissionConfig.SearchObject.Bottle => bottleMarker,
+                MissionConfig.SearchObject.Waterbottle => bottleMarker,
                 MissionConfig.SearchObject.Hammer => hammerMarker,
                 MissionConfig.SearchObject.Mallet => malletMarker,
                 MissionConfig.SearchObject.Aruco => arucoMarker,

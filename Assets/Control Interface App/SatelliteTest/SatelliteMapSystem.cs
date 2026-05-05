@@ -113,7 +113,7 @@ public class MissionConfig
 {
     // Match search patterns and objects to ROS2 enums.
     public enum SearchPattern { None, Spiral, Lawnmower }
-    public enum SearchObject { None, Bottle, Hammer, Mallet, Aruco }
+    public enum SearchObject { None, Mallet, Hammer, Waterbottle, Aruco }
 
     public List<Waypoint> waypoints = new List<Waypoint>();
     public SearchPattern searchPattern;
@@ -263,7 +263,7 @@ public class SatelliteMapSystem : MonoBehaviour
 
     [Header("Mission Configuration (Override)")]
     [SerializeField] private MissionConfig.SearchPattern inspectorSearchPattern = MissionConfig.SearchPattern.None;
-    [SerializeField] private MissionConfig.SearchObject inspectorSearchObject = MissionConfig.SearchObject.Aruco;
+    [SerializeField] private MissionConfig.SearchObject buttonSearchObject;
     [Tooltip("Lawnmower/Spiral: Lane Spacing (Meters)")]
     [SerializeField] private float inspectorSearchParam1 = 2.0f;
     [Tooltip("Lawnmower: Step Size | Spiral: Max Radius (Meters)")]
@@ -324,7 +324,7 @@ public class SatelliteMapSystem : MonoBehaviour
 
         currentMission = new MissionConfig(
             inspectorSearchPattern,
-            inspectorSearchObject,
+            buttonSearchObject,
             inspectorSearchParam1,
             inspectorSearchParam2,
             new List<Waypoint>()
@@ -866,6 +866,12 @@ public class SatelliteMapSystem : MonoBehaviour
     }
 
 
+    
+    public void SetSearchObject(MissionConfig.SearchObject newSearchObject) 
+    {
+        buttonSearchObject = newSearchObject;
+        Debug.Log("Search object set to: " + buttonSearchObject);
+    }
 
     void OnValidate()
     {
@@ -875,7 +881,7 @@ public class SatelliteMapSystem : MonoBehaviour
         if (currentMission != null)
         {
             currentMission.searchPattern = inspectorSearchPattern;
-            currentMission.searchObject = inspectorSearchObject;
+            currentMission.searchObject = buttonSearchObject;
             currentMission.searchParam1 = inspectorSearchParam1;
             currentMission.searchParam2 = inspectorSearchParam2;
         }
