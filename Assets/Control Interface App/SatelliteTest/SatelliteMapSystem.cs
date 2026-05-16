@@ -870,7 +870,8 @@ public class SatelliteMapSystem : MonoBehaviour
     public void SetSearchObject(MissionConfig.SearchObject newSearchObject) 
     {
         buttonSearchObject = newSearchObject;
-        Debug.Log("Search object set to: " + buttonSearchObject);
+        currentMission.searchObject = buttonSearchObject;
+        Debug.Log("Search object set to: " + currentMission.searchObject);
     }
 
     void OnValidate()
