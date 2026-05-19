@@ -27,8 +27,6 @@ public class MapController : MonoBehaviour
     [SerializeField] TMP_Dropdown objectsDropdown;
     [SerializeField] GameObject objectDetectionPanel;
     [SerializeField] Transform mapsParent;
-    [SerializeField] private SatelliteMapSystem satelliteMapSystem;
-    [SerializeField] private List<ObjectButtonHandler> buttons;
     MapData currMap;
 
     public ObjectType objectType;
@@ -36,7 +34,7 @@ public class MapController : MonoBehaviour
     public IconType iconType;
     public ObjectDetectionImageDisplay imageDisplay;
     private bool panelWasOpen = false;
-    private ObjectType? currentSelectedObject = null;
+    private ObjectButtonHandler _currentSelectedObject = null;
 
     void Awake()
     {
@@ -269,48 +267,29 @@ public class MapController : MonoBehaviour
         panelWasOpen = showPanel;
     }
 
-    public void OnObjectButtonClicked(ObjectType objectType, bool isSelected)
+    public void OnObjectButtonClicked(ObjectButtonHandler clickedButton)
     {
-        // if clicking new button :: toggle true
-        if (!isSelected) {
+        Debug.Log($"Object button clicked: {clickedButton.objectType}");
+        if (_currentSelectedObject == clickedButton) {
             // if clicking same button :: toggle false
+            _currentSelectedObject.UpdateVisual(false);
+            _currentSelectedObject = null;
             objectDetectionPanel.SetActive(false);
             imageDisplay?.Close();
             return;
         }
 
+        if (_currentSelectedObject != null) {
+            // if clicking new button :: toggle true
+            _currentSelectedObject.UpdateVisual(false);
+        }
+
+        _currentSelectedObject = clickedButton;
+        _currentSelectedObject.UpdateVisual(true);
+        SatelliteMapSystem.Instance.SetSearchObject(clickedButton.searchObject);
+
         objectDetectionPanel.SetActive(true);
         imageDisplay?.Open();
         MissionConfig.SearchObject buttonSearchObject;
-
-        foreach (var btn in buttons)
-        {
-            if (btn.objectType != objectType)
-            {
-                btn.SetSelected(false);
-            }
-        }
-
-        switch (objectType) 
-        {
-            case ObjectType.Aruco:
-                buttonSearchObject = MissionConfig.SearchObject.Aruco;
-                break;
-            case ObjectType.Mallet:
-                buttonSearchObject = MissionConfig.SearchObject.Mallet;
-                break;
-            case ObjectType.Hammer:
-                buttonSearchObject = MissionConfig.SearchObject.Hammer;
-                break;
-            case ObjectType.Waterbottle:
-                buttonSearchObject = MissionConfig.SearchObject.Waterbottle;
-                break;
-            default:
-                buttonSearchObject = MissionConfig.SearchObject.Aruco;
-                return;
-        }
-
-        satelliteMapSystem.SetSearchObject(buttonSearchObject);
     }
-    
 }
