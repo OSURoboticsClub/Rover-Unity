@@ -840,7 +840,18 @@ public class SatelliteMapSystem : MonoBehaviour
         if (!IsMouseOverMap() || (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()))
             return;
 
-        // Panning (Right Mouse Drag)
+        // WASD / Arrow Key Panning
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        if (h != 0 || v != 0)
+        {
+            float heightMult = _cam.transform.position.y / 10.0f;
+            Vector3 kbMove = new Vector3(h, 0, v) * (panSpeed * 10f) * heightMult * Time.deltaTime;
+            kbMove = Quaternion.Euler(0, _cam.transform.eulerAngles.y, 0) * kbMove;
+            _cam.transform.Translate(kbMove, Space.World);
+        }
+
+        // Panning (Middle Mouse Drag)
         if (Input.GetMouseButtonDown(2)) _lastMousePos = Input.mousePosition;
 
         if (Input.GetMouseButton(2))
