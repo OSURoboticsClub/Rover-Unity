@@ -1,11 +1,12 @@
 using TMPro;
+using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class WaypointListElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    public Image typeIcon;
+    public SVGImage typeIcon;
     public TextMeshProUGUI coordText;
 
     private Image _background;
@@ -29,6 +30,11 @@ public class WaypointListElement : MonoBehaviour, IPointerEnterHandler, IPointer
         coordText.text = $"{wp.latitude:F5}, <pos=50%>{wp.longitude:F5}";
     }
 
+    public void UpdateCoordinates(double lat, double lon)
+    {
+        coordText.text = $"{lat:F5}, <pos=50%>{lon:F5}";
+    }
+    
     public void OnEditClicked()
     {
         if (_controller != null && _controller.editorPanel != null)
@@ -46,20 +52,18 @@ public class WaypointListElement : MonoBehaviour, IPointerEnterHandler, IPointer
         SatelliteMapSystem.Instance.RemoveWaypointAtIndex(_index);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void OnPointerEnter(PointerEventData eventData = null)
     {
         SatelliteMapSystem.Instance.HighlightWaypoint(_index, true);
         _background.color = _hoverColor;
     }
 
-    // --- HOVER END ---
-    public void OnPointerExit(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData eventData = null)
     {
         SatelliteMapSystem.Instance.HighlightWaypoint(_index, false);
         _background.color = _bgColor;
     }
 
-    // --- CLICK ---
     public void OnPointerDown(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)

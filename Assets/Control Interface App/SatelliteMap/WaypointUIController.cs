@@ -49,6 +49,9 @@ public class WaypointUIController : MonoBehaviour
         if (SatelliteMapSystem.Instance != null)
         {
             SatelliteMapSystem.Instance.OnWaypointsChanged -= RefreshList;
+            SatelliteMapSystem.Instance.OnWaypointHoverStart -= HighlightListRow;
+            SatelliteMapSystem.Instance.OnWaypointHoverEnd -= UnhighlightListRow;
+            SatelliteMapSystem.Instance.OnWaypointDragged -= UpdateWaypointDragged;
             _isSubscribed = false;
         }
     }
@@ -58,6 +61,9 @@ public class WaypointUIController : MonoBehaviour
         if (_isSubscribed || SatelliteMapSystem.Instance == null)
             return;
         SatelliteMapSystem.Instance.OnWaypointsChanged += RefreshList;
+        SatelliteMapSystem.Instance.OnWaypointHoverStart += HighlightListRow;
+        SatelliteMapSystem.Instance.OnWaypointHoverEnd += UnhighlightListRow;
+        SatelliteMapSystem.Instance.OnWaypointDragged += UpdateWaypointDragged;
         _isSubscribed = true;
     }
 
@@ -89,6 +95,26 @@ public class WaypointUIController : MonoBehaviour
         }
     }
 
+    private void HighlightListRow(int index)
+    {
+        if (index < contentContainer.childCount)
+        {
+            var element = contentContainer.GetChild(index).GetComponent<WaypointListElement>();
+            if (element != null)
+                element.OnPointerEnter(null);
+        }
+    }
+    
+    private void UnhighlightListRow(int index)
+    {
+        if (index >= 0 && index < contentContainer.childCount)
+        {
+            var element = contentContainer.GetChild(index).GetComponent<WaypointListElement>();
+            if (element != null)
+                element.OnPointerExit(null);
+        }
+    }
+
     private Sprite GetMarker(int index, int count, MissionConfig.SearchObject searchObject)
     {
         if (index == 0) return roverMarker;
@@ -104,5 +130,15 @@ public class WaypointUIController : MonoBehaviour
             };
         }
         return waypointMarker;
+    }
+
+    private void UpdateWaypointDragged(int index, Waypoint newWaypoint)
+    {
+        if (index >= 0 && index < contentContainer.childCount)
+        {
+            var element = contentContainer.GetChild(index).GetComponent<WaypointListElement>();
+            if (element != null)
+                element.UpdateCoordinates(newWaypoint.latitude, newWaypoint.longitude);
+        }
     }
 }

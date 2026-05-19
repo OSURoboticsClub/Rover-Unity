@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 
 public class WaypointEditorPanel : MonoBehaviour
 {
+    public TMP_Text headerText;
     public TMP_InputField latInput;
     public TMP_InputField lonInput;
     public Button saveButton;
@@ -21,11 +22,13 @@ public class WaypointEditorPanel : MonoBehaviour
         if (cancelButton != null)
             cancelButton.onClick.AddListener(OnCancelClicked);
     }
+
     public void OpenForAdd()
     {
         _isEditing = false;
         latInput.text = "";
         lonInput.text = "";
+        headerText.text = "Add Waypoint";
         gameObject.SetActive(true);
     }
 
@@ -33,9 +36,9 @@ public class WaypointEditorPanel : MonoBehaviour
     {
         _isEditing = true;
         _editIndex = index;
-        
         latInput.text = lat.ToString("F7");
         lonInput.text = lon.ToString("F7");
+        headerText.text = "Edit Waypoint";
         gameObject.SetActive(true);
     }
 

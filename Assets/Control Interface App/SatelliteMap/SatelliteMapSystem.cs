@@ -147,26 +147,40 @@ public class MissionConfig
 
 public class WaypointHoverEffect : MonoBehaviour
 {
+    private int _waypointIndex;
     private SpriteRenderer _sr;
     private Material _mat;
     private float _scaleFactor = 1.2f;
 
-    public void SetBaseColor(Color color)
+    public void SetBaseColor(Color color, int index)
     {
         _sr = GetComponent<SpriteRenderer>();
         _sr.color = color;
         _mat = _sr.material;
+        _mat.EnableKeyword("_EMISSION");
+        _waypointIndex = index;
     }
     void OnMouseEnter()
     {
-        _mat.SetColor("_EmissionColor", _sr.color * 2.0f);
+        if (SatelliteMapSystem.Instance.IsDragging() && SatelliteMapSystem.Instance.GetDraggedIndex() != _waypointIndex)
+            return;
+        _mat.SetColor("_EmissionColor", _sr.color * 1.5f);
         transform.localScale *= _scaleFactor;
+        SatelliteMapSystem.Instance.TriggerHoverStart(_waypointIndex);
     }
 
     void OnMouseExit()
     {
+        if (SatelliteMapSystem.Instance.IsDragging() && SatelliteMapSystem.Instance.GetDraggedIndex() == _waypointIndex)
+            return;
+        RemoveEffect();
+    }
+
+    public void RemoveEffect()
+    {
         _mat.SetColor("_EmissionColor", Color.black);
         transform.localScale /= _scaleFactor;
+        SatelliteMapSystem.Instance.TriggerHoverEnd(_waypointIndex);
     }
 }
 
@@ -200,7 +214,7 @@ public class SatelliteMapSystem : MonoBehaviour
     public LoadMode mode = LoadMode.Local;
     public string localTileFolder = "Control Interface App/Maps/Merryfield";
     [Tooltip("Use {x}, {y}, {z} as placeholders")]
-    public string webUrlTemplate = "https://myserver.com/tiles/{z}/{x}/{y}.png";
+    public string webUrlTemplate = "https://server.com/tiles/{z}/{x}/{y}.png";
     public GameObject mapOrigin;
     public RectTransform mapUIPanel;
 
@@ -223,6 +237,10 @@ public class SatelliteMapSystem : MonoBehaviour
     public Sprite goalMarker;
     public Sprite boundsMarker;
 
+    public Color startColor = Color.green;
+    public Color waypointColor = Color.white;
+    public Color goalColor = Color.red;
+
     public GameObject markerPrefab;
     [Range(0.1f, 5.0f), SerializeField]
     private float markerScale = 1.0f;
@@ -239,7 +257,6 @@ public class SatelliteMapSystem : MonoBehaviour
         }
     }
     private float _previousMarkerScale = 1.0f;
-    public Color waypointColor = Color.white;
 
     private GameObject _markers;
     private LineRenderer _pathRenderer;
@@ -277,6 +294,15 @@ public class SatelliteMapSystem : MonoBehaviour
 
     // UI Action / Hooks
     public Action OnWaypointsChanged;
+    public Action<int> OnWaypointHoverStart;
+    public Action<int> OnWaypointHoverEnd;
+    public Action<int, Waypoint> OnWaypointDragged;
+
+    public void TriggerHoverStart(int index) => OnWaypointHoverStart?.Invoke(index);
+    public void TriggerHoverEnd(int index) => OnWaypointHoverEnd?.Invoke(index);
+
+    public bool IsDragging() => _draggedMarker != null;
+    public int GetDraggedIndex() => _draggedIndex;
 
     private void Awake()
     {
@@ -299,20 +325,17 @@ public class SatelliteMapSystem : MonoBehaviour
             Debug.LogError("Satellite Camera not found.");
         }
         _mainCamClearFlags = Camera.main.clearFlags;
-
         _lastCamHeight = _cam.transform.position.y;
 
         _pathRenderer = GetComponent<LineRenderer>();
-        _pathRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        _pathRenderer.startColor = Color.white;
-        _pathRenderer.endColor = Color.white;
         _pathRenderer.startWidth = markerScale * 0.5f;
         _pathRenderer.endWidth = markerScale * 0.5f;
         _pathRenderer.alignment = LineAlignment.View;
-        _pathRenderer.numCornerVertices = 10;
-        _pathRenderer.numCapVertices = 5;
+        _pathRenderer.numCornerVertices = 15;
+        _pathRenderer.numCapVertices = 10;
         _pathRenderer.positionCount = 0;
         _pathRenderer.useWorldSpace = true;
+        _pathRenderer.sortingOrder = -2;
         baseMaterial = new Material(Shader.Find("Unlit/Texture"));
 
         // Initialize Loader
@@ -447,21 +470,25 @@ public class SatelliteMapSystem : MonoBehaviour
     private float _smoothTime = 0.2f;
     private IEnumerator SmoothCameraFocus(Vector3 target)
     {
-        Vector3 endPos = new Vector3(target.x, _cam.transform.position.y, target.z);
-
-        // Continue moving until the distance is negligible
-        while (Vector3.Distance(_cam.transform.position, endPos) > 0.01f)
+        while (true)
         {
+            Vector3 currentPos = _cam.transform.position;
+            Vector3 endPos = new Vector3(target.x, currentPos.y, target.z);
+            float flatDistance = Vector2.Distance(new Vector2(currentPos.x, currentPos.z), new Vector2(target.x, target.z));
+            if (flatDistance <= 0.01f)
+                break;
+
             _cam.transform.position = Vector3.SmoothDamp(
-                _cam.transform.position,
+                currentPos,
                 endPos,
                 ref _camVel,
                 _smoothTime
             );
+            
             yield return null;
         }
 
-        _cam.transform.position = endPos;
+        _cam.transform.position = new Vector3(target.x, _cam.transform.position.y, target.z);
     }
 
     public void HighlightWaypoint(int index, bool isHighlighted)
@@ -474,7 +501,7 @@ public class SatelliteMapSystem : MonoBehaviour
 
         if (isHighlighted)
         {
-            r.material.SetColor("_EmissionColor", r.material.color * 2.0f);
+            r.material.SetColor("_EmissionColor", r.material.color * 1.5f);
             marker.transform.localScale = Vector3.one * GetCurrentZoomScale() * 1.5f;
         }
         else
@@ -599,7 +626,8 @@ public class SatelliteMapSystem : MonoBehaviour
         {
             Vector3 worldPos = GetUnityPositionFromGPS(currentMission.waypoints[i].latitude, currentMission.waypoints[i].longitude);
             worldPos.y = 0.1f;
-
+            Vector3 linePos = worldPos;
+            linePos.y = 0.05f;
             _pathRenderer.SetPosition(i, worldPos);
 
             if (i >= _waypointMarkers.Count) {
@@ -613,27 +641,48 @@ public class SatelliteMapSystem : MonoBehaviour
             _waypointMarkers[i].transform.position = worldPos;
             _waypointMarkers[i].transform.localScale = Vector3.one * GetCurrentZoomScale();
 
-            if (_waypointMarkers[i].TryGetComponent(out SpriteRenderer sr))
+            SpriteRenderer sr = _waypointMarkers[i].GetComponentInChildren<SpriteRenderer>();
+            if (sr != null)
             {
                 if (i == 0) sr.sprite = startMarker;
                 else if (i == currentMission.waypoints.Count - 1 && currentMission.waypoints.Count > 1) sr.sprite = goalMarker;
                 else sr.sprite = pathMarker;
 
                 Color baseColor = waypointColor;
-                if (i == 0) baseColor = Color.green;
-                else if (i == currentMission.waypoints.Count - 1 && currentMission.waypoints.Count > 1) baseColor = Color.red;
+                if (i == 0) baseColor = startColor;
+                else if (i == currentMission.waypoints.Count - 1 && currentMission.waypoints.Count > 1) baseColor = goalColor;
 
                 sr.color = baseColor;
                 sr.material = new Material(sr.sharedMaterial);
                 sr.material.SetColor("_Color", baseColor);
 
                 WaypointHoverEffect hover = _waypointMarkers[i].GetComponent<WaypointHoverEffect>();
-                hover.SetBaseColor(baseColor);
+                hover.SetBaseColor(baseColor, i);
 
-                if (_waypointMarkers[i].TryGetComponent(out BoxCollider box)) {
-                    Vector3 spriteSize = sr.sprite.bounds.size;
-                    box.size = new Vector3(spriteSize.x, spriteSize.y, 0.2f);
-                    box.center = sr.sprite.bounds.center;
+                // if (_waypointMarkers[i].TryGetComponent(out BoxCollider box)) {
+                //     Vector3 spriteSize = sr.sprite.bounds.size;
+                //     box.size = new Vector3(spriteSize.x, spriteSize.y, 0.2f);
+                //     box.center = sr.sprite.bounds.center;
+                // }
+
+                if (_waypointMarkers[i].TryGetComponent(out BoxCollider box))
+                {
+                    SpriteRenderer mainSr = _waypointMarkers[i].GetComponent<SpriteRenderer>();
+                    
+                    Bounds combined = new Bounds(mainSr.sprite.bounds.center, mainSr.sprite.bounds.size);
+
+                    if (_waypointMarkers[i].transform.childCount > 0 && 
+                        _waypointMarkers[i].transform.GetChild(0).TryGetComponent(out SpriteRenderer circleSr) && 
+                        circleSr.sprite != null)
+                    {
+                        Vector3 childLocalCenter = _waypointMarkers[i].transform.InverseTransformPoint(circleSr.transform.TransformPoint(circleSr.sprite.bounds.center));
+                        Vector3 childLocalSize = _waypointMarkers[i].transform.InverseTransformVector(circleSr.bounds.size);
+                        childLocalSize = new Vector3(Mathf.Abs(childLocalSize.x), Mathf.Abs(childLocalSize.y), Mathf.Abs(childLocalSize.z));
+                        combined.Encapsulate(new Bounds(childLocalCenter, childLocalSize));
+                    }
+
+                    box.size = new Vector3(combined.size.x, combined.size.y, 0.2f);
+                    box.center = combined.center;
                 }
             }
 
@@ -753,6 +802,7 @@ public class SatelliteMapSystem : MonoBehaviour
 
                 GetGPSFromUnityPosition(targetPos, out double newLat, out double newLon);
                 currentMission.waypoints[_draggedIndex] = new Waypoint(newLat, newLon);
+                OnWaypointDragged?.Invoke(_draggedIndex, currentMission.waypoints[_draggedIndex]);
             }
         }
 
@@ -760,7 +810,10 @@ public class SatelliteMapSystem : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             if (_draggedMarker != null)
+            {
+                _draggedMarker.GetComponent<WaypointHoverEffect>()?.RemoveEffect();
                 OnWaypointsChanged?.Invoke();
+            }
             _draggedMarker = null;
             _draggedIndex = -1;
         }
