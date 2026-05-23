@@ -8,8 +8,7 @@ public class WaypointUIController : MonoBehaviour
     public GameObject instructionText;
 
     [Header("Marker Icons")]
-    public Sprite roverMarker;
-    public Sprite startMarker;
+    public Sprite homeMarker;
     public Sprite waypointMarker;
     public Sprite goalMarker;
     public Sprite searchBoundsMarker;
@@ -117,7 +116,7 @@ public class WaypointUIController : MonoBehaviour
 
     private Sprite GetMarker(int index, int count, MissionConfig.SearchObject searchObject)
     {
-        if (index == 0) return roverMarker;
+        if (index == 0) return homeMarker;
         if (index == count - 1)
         {
             return searchObject switch

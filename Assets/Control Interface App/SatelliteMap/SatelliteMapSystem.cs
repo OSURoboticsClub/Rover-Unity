@@ -142,6 +142,30 @@ public class MissionConfig
     }
 }
 
+public enum MissionState
+{
+    IDLE = 0,
+    MOVING_TO_START = 1,
+    SEARCHING = 2,
+    WAITING_FOR_NAV_IDLE = 3,
+    INVESTIGATING = 4,
+    RETURNING_TO_SEARCH = 5,
+    SUCCESS = 6,
+    FAILED = 7,
+    RETURNING_HOME = 8,
+    STOPPED = 9
+}
+
+[System.Serializable]
+public class MissionTelemetry
+{
+    public double timestamp;
+    public MissionState mission_state;
+    public double latitude;
+    public double longitude;
+    public float heading;
+}
+
 // ---------------------------------
 // MISSION VISUALIZATION COMPONENTS
 
@@ -242,6 +266,8 @@ public class SatelliteMapSystem : MonoBehaviour
     public Color goalColor = Color.red;
 
     public GameObject markerPrefab;
+    public GameObject roverMarkerPrefab;
+
     [Range(0.1f, 5.0f), SerializeField]
     private float markerScale = 1.0f;
     public float MarkerScale
@@ -259,6 +285,7 @@ public class SatelliteMapSystem : MonoBehaviour
     private float _previousMarkerScale = 1.0f;
 
     private GameObject _markers;
+    private GameObject _roverMarker;
     private LineRenderer _pathRenderer;
     private List<GameObject> _waypointMarkers = new List<GameObject>();
     private int _lastWaypointCount = 0;
@@ -297,6 +324,7 @@ public class SatelliteMapSystem : MonoBehaviour
     public Action<int> OnWaypointHoverStart;
     public Action<int> OnWaypointHoverEnd;
     public Action<int, Waypoint> OnWaypointDragged;
+    public Action<MissionTelemetry> OnTelemetryReceived;
 
     public void TriggerHoverStart(int index) => OnWaypointHoverStart?.Invoke(index);
     public void TriggerHoverEnd(int index) => OnWaypointHoverEnd?.Invoke(index);
@@ -307,8 +335,6 @@ public class SatelliteMapSystem : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        //_cam = Camera.main;
-        //GameObject camera = GameObject.Find("Satellite Camera");
         Camera[] allCams = Resources.FindObjectsOfTypeAll<Camera>();
         foreach (Camera cam in allCams)
         {
@@ -345,7 +371,7 @@ public class SatelliteMapSystem : MonoBehaviour
             _loader = new WebTileLoader(webUrlTemplate);
 
         // Pre-calculate Global Web Mercator Coordinates for the Origin (Lat/Lon)
-        // This makes the click-to-GPS math ultra-fast later.
+        // This makes the click-to-GPS math fast later.
         _originGlobalTileX = LongitudeToTileX(originLon, zoomLevel);
         _originGlobalTileY = LatitudeToTileY(originLat, zoomLevel);
 
@@ -374,6 +400,7 @@ public class SatelliteMapSystem : MonoBehaviour
         _markers = new GameObject("Markers");
         _markers.transform.parent = this.transform;
         _markers.transform.localPosition = new Vector3(0, 0, 0);
+        _roverMarker = SpawnMarkerAtGPS(originLat, originLon, "RoverMarker", _markers.transform, roverMarkerPrefab);
 
         // Center Camera
         if (_cam != null)
@@ -511,6 +538,8 @@ public class SatelliteMapSystem : MonoBehaviour
         }
     }
 
+
+
     private float GetCurrentZoomScale()
     {
         float t = Mathf.InverseLerp(minCamHeight, maxCamHeight, _cam.transform.position.y);
@@ -522,6 +551,9 @@ public class SatelliteMapSystem : MonoBehaviour
     {
         float finalScale = GetCurrentZoomScale();
         Vector3 scaleVec = Vector3.one * finalScale;
+
+        if (_roverMarker != null) 
+            _roverMarker.transform.localScale = scaleVec;
 
         foreach (var marker in _waypointMarkers)
         {
@@ -585,30 +617,18 @@ public class SatelliteMapSystem : MonoBehaviour
         Destroy(tile.GetComponent<Collider>());
     }
 
-
     // --- Mission Visualization ---
-    public GameObject SpawnMarkerAtGPS(double lat, double lon, string markerName = "GPS_Marker")
+    public GameObject SpawnMarkerAtGPS(double lat, double lon, string markerName = "GPS_Marker", Transform parent = null, GameObject markerPrefabOverride = null)
     {
-        // Convert GPS to Global Tile Coords
-        double targetGlobalX = LongitudeToTileX(lon, zoomLevel);
-        double targetGlobalY = LatitudeToTileY(lat, zoomLevel);
-
-        // Find difference from origin
-        double offsetX = targetGlobalX - _originGlobalTileX;
-        double offsetY = targetGlobalY - _originGlobalTileY;
-
-        // Convert to Unity Units (X is East, Z is North)
-        float unityX = (float)(offsetX * tileSize);
-        float unityZ = (float)(-offsetY * tileSize);
-
-        GameObject marker = markerPrefab != null ? Instantiate(markerPrefab) : GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        Vector3 pos = GetUnityPositionFromGPS(lat, lon);
+        pos.y = 0.1f;
+        GameObject marker =  markerPrefabOverride != null ? Instantiate(markerPrefabOverride) 
+            : markerPrefab != null ? Instantiate(markerPrefab) : GameObject.CreatePrimitive(PrimitiveType.Sphere);
         marker.name = markerName;
-        marker.transform.SetParent(this.transform);
-        marker.transform.localPosition = new Vector3(unityX, 1.0f, unityZ); // Lifted slightly off ground
-
+        marker.transform.SetParent(parent ?? this.transform);
+        marker.transform.localPosition = pos;
         return marker;
     }
-
 
     public void RenderWaypoints()
     {
@@ -675,7 +695,9 @@ public class SatelliteMapSystem : MonoBehaviour
                         _waypointMarkers[i].transform.GetChild(0).TryGetComponent(out SpriteRenderer circleSr) && 
                         circleSr.sprite != null)
                     {
-                        Vector3 childLocalCenter = _waypointMarkers[i].transform.InverseTransformPoint(circleSr.transform.TransformPoint(circleSr.sprite.bounds.center));
+                        Vector3 childLocalCenter = _waypointMarkers[i].transform.InverseTransformPoint(
+                            circleSr.transform.TransformPoint(circleSr.sprite.bounds.center)
+                        );
                         Vector3 childLocalSize = _waypointMarkers[i].transform.InverseTransformVector(circleSr.bounds.size);
                         childLocalSize = new Vector3(Mathf.Abs(childLocalSize.x), Mathf.Abs(childLocalSize.y), Mathf.Abs(childLocalSize.z));
                         combined.Encapsulate(new Bounds(childLocalCenter, childLocalSize));

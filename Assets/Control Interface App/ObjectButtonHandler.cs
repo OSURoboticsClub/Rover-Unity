@@ -14,7 +14,6 @@ public class ObjectButtonHandler : MonoBehaviour
 
     public void Awake() {
         _button = GetComponent<Button>();
-       // _button.onClick.AddListener(OnClick);
         backgroundImage.color = OFF_COLOR;
     }
 
@@ -27,6 +26,7 @@ public class ObjectButtonHandler : MonoBehaviour
 
     public void OnClick()
     {
+        Debug.Log($"Clicked on {objectType} button");
         MapController.instance.OnObjectButtonClicked(this);
     }
 }
