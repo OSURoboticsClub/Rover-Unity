@@ -294,16 +294,31 @@ D-Pad:
         // Only publish pan/tilt command if there's input
         if (panTiltHasInput)
         {
-            string panTiltPrefix = useChassisPanTilt ? "chassis/pan_tilt/control" : "tower/pan_tilt/control";
+            // string panTiltPrefix = useChassisPanTilt ? "chassis/pan_tilt/control" : "tower/pan_tilt/control";
 
+            // tiltMessage = JObject.Parse(tiltMessageJson.text);
+            // tiltMessage["topic"] = panTiltPrefix;
+            // tiltMessage["data"]["should_center"] = start==1;
+            // tiltMessage["data"]["relative_pan_adjustment"] = ((buttonWest - buttonEast) + (shoulderWest - shoulderEast)) * 100;
+            // tiltMessage["data"]["relative_tilt_adjustment"] = (buttonNorth - buttonSouth) * 100;
+
+            // string msg = tiltMessage.ToString();
+            // UdpController.inst.PublishMessage(msg);
+
+            // 2526 Odrive pan tilt
+            string odrivePanTiltPrefix = useChassisPanTilt ? "chassis_pan_tilt/control" : "tower_gimbal/control";
             tiltMessage = JObject.Parse(tiltMessageJson.text);
-            tiltMessage["topic"] = panTiltPrefix;
-            tiltMessage["data"]["should_center"] = start==1;
-            tiltMessage["data"]["relative_pan_adjustment"] = ((buttonWest - buttonEast) + (shoulderWest - shoulderEast)) * 100;
-            tiltMessage["data"]["relative_tilt_adjustment"] = (buttonNorth - buttonSouth) * 100;
+            tiltMessage["topic"] = odrivePanTiltPrefix;
+            tiltMessage["data"]["go_home"] = start == 1;
+            tiltMessage["data"]["is_angle"] = false;
+            tiltMessage["data"]["stabalize"] = false;
+            tiltMessage["data"]["yaw"] = ((buttonWest - buttonEast) + (shoulderWest - shoulderEast)); 
+            tiltMessage["data"]["pitch"] = (buttonNorth - buttonSouth);
+            tiltMessage["data"]["roll"] = (dpadEast - dpadWest);
 
             string msg = tiltMessage.ToString();
             UdpController.inst.PublishMessage(msg);
+            
             
         }
         std_msgs.msg.UInt8 light_msg = new std_msgs.msg.UInt8();

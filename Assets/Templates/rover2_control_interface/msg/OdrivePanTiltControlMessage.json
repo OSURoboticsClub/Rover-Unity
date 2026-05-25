@@ -1,0 +1,12 @@
+{
+    "topic": "",
+    "msgType": "rover2_control_interface/msg/OdrivePanTiltControlMessage",
+    "data": {
+        "go_home": false,
+        "is_angle": false,
+        "stabalize": false,
+        "pitch": 0.0,
+        "yaw": 0.0,
+        "roll": 0.0
+    }
+}
