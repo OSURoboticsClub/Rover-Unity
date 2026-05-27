@@ -236,7 +236,7 @@ public class SatelliteMapSystem : MonoBehaviour
 
     [Header("Configuration")]
     public LoadMode mode = LoadMode.Local;
-    public string localTileFolder = "Control Interface App/Maps/Merryfield";
+    public string localTileFolder = "Control Interface App/Maps/URC";
     [Tooltip("Use {x}, {y}, {z} as placeholders")]
     public string webUrlTemplate = "https://server.com/tiles/{z}/{x}/{y}.png";
     public GameObject mapOrigin;
@@ -250,8 +250,8 @@ public class SatelliteMapSystem : MonoBehaviour
 
     [Header("Geospatial Settings")]
     public int zoomLevel = 19;
-    public double originLat = 44.56479;
-    public double originLon = -123.27378;
+    public double originLat = 38.406435;
+    public double originLon = -110.792015;
 
     [Header("Visual Settings")]
     public float tileSize = 256.0f; // Size of the tile in Unity Units
