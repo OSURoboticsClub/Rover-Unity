@@ -21,6 +21,7 @@ public class RGBTcpReceiver : MonoBehaviour
     private byte[] frameBuffer;
     private int frameSize;
     private int bytesReceived = 0;
+    private bool isListening = false;
 
     void Start()
     {
@@ -31,113 +32,154 @@ public class RGBTcpReceiver : MonoBehaviour
             return;
         }
 
-        frameSize = frameWidth * frameHeight * 3; // RGB = 3 bytes per pixel
+        // RGB = 3 bytes per pixel
+        frameSize = frameWidth * frameHeight * 3;
         frameBuffer = new byte[frameSize];
-        
         receivedTexture = new Texture2D(frameWidth, frameHeight, TextureFormat.RGB24, false);
-        
-        tcpListener = new TcpListener(IPAddress.Any, listenPort);
-        tcpListener.Start();
-        Debug.Log($"TCP listener started on port {listenPort}");
+
+        StartListening();
     }
 
     void Update()
     {
         try
         {
-            // Accept new connections if we don't have one
+            if (!isListening)
+            {
+                // Restart the listener if Unity disabled it or a socket error stopped it.
+                StartListening();
+                return;
+            }
+
+            // Accept new connections if we don't have one.
             if (tcpClient == null || !tcpClient.Connected)
             {
                 if (tcpListener.Pending())
                 {
                     tcpClient = tcpListener.AcceptTcpClient();
                     stream = tcpClient.GetStream();
-                    stream.ReadTimeout = 1; // 1 ms timeout
+                    // 1 ms timeout keeps Unity's main thread from hanging on reads.
+                    stream.ReadTimeout = 1;
                     bytesReceived = 0;
-                    Debug.Log("Client connected!");
+                    Debug.Log($"Camera TCP client connected on port {listenPort}");
                 }
                 else
                 {
-                    
                     return;
                 }
             }
 
-            // Read data from stream
             if (stream != null && stream.DataAvailable)
             {
                 count = 0;
-                
-                // Read as much data as available
+
+                // Read as much data as is available for the current RGB frame.
                 int bytesToRead = frameSize - bytesReceived;
                 int read = stream.Read(frameBuffer, bytesReceived, bytesToRead);
                 bytesReceived += read;
 
-                // If we have a complete frame
+                // If we have a complete frame, load the raw RGB data into the texture.
                 if (bytesReceived >= frameSize)
                 {
-                    // Load raw RGB data into texture
                     receivedTexture.LoadRawTextureData(frameBuffer);
                     receivedTexture.Apply();
-                    
                     cameraImage.texture = receivedTexture;
-
-
-                    // Reset for next frame
+                    // Reset for next frame.
                     bytesReceived = 0;
                 }
             }
             else if (tcpClient != null && !tcpClient.Connected)
             {
-                // Connection lost
-                Debug.Log("Client disconnected");
-                stream?.Close();
-                tcpClient?.Close();
-                tcpClient = null;
-                stream = null;
-                bytesReceived = 0;
+                // Connection lost; keep the listener alive for the next GStreamer process.
+                Debug.Log("Camera TCP client disconnected");
+                CloseClient();
             }
+
             count++;
-            Debug.Log(count);
             if (count >= timeoutCount)
             {
                 if (cameraImage.texture != timeoutTexture)
                 {
                     cameraImage.texture = timeoutTexture;
                 }
+
                 count = 0;
-                tcpClient.Close();
+                CloseClient();
             }
         }
         catch (System.IO.IOException)
         {
-            // Timeout or connection issue - ignore
-            Debug.Log("hmm");
+            // Timeout or short read; keep the connection alive.
+        }
+        catch (ObjectDisposedException)
+        {
+            CloseClient();
+        }
+        catch (InvalidOperationException e)
+        {
+            Debug.LogWarning($"TCP listener on port {listenPort} was not active: {e.Message}");
+            StopListening();
         }
         catch (SocketException e)
         {
-            Debug.LogWarning($"Socket exception: {e.Message}");
-            stream?.Close();
-            tcpClient?.Close();
-            tcpClient = null;
-            stream = null;
-            bytesReceived = 0;
+            Debug.LogWarning($"Socket exception on camera port {listenPort}: {e.Message}");
+            CloseClient();
         }
+    }
+
+    void StartListening()
+    {
+        if (isListening)
+        {
+            return;
+        }
+
+        try
+        {
+            tcpListener = new TcpListener(IPAddress.Any, listenPort);
+            tcpListener.Start();
+            isListening = true;
+            Debug.Log($"TCP listener started on port {listenPort}");
+        }
+        catch (SocketException e)
+        {
+            isListening = false;
+            tcpListener = null;
+            Debug.LogWarning($"Could not start TCP listener on port {listenPort}: {e.Message}");
+        }
+    }
+
+    void CloseClient()
+    {
+        // Close just the active TCP client; the listener remains available.
+        stream?.Close();
+        tcpClient?.Close();
+        stream = null;
+        tcpClient = null;
+        bytesReceived = 0;
+    }
+
+    void StopListening()
+    {
+        // Full shutdown for Unity lifecycle events.
+        CloseClient();
+
+        if (tcpListener != null)
+        {
+            try { tcpListener.Stop(); } catch (Exception) { }
+            tcpListener = null;
+        }
+
+        isListening = false;
+    }
+
+    void OnDisable()
+    {
+        StopListening();
     }
 
     void OnApplicationQuit()
     {
-        if (stream != null)
-        {
-            stream.Close();
-        }
-        if (tcpClient != null)
-        {
-            tcpClient.Close();
-        }
-        if (tcpListener != null)
-        {
-            tcpListener.Stop();
-        }
+        StopListening();
     }
 }
