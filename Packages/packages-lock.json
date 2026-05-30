@@ -14,6 +14,15 @@
       "dependencies": {},
       "hash": "c2af83c9d4f8cdaada9d4a0e94de2f195d8e1d01"
     },
+    "com.pathightree.spacenavigator-driver": {
+      "version": "https://github.com/PatHightree/SpaceNavigator.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.inputsystem": "1.0.2"
+      },
+      "hash": "e8c8a9a93ced0438e182a71d8a34c96328656690"
+    },
     "com.unity.2d.animation": {
       "version": "9.1.1",
       "depth": 1,
