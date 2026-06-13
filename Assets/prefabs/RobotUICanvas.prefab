@@ -17284,7 +17284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5397d8b7246eb8635853f964712f6e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listenPort: 5002
+  listenPort: 5005
   frameWidth: 640
   frameHeight: 480
   timeoutCount: 120
@@ -17388,7 +17388,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   portNum: 5002
-  sourcePort: 42070
   dropdown: {fileID: 150779331354549027}
   defaultCameraIndex: 2
 --- !u!1 &3575359372884246314
@@ -18107,7 +18106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5397d8b7246eb8635853f964712f6e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listenPort: 5001
+  listenPort: 5004
   frameWidth: 640
   frameHeight: 480
   timeoutCount: 120
@@ -18211,7 +18210,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   portNum: 5001
-  sourcePort: 42067
   dropdown: {fileID: 6349287311496994046}
   defaultCameraIndex: 1
 --- !u!1 &3741597132516372790
@@ -35742,7 +35740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5397d8b7246eb8635853f964712f6e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listenPort: 5000
+  listenPort: 5003
   frameWidth: 640
   frameHeight: 480
   timeoutCount: 120
@@ -35832,7 +35830,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   portNum: 5000
-  sourcePort: 42069
   dropdown: {fileID: 3352313841473297484}
   defaultCameraIndex: 3
 --- !u!114 &6144019523845442849
