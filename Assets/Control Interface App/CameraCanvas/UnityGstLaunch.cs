@@ -12,11 +12,14 @@ public class GStreamerLauncher : MonoBehaviour
 
     private Dictionary<int, string> cameraPortMap = new Dictionary<int, string>()
     {
-        { 0, "42067" },
+        { 0, "42073" },
         { 1, "42068" },
-        { 2, "42069" },
-        { 3, "42074" },
-        { 4, "42075" },
+        { 2, "42070" },
+        { 3, "42069" },
+        { 4, "42074" },
+        { 5, "42071" },
+        { 6, "42072" },
+        { 7, "42075" },
     };
 
     public int defaultCameraIndex = 3;
