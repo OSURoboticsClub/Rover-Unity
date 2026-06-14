@@ -12,10 +12,10 @@ def generate_launch_description():
             name='tcp_relay',
             **config
         ),
-        Node(
-            package='py_pubsub',
-            executable='udp_relay',
-            name='udp_relay',
-	    **config
-        ),
+        # Node(
+        #     package='py_pubsub',
+        #     executable='udp_relay',
+        #     name='udp_relay',
+	    # **config
+        # ),
     ])

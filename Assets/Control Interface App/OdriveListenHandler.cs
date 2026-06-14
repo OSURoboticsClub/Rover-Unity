@@ -35,7 +35,7 @@ public class OdriveListenHandler : MonoBehaviour
         if(busName=="can0"){
             ColorNetwork(disarm_reason,motorId,temp,driveNodes,driveText,false);
         }
-        if(busName=="can1"){
+        if(busName=="can_arm"){
             ColorNetwork(disarm_reason,motorId,temp,armNodes,armText,true);
         }
        
