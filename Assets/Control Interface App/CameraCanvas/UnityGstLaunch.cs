@@ -2,8 +2,7 @@ using UnityEngine;
 using System.Diagnostics;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine.UI;
-using UnityEditor.UI;
+
 
 public class GStreamerLauncher : MonoBehaviour
 {
