@@ -78,10 +78,11 @@ public class ROSBridgeConnectionManager : MonoBehaviour
                 
                 lock (telemetryLock)
                 {
-                    if (parsed.timestamp > latestTelemetry.timestamp)
-                    {
-                        latestTelemetry = parsed;
-                    }
+                    latestTelemetry = parsed;
+                    Debug.Log("Telem Received");
+                    // if (parsed.timestamp > latestTelemetry.timestamp)
+                    // {
+                    // }
                 }
             }
             catch (SocketException ex)
@@ -104,10 +105,12 @@ public class ROSBridgeConnectionManager : MonoBehaviour
         }
 
         // Validate data has been received before processing
-        if (currentData.timestamp > 0)
-        {
-            SatelliteMapSystem.Instance.OnTelemetryReceived?.Invoke(currentData);
-        }
+        SatelliteMapSystem.Instance.OnTelemetryReceived?.Invoke(currentData);
+        Debug.Log("Telem Updated");
+        // if (currentData.timestamp > 0)
+        // {
+        // }
+
     }
 
     void OnDestroy()

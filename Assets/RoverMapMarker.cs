@@ -48,6 +48,7 @@ public class RoverMapMarker : MonoBehaviour
 
     public void OnTelemetry(MissionTelemetry telemetry)
     {
+        Debug.Log("Marker Updated");
         Vector3 roverPos = SatelliteMapSystem.Instance.GetUnityPositionFromGPS(telemetry.latitude, telemetry.longitude);
         roverPos.y = 0.1f;
         Quaternion roverRot = Quaternion.Euler(90f, 0f, telemetry.heading - 90f);
