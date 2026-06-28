@@ -43,10 +43,10 @@ public class TcpMessageReceiver : MonoBehaviour
         else if (parts[0] == "/nodetopiclisten"){
             NodeTopicListenHandler.inst.ReceiveNodeTopicListen(message);
         }
-        else if (parts[0] == "tower/status/gps"){
+        else if (parts[0] == "/gps/fix"){
             gpsReceived.Invoke(message);
         }
-        else if (parts[0] == "imu/data/heading")
+        else if (parts[0] == "imu/heading")
         {
             imuReceived.Invoke(message);
         }

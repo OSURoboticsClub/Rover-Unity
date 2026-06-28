@@ -4,7 +4,7 @@ from rclpy.node import Node
 from threading import Thread
 from std_msgs.msg import String
 from std_msgs.msg import Float32
-from rover2_control_interface.msg import GPSStatusMessage
+from sensor_msgs.msg import NavSatFix
 from rover2_control_interface.msg import DriveCommandMessage
 from rover2_control_interface.msg import TowerPanTiltControlMessage
 from sensor_msgs.msg import Imu
@@ -56,12 +56,12 @@ class TCPServer(Node):
         self.tcp_client = None
         self.get_logger().info('TCP server initialized.')
         self.bridge = CvBridge()
-        self.no_msg_count = 0;
+        self.no_msg_count = 0
         
         # topics we subscribe to will automatically  have their data sent over to Unity
         self.add_subscription('autonomous/auton_control_response', String)
-        self.add_subscription('tower/status/gps', GPSStatusMessage)
-        self.add_subscription('imu/data/heading', Float32)
+        self.add_subscription('/gps/fix', NavSatFix)
+        self.add_subscription('imu/heading', Float32)
         self.add_subscription('autonomous/simple_position', String)
         self.add_subscription('/joint_states', JointState)
         self.add_subscription('/nodetopiclisten', NodesTopics)
@@ -112,8 +112,8 @@ class TCPServer(Node):
                 
 
 
-            elif topic_name == "tower/status/gps":
-                message += f"{msg.rover_latitude};{msg.rover_longitude}"
+            elif topic_name == "/gps/fix":
+                message += f"{msg.latitude};{msg.longitude}"
             elif topic_name =="/nodetopiclisten":
                 for i in range(len(msg.topic_name)):
                     message += f"{msg.topic_name[i]},{msg.topic_status[i][0]};"
@@ -123,7 +123,7 @@ class TCPServer(Node):
                 for i in range(len(msg.node_name)):
                     message += f"{msg.node_name[i]},{msg.node_status[i][0]};"
 
-            elif topic_name == "imu/data/heading":
+            elif topic_name == "/imu/heading":
                 message += f"{msg.data}"
             elif topic_name == "imu/data":
                 message += f"{msg.orientation.x};{msg.orientation.y};{msg.orientation.z};{msg.orientation.w}"
