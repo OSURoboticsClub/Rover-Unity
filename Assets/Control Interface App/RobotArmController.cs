@@ -43,7 +43,7 @@ public class RobotArmController : MonoBehaviour
     {
         // Rotation axis per joint — true = Y axis, false = Z axis.
         // Matches the original Quaternion.Euler layout.
-        bool[] rotateY = { true, false, true, false, false, true };
+        bool[] rotateY = { true, false, false, true, false, true };
 
         while (true)
         {

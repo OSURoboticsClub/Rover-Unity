@@ -67,7 +67,7 @@ public class clearCanError : MonoBehaviour
                 setBoolClientCan0 = ros2Node.CreateClient<setBoolReq, setBoolResp>(
                     "/can0_clear_can"); // Change to your service name if different
                 setBoolClientCan1 = ros2Node.CreateClient<setBoolReq, setBoolResp>(
-                    "/can1_clear_can"); // Change to your service name if different
+                    "/can_arm_clear_can"); // Change to your service name if different
             }
         }
     }

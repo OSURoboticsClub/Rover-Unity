@@ -14,6 +14,10 @@
 /[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
 /[Rr]ecordings/
+/RoverUI_Data/
+/Pure Pursuit Test_BurstDebugInformation_DoNotShip/
+/log/
+UnityPlayer.so
 
 # Asset store / editor-generated plugins
 /[Aa]ssets/AssetStoreTools*
