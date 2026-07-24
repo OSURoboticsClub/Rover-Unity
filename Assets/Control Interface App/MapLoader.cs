@@ -34,7 +34,7 @@ public class MapLoader : MonoBehaviour
 
         int fileCount = (int)Mathf.Sqrt(filteredFiles.Count);
         Debug.Log("Map is " + fileCount + "x" + fileCount);
-        #if UnityEditor
+        #if UNITY_EDITOR 
         foreach (var filename in filteredFiles) {
             var parts = filename.Split("~");
             var coords = parts[1].Split(",");
@@ -61,7 +61,7 @@ public class MapLoader : MonoBehaviour
 
     private void Start() { }
 }
-#if UnityEditor
+#if UNITY_EDITOR 
 [CustomEditor(typeof(MapLoader))]
 
 public class MyComponentEditor : Editor

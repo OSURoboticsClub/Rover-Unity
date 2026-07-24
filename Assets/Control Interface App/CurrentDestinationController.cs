@@ -127,7 +127,6 @@ public class CurrentDestinationController : MonoBehaviour
             }
             CameraControl.inst.RescaleIcons();
             SendNextWaypoint(true);
-            StatusIndicator.instance.SetIndicator(Status.Activated, script);
             // TODO: this should be done on callback from the rover
         }
     }
@@ -150,7 +149,6 @@ public class CurrentDestinationController : MonoBehaviour
         if(script != null)
         {
             script.SetInactiveUI();
-            StatusIndicator.instance.SetIndicator(Status.NotActivated, script);
             // this should be done on callback from the rover
         }
     }
@@ -212,7 +210,6 @@ public class CurrentDestinationController : MonoBehaviour
                 {
                     Debug.Log("Set UI inactive");
                     currentTarget.SetInactiveUI();
-                    StatusIndicator.instance.SetIndicator(Status.NotActivated, currentTarget);
                     bool haveLedBlink = true;
                     nextCommand = $"autonomous/auton_control;STOP;{haveLedBlink}";
                     currentTarget = null;
@@ -256,7 +253,6 @@ public class CurrentDestinationController : MonoBehaviour
             if(currentTarget != null)
             {
                 currentTarget.SetInactiveUI();
-                StatusIndicator.instance.SetIndicator(Status.NotActivated, currentTarget);
             }
         }
     }

@@ -12,6 +12,8 @@ public class TabSelector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        buttons.Clear();
+
         foreach(Transform x in transform) {
             buttons.Add(x.GetComponent<Button>());
             // auto populate the list using the hierarchy
