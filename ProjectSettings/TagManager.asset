@@ -46,3 +46,6 @@ TagManager:
   - name: New Layer 1
     uniqueID: 3063225789
     locked: 0
+  - name: SatelliteLayer
+    uniqueID: 1020285903
+    locked: 0
