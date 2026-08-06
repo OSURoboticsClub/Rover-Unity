@@ -24,6 +24,7 @@ public class GStreamerLauncher : MonoBehaviour
     private Dictionary<string, IClient<BoolReq, BoolResp>> cameraClients;
 
     private string mulitcastAddr = "239.0.0.1";
+    private string tcpAddr = "192.168.1.11";
 
     private class CameraEntry
     {
@@ -211,10 +212,10 @@ public class GStreamerLauncher : MonoBehaviour
         ProcessStartInfo startInfo = new ProcessStartInfo();
         startInfo.FileName = "/bin/bash";
         // Decode the incoming UDP H265 stream and forward raw RGB frames to CameraListener over TCP.
-        startInfo.Arguments = "-c \"gst-launch-1.0 udpsrc port=" + sourcePort + " address=" + mulitcastAddr +
-            " caps=\\\"application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H265\\\" " +
-            "! rtpulpfecdec ! rtpjitterbuffer latency=200 ! rtph265depay ! h265parse ! " +
-            "queue max-size-buffers=3000 max-size-time=0 max-size-bytes=0 ! " +
+        startInfo.Arguments = "-c \"gst-launch-1.0 tcpclientsrc port=" + sourcePort + " host=" + tcpAddr +
+            " ! \\\"application/x-rtp-stream, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H265\\\" " +
+            "! rtpstreamdepay ! rtpulpfecdec ! rtpjitterbuffer latency=200 ! rtph265depay ! h265parse ! " +
+            "queue leaky=downstream max-size-buffers=10 max-size-time=0 max-size-bytes=0 ! " +
             "avdec_h265 ! videoconvert ! videorate ! video/x-raw,format=RGB,framerate=" + sourceFramerate + " ! " +
             "tcpclientsink host=127.0.0.1 port=" + portNum + " sync=false\"";
         startInfo.UseShellExecute = false;
