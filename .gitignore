@@ -103,3 +103,9 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Build and install directories for Python UI
+Science_Python_UI/build
+Science_Python_UI/log
+Science_Python_UI/install
+
