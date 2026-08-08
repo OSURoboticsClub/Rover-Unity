@@ -23,8 +23,10 @@ public class ControllerManager : MonoBehaviour
     public Button driveButton;
     public Button armButton;
     public Button offButton;
-    public Slider driveSpeedSlider;
-    public Slider armSpeedSlider;
+    public Slider[] driveSpeedSlider;
+    public Slider[] armSpeedSlider;
+    public float driveSpeed = 0.5f;
+    public float armSpeed = 0.5f;
 
     public double gimbalSpeedScale = 0.3;
     
@@ -89,13 +91,17 @@ public class ControllerManager : MonoBehaviour
         debugText = debugTextObject.GetComponent<TextMeshProUGUI>();
         UpdateButtonColors();
         ros2Unity = GetComponent<ROS2UnityComponent>();
-        driveSpeedSlider.value = 0.5f;
-        driveSpeedSlider.minValue = 0f;
-        driveSpeedSlider.maxValue = 1f;
+        foreach (Slider i in driveSpeedSlider) {
+            i.value = 0.5f;
+            i.minValue = 0f;
+            i.maxValue = 1f;
+        }
 
-        armSpeedSlider.value = 0.5f;
-        armSpeedSlider.minValue = 0f;
-        armSpeedSlider.maxValue = 1f;
+        foreach (Slider i in armSpeedSlider) {
+            i.value = 0.5f;
+            i.minValue = 0f;
+            i.maxValue = 1f;
+        }
 
         driveButton.onClick.AddListener(SetDriveMode);
         armButton.onClick.AddListener(SetArmMode);
@@ -161,6 +167,7 @@ public class ControllerManager : MonoBehaviour
 
     void Update()
     {
+
         Vector2 leftJoyValue = controls.DriveControl.leftJoy.ReadValue<Vector2>();
         Vector2 rightJoyValue = controls.DriveControl.rightJoy.ReadValue<Vector2>();
         float triggerEast = controls.DriveControl.triggerEast.ReadValue<float>();
@@ -179,6 +186,33 @@ public class ControllerManager : MonoBehaviour
         float shoulderEast = controls.DriveControl.shoulderEast.ReadValue<float>();
 
         bool joystickEast = controls.DriveControl.joystickEastButton.triggered;
+
+        //synchronize sliders
+        foreach (Slider i in driveSpeedSlider)
+        {
+            if (i.value != driveSpeed)
+            {
+                driveSpeed = i.value;
+                foreach (Slider j in driveSpeedSlider) {
+                    j.value = driveSpeed;
+                }
+                break;
+            }
+        }
+
+        foreach (Slider i in armSpeedSlider)
+        {
+            if (i.value != armSpeed)
+            {
+                armSpeed = i.value;
+                foreach (Slider j in armSpeedSlider) {
+                    j.value = armSpeed;
+                }
+                break;
+            }
+        }
+
+        //Check joystick inputs
         if(joystickEast)
         {
             float[] axes = new float[]{
@@ -254,9 +288,11 @@ D-Pad:
     float dpadEast, float dpadWest, float dpadNorth, float dpadSouth,
     float start, float select,
     float shoulderWest, float shoulderEast)
-    {
-        driveSpeedSlider.value += (triggerWest - triggerEast) * 0.025f;
-
+    {   
+        foreach (Slider i in driveSpeedSlider) {
+            i.value += (triggerWest - triggerEast) * 0.025f;
+        }
+        driveSpeed = driveSpeedSlider[0].value;
 
         // Check if drive has input
         //bool driveHasInput = (leftJoy.y != 0 || rightJoy.x != 0);
@@ -268,8 +304,8 @@ D-Pad:
             
             driveMessage = JObject.Parse(driveMessageJson.text);
             driveMessage["topic"] = "cmd_vel";
-            driveMessage["data"]["angular"]["z"] = rightJoy.x * driveSpeedSlider.value * -1;
-            driveMessage["data"]["linear"]["x"] = leftJoy.y * driveSpeedSlider.value;
+            driveMessage["data"]["angular"]["z"] = rightJoy.x * driveSpeed * -1;
+            driveMessage["data"]["linear"]["x"] = leftJoy.y * driveSpeed;
             string msg = driveMessage.ToString();
             UdpController.inst.PublishMessage(msg);
 
@@ -365,7 +401,10 @@ D-Pad:
                         (shoulderWest != 0) ||
                         (shoulderEast != 0);*/
         bool armHasInput = true;
-        armSpeedSlider.value += (buttonNorth-buttonSouth)*0.025f;
+        foreach (Slider i in armSpeedSlider) {
+            i.value += (buttonNorth-buttonSouth)*0.025f;
+        }
+        armSpeed = armSpeedSlider[0].value;
         // Only publish if there's input
         if (armHasInput || wasArmActive)
         {
@@ -373,9 +412,9 @@ D-Pad:
             //More specifically, sending a 0 joint velocity for every joint after switching controllers and moving causes 
             //the arm to rapidly swing back to the pose the original controller put it in.
             float[] axes = new float[] {
-                -leftJoy.x*armSpeedSlider.value , leftJoy.y*armSpeedSlider.value , triggerWest*armSpeedSlider.value ,
-                -rightJoy.x*armSpeedSlider.value , rightJoy.y*armSpeedSlider.value , triggerEast*armSpeedSlider.value ,
-                ((int)dpadEast*armSpeedSlider.value  - (int)dpadWest*armSpeedSlider.value+0.0000000000001f) , ((int)dpadNorth*armSpeedSlider.value  - (int)dpadSouth*armSpeedSlider.value) 
+                -leftJoy.x*armSpeed , leftJoy.y*armSpeed , triggerWest*armSpeed ,
+                -rightJoy.x*armSpeed , rightJoy.y*armSpeed , triggerEast*armSpeed ,
+                ((int)dpadEast*armSpeed  - (int)dpadWest*armSpeed+0.0000000000001f) , ((int)dpadNorth*armSpeed  - (int)dpadSouth*armSpeed) 
             };
 
             wasArmActive = armHasInput;
