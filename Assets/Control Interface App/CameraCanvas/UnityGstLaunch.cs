@@ -1,15 +1,10 @@
 using UnityEngine;
 using System.Diagnostics;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using TMPro;
-using ROS2;
+using Newtonsoft.Json.Linq;
 
 using Debug = UnityEngine.Debug;
-
-using BoolReq = std_srvs.srv.SetBool_Request;
-using BoolResp = std_srvs.srv.SetBool_Response;
 
 public class GStreamerLauncher : MonoBehaviour
 {
@@ -19,9 +14,9 @@ public class GStreamerLauncher : MonoBehaviour
     private Process gStreamerProcess;
     public TMP_Dropdown dropdown;
 
-    private ROS2UnityComponent ros2Unity;
-    private ROS2Node ros2Node;
-    private Dictionary<string, IClient<BoolReq, BoolResp>> cameraClients;
+    // std_srvs/srv/SetBool template (Assets/Templates/std_srvs/srv/SetBool.json).
+    // Assign in the inspector; used to build toggle_camera requests for the UDP bridge.
+    [SerializeField] private TextAsset setBoolServiceJson;
 
     private string mulitcastAddr = "239.0.0.1";
     private string tcpAddr = "192.168.1.11";
@@ -44,64 +39,56 @@ public class GStreamerLauncher : MonoBehaviour
 
     private CameraEntry activeEntry;
 
-    private IEnumerator ToggleCameraThenLaunch(CameraEntry entry)
-    {
-        if (!cameraClients.TryGetValue(entry.serviceNamespace, out IClient<BoolReq, BoolResp> client))
-        {
-            Debug.LogError($"No ROS2 client found for camera '{entry.serviceNamespace}'.");
-            yield break;
-        }
+    // ROS service name the UDP bridge forwards each camera toggle to.
+    private static string ToggleServiceName(CameraEntry entry) => $"/{entry.serviceNamespace}/toggle_camera";
 
+    private void ToggleCameraThenLaunch(CameraEntry entry)
+    {
+        // Toggle the previously active camera off (fire-and-forget), if switching.
         if (activeEntry != null && activeEntry.serviceNamespace != entry.serviceNamespace)
         {
-            yield return SetCameraState(activeEntry, false);
+            SetCameraState(activeEntry, false);
         }
 
-        while (!client.IsServiceAvailable())
-        {
-            Debug.Log($"Waiting for /{entry.serviceNamespace}/toggle_camera service...");
-            yield return new WaitForSecondsRealtime(1);
-        }
-
-        Task<BoolResp> task = CallToggleCameraAsync(client, true);
-        yield return new WaitUntil(() => task.IsCompleted);
-        BoolResp response = task.Result;
-        Debug.Log($"[{entry.serviceNamespace}] toggle_camera response: success = {response.Success}, message = {response.Message}");
-
-        if (response.Success)
-        {
-            activeEntry = entry;
-            LaunchGStreamer();
-        }
-        else
-        {
-            Debug.LogWarning($"Camera toggle failed for {entry.serviceNamespace}: {response.Message}");
-        }
+        // Toggle the new camera on, then launch without waiting for a response.
+        SetCameraState(entry, true);
+        activeEntry = entry;
+        StartGStreamerProcess();
     }
 
-    private IEnumerator SetCameraState(CameraEntry entry, bool state)
+    // Resolve the camera the UI currently has selected (dropdown wins, else the default).
+    private CameraEntry GetSelectedEntry()
     {
-        if (!cameraClients.TryGetValue(entry.serviceNamespace, out IClient<BoolReq, BoolResp> client))
+        int index = (dropdown != null) ? dropdown.value : defaultCameraIndex;
+        if (cameraPortMap.TryGetValue(index, out CameraEntry entry))
         {
-            yield break;
+            return entry;
         }
-
-        while (!client.IsServiceAvailable())
-        {
-            yield return new WaitForSecondsRealtime(1);
-        }
-
-        Task<BoolResp> task = CallToggleCameraAsync(client, state);
-        yield return new WaitUntil(() => task.IsCompleted);
-        BoolResp response = task.Result;
-        Debug.Log($"[{entry.serviceNamespace}] toggle_camera({state}) response: success = {response.Success}, message = {response.Message}");
+        return null;
     }
 
-    private Task<BoolResp> CallToggleCameraAsync(IClient<BoolReq, BoolResp> client, bool state)
+    // Send a toggle_camera SetBool request over the UDP bridge. Fire-and-forget: we do
+    // not wait for or decode the response.
+    private void SetCameraState(CameraEntry entry, bool state)
     {
-        BoolReq request = new BoolReq();
-        request.Data = state;
-        return client.CallAsync(request);
+        if (setBoolServiceJson == null)
+        {
+            Debug.LogError("[GStreamerLauncher] setBoolServiceJson TextAsset is not assigned in the inspector.");
+            return;
+        }
+
+        if (UdpController.inst == null)
+        {
+            Debug.LogError("[GStreamerLauncher] UdpController.inst is null - no UDP controller in the scene.");
+            return;
+        }
+
+        JObject msg = JObject.Parse(setBoolServiceJson.text);
+        msg["service"] = ToggleServiceName(entry);
+        msg["request"]["data"] = state;
+
+        Debug.Log($"[{entry.serviceNamespace}] toggle_camera({state}) sent (no wait).");
+        UdpController.inst.SendClientReq(msg.ToString());
     }
 
     private Dictionary<int, CameraEntry> cameraPortMap = new Dictionary<int, CameraEntry>()
@@ -120,41 +107,9 @@ public class GStreamerLauncher : MonoBehaviour
 
     void Start()
     {
-        ros2Unity = GetComponent<ROS2UnityComponent>();
-        if (ros2Unity == null)
-        {
-            Debug.LogError("No ROS2UnityComponent found on this GameObject - add one.");
-        }
-        else if (ros2Unity.Ok())
-        {
-            if (ros2Node == null)
-            {
-                ros2Node = ros2Unity.CreateNode($"ROS2UnityCameraToggleClient_{Mathf.Abs(GetInstanceID())}");
-                cameraClients = new Dictionary<string, IClient<BoolReq, BoolResp>>();
-                foreach (CameraEntry entry in cameraPortMap.Values)
-                {
-                    if (cameraClients.ContainsKey(entry.serviceNamespace))
-                    {
-                        continue;
-                    }
+        // Camera toggles now go through the custom UDP ROS bridge (UdpController) rather
+        // than a per-camera ROS2 client, so there is no client setup to do here.
 
-                    try
-                    {
-                        cameraClients[entry.serviceNamespace] = ros2Node.CreateClient<BoolReq, BoolResp>(
-                            $"/{entry.serviceNamespace}/toggle_camera");
-                    }
-                    catch (System.Exception e)
-                    {
-                        Debug.LogWarning($"Could not create toggle_camera client for '{entry.serviceNamespace}': {e.Message}");
-                    }
-                }
-                Debug.Log($"Created {cameraClients.Count}/{cameraPortMap.Count} camera toggle clients.");
-            }
-        }
-        else
-        {
-            Debug.LogError("ros2Unity.Ok() returned false - ROS2 not initialized.");
-        }
         // Select the default camera port at startup, but keep launching manual through the UI.
         if (dropdown != null)
         {
@@ -180,7 +135,7 @@ public class GStreamerLauncher : MonoBehaviour
             sourcePort = entry.port.ToString();
             sourceFramerate = entry.framerate;
             Debug.Log($"[OnDropdownChanged] set sourcePort={sourcePort}, sourceFramerate={sourceFramerate} on instanceID={GetInstanceID()}");
-            StartCoroutine(ToggleCameraThenLaunch(entry));
+            ToggleCameraThenLaunch(entry);
         }
         else
         {
@@ -188,7 +143,22 @@ public class GStreamerLauncher : MonoBehaviour
         }
     }
 
+    // Public entrypoint (e.g. a Launch button): toggle the selected camera's service on, then launch.
     public void LaunchGStreamer()
+    {
+        CameraEntry entry = GetSelectedEntry();
+        if (entry == null)
+        {
+            Debug.LogWarning("[LaunchGStreamer] No camera selected - cannot toggle service or launch.");
+            return;
+        }
+
+        sourcePort = entry.port.ToString();
+        sourceFramerate = entry.framerate;
+        ToggleCameraThenLaunch(entry);
+    }
+
+    private void StartGStreamerProcess()
     {
         Debug.Log($"[LaunchGStreamer] called on GameObject={gameObject.name}, instanceID={GetInstanceID()}, sourcePort='{sourcePort}', portNum='{portNum}'");
         // If the last gst-launch process already exited, clear it so the button can restart it.

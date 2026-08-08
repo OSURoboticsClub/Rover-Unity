@@ -1,71 +1,44 @@
-using System.Collections;
 using UnityEngine;
-using ROS2;
-
-using TriggerReq = std_srvs.srv.Trigger_Request;
-using TriggerResp = std_srvs.srv.Trigger_Response;
+using Newtonsoft.Json.Linq;
 
 /// <summary>
 /// Calls the move_perp_to_plane Trigger service on the perp_to_plane node, which
 /// commands the arm to align perpendicular to the most prominent plane in the point cloud.
+///
+/// Uses the custom UDP ROS bridge (via UdpController) instead of the built-in ROS2
+/// bridge. The call is fire-and-forget: the request is sent without waiting for or
+/// decoding a response. Assign a std_srvs/srv/Trigger service JSON template
+/// (Assets/Templates/std_srvs/srv/Trigger.json) to triggerServiceJson in the inspector.
 /// </summary>
 public class PerpToPlane : MonoBehaviour
 {
-    private ROS2UnityComponent ros2Unity;
-    private ROS2Node ros2Node;
-    private IClient<TriggerReq, TriggerResp> perpToPlaneClient;
+    [SerializeField] private TextAsset triggerServiceJson;
 
-    private TriggerResp response;
-
-    public IEnumerator CallPerpToPlaneCoroutine()
-    {
-        if (perpToPlaneClient == null)
-        {
-            Debug.LogError("[PerpToPlane] perpToPlaneClient is null - ROS2UnityComponent was missing or not Ok() in Start().");
-            yield break;
-        }
-
-        while (!perpToPlaneClient.IsServiceAvailable())
-        {
-            Debug.Log("[PerpToPlane] Waiting for move_perp_to_plane service...");
-            yield return new WaitForSecondsRealtime(1);
-        }
-
-        TriggerReq request = new TriggerReq();
-
-        response = perpToPlaneClient.Call(request);
-
-        Debug.Log($"[PerpToPlane] Got answer: success = {response.Success}, message = {response.Message}");
-    }
+    // ROS service name the UDP bridge will forward the call to.
+    private const string ServiceName = "move_perp_to_plane";
 
     // Hook this up to the button's OnClick event
     public void CallPerpToPlane()
     {
         Debug.Log("[PerpToPlane] CallPerpToPlane invoked.");
-        StartCoroutine(CallPerpToPlaneCoroutine());
-    }
 
-    void Start()
-    {
-        ros2Unity = GetComponent<ROS2UnityComponent>();
-        if (ros2Unity == null)
+        if (triggerServiceJson == null)
         {
-            Debug.LogError("[PerpToPlane] No ROS2UnityComponent found on this GameObject - add one.");
+            Debug.LogError("[PerpToPlane] triggerServiceJson TextAsset is not assigned in the inspector.");
             return;
         }
-        if (ros2Unity.Ok())
+
+        if (UdpController.inst == null)
         {
-            if (ros2Node == null)
-            {
-                ros2Node = ros2Unity.CreateNode("ROS2UnityPerpToPlaneClient");
-                perpToPlaneClient = ros2Node.CreateClient<TriggerReq, TriggerResp>(
-                    "move_perp_to_plane");
-                Debug.Log("[PerpToPlane] Created client for move_perp_to_plane service.");
-            }
+            Debug.LogError("[PerpToPlane] UdpController.inst is null - no UDP controller in the scene.");
+            return;
         }
-        else
-        {
-            Debug.LogError("[PerpToPlane] ros2Unity.Ok() returned false - ROS2 not initialized.");
-        }
+
+        JObject msg = JObject.Parse(triggerServiceJson.text);
+        msg["service"] = ServiceName;
+        // Trigger has an empty request, so nothing to populate.
+
+        Debug.Log("[PerpToPlane] Sending move_perp_to_plane request over UDP bridge (no wait).");
+        UdpController.inst.SendClientReq(msg.ToString());
     }
 }
