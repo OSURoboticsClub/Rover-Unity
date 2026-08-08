@@ -15834,6 +15834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portNum: 5011
   dropdown: {fileID: 7060206479450420875}
+  setBoolServiceJson: {fileID: 0}
   defaultCameraIndex: 0
 --- !u!114 &6994328705112601004
 MonoBehaviour:
@@ -21321,6 +21322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portNum: 5010
   dropdown: {fileID: 5599041174868035326}
+  setBoolServiceJson: {fileID: 0}
   defaultCameraIndex: 1
 --- !u!114 &6775454805633625302
 MonoBehaviour:
@@ -24090,6 +24092,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portNum: 5002
   dropdown: {fileID: 150779331354549027}
+  setBoolServiceJson: {fileID: 4900000, guid: 7a6ff0dc71bb16b94bf3c335bdbbd475, type: 3}
   defaultCameraIndex: 2
 --- !u!114 &5593872229512537519
 MonoBehaviour:
@@ -25229,6 +25232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portNum: 5001
   dropdown: {fileID: 6349287311496994046}
+  setBoolServiceJson: {fileID: 4900000, guid: 7a6ff0dc71bb16b94bf3c335bdbbd475, type: 3}
   defaultCameraIndex: 1
 --- !u!114 &742982556769760620
 MonoBehaviour:
@@ -26724,6 +26728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc038375f3f7ee9f28cb83e74a287fb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerServiceJson: {fileID: 4900000, guid: b55c545e7e36a6371a33911ca3bd0bbf, type: 3}
 --- !u!114 &2443660312686380091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48460,6 +48465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portNum: 5000
   dropdown: {fileID: 3352313841473297484}
+  setBoolServiceJson: {fileID: 4900000, guid: 7a6ff0dc71bb16b94bf3c335bdbbd475, type: 3}
   defaultCameraIndex: 3
 --- !u!114 &6144019523845442849
 MonoBehaviour:

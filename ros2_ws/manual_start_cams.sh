@@ -1,45 +1,54 @@
-gst-launch-1.0 udpsrc port=42070 address=239.0.0.1 caps="application/x-rtp, media=video, encoding-name=H265, payload=96" ! \
+gst-launch-1.0 tcpclientsrc port=42073 host=192.168.1.11      ! \
+    "application/x-rtp-stream,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H265" ! \
+    rtpstreamdepay ! \
     rtpjitterbuffer latency=200 ! \
     rtpulpfecdec ! \
     rtph265depay ! \
     h265parse ! \
-    queue max-size-buffers=3000 max-size-time=0 max-size-bytes=0 ! \
-    avdec_h265 ! \
-    videoconvert ! \
-    videorate ! \
-    video/x-raw,framerate=25/1 ! \
-    autovideosink sync=false & 
-gst-launch-1.0 udpsrc port=42071 address=239.0.0.1 caps="application/x-rtp, media=video, encoding-name=H265, payload=96" ! \
-    rtpjitterbuffer latency=200 ! \
-    rtpulpfecdec ! \
-    rtph265depay ! \
-    h265parse ! \
-    queue max-size-buffers=3000 max-size-time=0 max-size-bytes=0 ! \
-    avdec_h265 ! \
-    videoconvert ! \
-    videorate ! \
-    video/x-raw,framerate=25/1 ! \
-    autovideosink sync=false & 
-gst-launch-1.0 udpsrc port=42074 address=239.0.0.1 caps="application/x-rtp, media=video, encoding-name=H265, payload=96" ! \
-    rtpjitterbuffer latency=200 ! \
-    rtpulpfecdec ! \
-    rtph265depay ! \
-    h265parse ! \
-    queue max-size-buffers=3000 max-size-time=0 max-size-bytes=0 ! \
+    queue max-size-buffers=30 max-size-time=0 max-size-bytes=0 leaky=downstream ! \
     avdec_h265 ! \
     videoconvert ! \
     videorate ! \
     video/x-raw,framerate=30/1 ! \
-    autovideosink sync=false & 
-gst-launch-1.0 udpsrc port=42069 address=239.0.0.1 caps="application/x-rtp, media=video, encoding-name=H265, payload=96" ! \
+    autovideosink sync=false &
+gst-launch-1.0 tcpclientsrc port=42070 host=192.168.1.11      ! \
+    "application/x-rtp-stream,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H265" ! \
+    rtpstreamdepay ! \
     rtpjitterbuffer latency=200 ! \
     rtpulpfecdec ! \
     rtph265depay ! \
     h265parse ! \
-    queue max-size-buffers=3000 max-size-time=0 max-size-bytes=0 ! \
+    queue max-size-buffers=30 max-size-time=0 max-size-bytes=0 leaky=downstream ! \
     avdec_h265 ! \
     videoconvert ! \
     videorate ! \
     video/x-raw,framerate=25/1 ! \
-    autovideosink sync=false & 
+    autovideosink sync=false &
+gst-launch-1.0 tcpclientsrc port=42071 host=192.168.1.11      ! \
+    "application/x-rtp-stream,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H265" ! \
+    rtpstreamdepay ! \
+    rtpjitterbuffer latency=200 ! \
+    rtpulpfecdec ! \
+    rtph265depay ! \
+    h265parse ! \
+    queue max-size-buffers=30 max-size-time=0 max-size-bytes=0 leaky=downstream ! \
+    avdec_h265 ! \
+    videoconvert ! \
+    videorate ! \
+    video/x-raw,framerate=25/1 ! \
+    autovideosink sync=false &
+gst-launch-1.0 tcpclientsrc port=42068 host=192.168.1.11      ! \
+    "application/x-rtp-stream,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H265" ! \
+    rtpstreamdepay ! \
+    rtpjitterbuffer latency=200 ! \
+    rtpulpfecdec ! \
+    rtph265depay ! \
+    h265parse ! \
+    queue max-size-buffers=30 max-size-time=0 max-size-bytes=0 leaky=downstream ! \
+    avdec_h265 ! \
+    videoconvert ! \
+    videorate ! \
+    video/x-raw,framerate=30/1 ! \
+    autovideosink sync=false &
 wait
+
