@@ -31,7 +31,6 @@ MECHANICAL_SYSTEM_NAMES = (
     "pump",
     "coil_1",
     "coil_2",
-    "solenoid",
 )
 MECHANICAL_SYSTEM_FIELDS = {
     "valve_1": "valve_1_on",
@@ -39,7 +38,6 @@ MECHANICAL_SYSTEM_FIELDS = {
     "pump": "pump_on",
     "coil_1": "coil_1_on",
     "coil_2": "coil_2_on",
-    "solenoid": "solenoid_on",
 }
 MECHANICAL_STATUS_TIMEOUT_S = 1.0
 MECHANICAL_ACTIVE_BUTTON_BG = "#242629"
@@ -136,7 +134,6 @@ class ControlUI:
         self._build_valves_section(mechanical_frame)
         self._build_pump_section(mechanical_frame)
         self._build_heating_coils_section(mechanical_frame)
-        self._build_dirt_agitator_section(mechanical_frame)
         self._set_mechanical_controls_state(tk.DISABLED)
         self._update_mechanical_button_styles()
 
@@ -302,24 +299,6 @@ class ControlUI:
             variable=self.coil_2_status_var,
         )
 
-    def _build_dirt_agitator_section(self, parent):
-        """Build dirt-agitator solenoid controls and status monitor."""
-        frame = self._new_mechanical_section(parent, "Dirt Agitator")
-        self.solenoid_status_var = tk.StringVar(value="Unknown")
-        self._add_control_button(
-            frame, 0, 0, "Turn On Solenoid", "solenoid", True
-        )
-        self._add_control_button(
-            frame, 0, 1, "Turn Off Solenoid", "solenoid", False
-        )
-        self._add_status_monitor(
-            frame,
-            row=1,
-            column=0,
-            label="Solenoid",
-            variable=self.solenoid_status_var,
-        )
-
     @staticmethod
     def _new_mechanical_section(parent, title):
         frame = tk.LabelFrame(parent, text=title, padx=8, pady=8)
@@ -466,7 +445,6 @@ class ControlUI:
             "pump": self.pump_status_var,
             "coil_1": self.coil_1_status_var,
             "coil_2": self.coil_2_status_var,
-            "solenoid": self.solenoid_status_var,
         }
         snapshot = self.node.get_mechanical_status_snapshot()
         status_available = (
@@ -898,7 +876,7 @@ class _ControlNode(Node):
             if self.spectrometry_sub is None:
                 self.spectrometry_sub = self.create_subscription(
                     Image,
-                    "camera/image",
+                    "science/image",
                     self._spectrometry_image_callback,
                     10,
                 )
