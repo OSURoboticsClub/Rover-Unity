@@ -58,10 +58,15 @@ public class TcpMessageReceiver : MonoBehaviour
         {
             CurrentDestinationController.inst.ReceiveFeedback(message);
         }
+        // else if (parts[0] != "/joint_states")
+        // {
+        //     MessagesController.inst.DisplayMessage(message);
+        // }
 
-        else {
-            MessagesController.inst.DisplayMessage(message);
-        }
+        // else {
+        //     // MessagesController.inst.DisplayMessage(message);
+            
+        // }
 
     }
 }

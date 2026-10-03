@@ -292,7 +292,40 @@ foreach (var key in latestServiceResponses.Keys)
             return SrvReturn;
         }
     }
-    
+
+    // Fire-and-forget service call: sends the request on the service request socket
+    // without waiting for (or decoding) a response. Use when the caller does not need
+    // the result, e.g. toggling a camera on.
+    public void SendClientReq(string message)
+    {
+        if (showDebugLogs)
+            Debug.Log($"Sending UDP Client Req (no wait): {message}");
+
+        if (!isConnected || srvClient == null)
+        {
+            Debug.Log("UDP connection is not established. Attempting reconnect.");
+            Start();
+            if (!isConnected || srvClient == null)
+            {
+                Debug.Log("UDP reconnect failed. Canceling send.");
+                return;
+            }
+        }
+
+        try
+        {
+            byte[] dataToSend = Encoding.UTF8.GetBytes(message);
+            srvClient.Send(dataToSend, dataToSend.Length, srvEndPoint);
+            disconnected = false;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"Error while sending UDP client req: {e.Message}");
+            disconnected = true;
+            isConnected = false;
+        }
+    }
+
 
     // Get the latest message for a topic
     public JObject GetLatestMessage(string topic)

@@ -56,5 +56,14 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Rover-Unity.sln"
+    "dotnet.defaultSolution": "Rover-Unity.sln",
+    "ROS2.distro": "humble",
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
 }

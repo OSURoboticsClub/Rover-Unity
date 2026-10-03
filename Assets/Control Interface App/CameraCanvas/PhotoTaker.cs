@@ -47,11 +47,36 @@ public class PhotoTaker : MonoBehaviour
             return;
         }
 
-        byte[] bytes = image.EncodeToPNG();
+        Texture2D correctedImage = FlipTextureVertically(image);
+        byte[] bytes = correctedImage.EncodeToPNG();
         string savePath = Path.Combine(filePath, $"{count}.png");
 
         File.WriteAllBytes(savePath, bytes);
+        Destroy(correctedImage);
         Debug.Log($"Image saved as {savePath}");
         count++;
+    }
+
+    Texture2D FlipTextureVertically(Texture2D source)
+    {
+        int width = source.width;
+        int height = source.height;
+        Color[] pixels = source.GetPixels();
+        Color[] flippedPixels = new Color[pixels.Length];
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                int sourceIndex = y * width + x;
+                int flippedIndex = (height - 1 - y) * width + x;
+                flippedPixels[flippedIndex] = pixels[sourceIndex];
+            }
+        }
+
+        Texture2D flippedTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        flippedTexture.SetPixels(flippedPixels);
+        flippedTexture.Apply();
+        return flippedTexture;
     }
 }

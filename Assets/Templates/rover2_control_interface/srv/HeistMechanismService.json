@@ -1,0 +1,12 @@
+{
+    "service": "",
+    "srvType": "rover2_control_interface/srv/HeistMechanismService",
+    "request": {
+        "command": 0,
+        "message": ""
+    },
+    "response": {
+        "success": false,
+        "result_msg": ""
+    }
+}

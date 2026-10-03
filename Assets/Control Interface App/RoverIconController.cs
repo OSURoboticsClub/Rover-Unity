@@ -56,7 +56,8 @@ public class RoverIconController : MonoBehaviour
         latestGps = MapController.instance.GetWorldPosition(latestlon, latestlon);
         latestGps.y = 0;
         //Debug.Log($"GPS: {latestlat}, {latestlon}\nWorld pos: {latestGps}");
-        //roverIcon.position = worldPos;
+        //roverIcon.position = latestGps;
+        MapController.instance.MoveIcon(roverIcon, latestlat, latestlon);
     }
 
     void OnImuHeadingReceived(string message)

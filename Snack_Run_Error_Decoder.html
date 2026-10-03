@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ERR2 Hardware Fault Decoder</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f5f7fb;color:#1f2937;text-align:center}
+h2{margin:12px}
+.grid{display:grid;grid-template-columns:repeat(4,120px);gap:18px;justify-content:center}
+.segbox{background:#ffffff;padding:8px;border-radius:8px;border:1px solid #d7deea;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+.seven{position:relative;width:100px;height:150px;margin:auto}
+
+.s{
+ position:absolute;
+ background:#cfd8e3;
+ border-radius:5px;
+ cursor:pointer;
+ transition:.1s;
+}
+.s:hover{background:#b5c2d4}
+.s.on{
+ background:#ef4444;
+ box-shadow:0 0 10px rgba(239,68,68,.55);
+}
+
+.a,.d,.g{
+ width:60px;
+ height:12px;
+ left:20px;
+}
+.a{top:5px}
+.g{top:69px}
+.d{bottom:5px}
+
+.f,.b,.e,.c{
+ width:12px;
+ height:60px;
+}
+.f{left:5px;top:15px}
+.b{right:5px;top:15px}
+.e{left:5px;bottom:15px}
+.c{right:5px;bottom:15px}
+
+.info{
+ margin:15px;
+ font-family:monospace;
+ color:#334155;
+}
+button{
+ font-size:16px;
+ padding:8px 15px;
+ margin:5px;
+ background:#ffffff;
+ color:#1f2937;
+ border:1px solid #cbd5e1;
+ border-radius:6px;
+ cursor:pointer;
+}
+button:hover{background:#f1f5f9}
+</style>
+</head>
+
+<body>
+<h2>ERR2 Hardware Fault Decoder</h2>
+
+<div id="grid" class="grid"></div>
+
+<div class="info">
+<div id="bytes">Bytes: </div>
+<div id="xor">XOR: </div>
+<div id="ascii">ASCII: </div>
+<div id="switches">Switches: </div>
+</div>
+
+<button onclick="resetAll()">Reset</button>
+<button onclick="copyResult()">Copy Results</button>
+
+<script>
+const names=["A","B","C","D","E","F","G"];
+const bit={A:1,B:2,C:4,D:8,E:16,F:32,G:64};
+let disp=Array.from({length:12},()=>0);
+
+function makeDisplay(i){
+ let box=document.createElement("div");
+ box.className="segbox";
+ box.innerHTML="<div>"+(i+1)+"</div>";
+ let seven=document.createElement("div");
+ seven.className="seven";
+
+ names.forEach(n=>{
+  let s=document.createElement("div");
+  s.className="s "+n.toLowerCase();
+  s.onclick=()=>{
+   disp[i]^=bit[n];
+   s.classList.toggle("on");
+   decode();
+  };
+  seven.appendChild(s);
+ });
+ box.appendChild(seven);
+ return box;
+}
+
+for(let i=0;i<12;i++)
+ document.getElementById("grid").appendChild(makeDisplay(i));
+
+function decode(){
+ let x=[];
+ for(let c=0;c<4;c++)
+  x[c]=disp[c]^disp[c+4]^disp[c+8];
+
+ let chars=x.map(v=>String.fromCharCode(v));
+ let sw=chars.map(c=>c==">"?"UP":c=="^"?"DOWN":"INVALID");
+
+ document.getElementById("bytes").textContent=
+  "Bytes: "+disp.map(v=>"0x"+v.toString(16).padStart(2,"0")).join(" ");
+
+ document.getElementById("xor").textContent=
+  "XOR: "+x.map(v=>"0x"+v.toString(16).padStart(2,"0")).join(" ");
+
+ document.getElementById("ascii").textContent=
+  "ASCII: "+chars.join("");
+
+ document.getElementById("switches").textContent=
+  "Switches: "+sw.join(", ");
+}
+
+function resetAll(){
+ disp.fill(0);
+ document.querySelectorAll(".s").forEach(x=>x.classList.remove("on"));
+ decode();
+}
+
+function copyResult(){
+ navigator.clipboard.writeText(
+  document.getElementById("switches").textContent
+ );
+}
+
+decode();
+</script>
+</body>
+</html>
