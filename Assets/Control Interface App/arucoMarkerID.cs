@@ -2,24 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using ROS2;
 using System;
-using example_interfaces.msg;
+using Newtonsoft.Json.Linq;
 using TMPro;
 
 public class arucoMarkerID : MonoBehaviour
 {
-    private ISubscription<std_msgs.msg.Int32> aruco_sub_ir;
-    private ISubscription<std_msgs.msg.Int32> aruco_sub_tower;
-    private ISubscription<std_msgs.msg.Int32> aruco_sub_gripper;
-
     public GameObject arucoTextObject;
     public GameObject towerTextObject;
     public GameObject gripperTextObject;
 
     private TextMeshProUGUI arucoText;
     private TextMeshProUGUI towerText;
-    private TextMeshProUGUI gripperText
+    private TextMeshProUGUI gripperText;
 
     // Values and update flags
     private int aruco_val_ir = -1;
@@ -46,17 +41,16 @@ public class arucoMarkerID : MonoBehaviour
 
     void Update()
     {
-        //create a jobject for each topic data
-        JObject message = UdpController.inst.GetLatestMessage("/infared/aruco_id")
-        if (message.HasValues()){ //using HasValues() to check for update.
-            arucoText.text = $"IR: {(int)message["Data"]}"; //Format string and insert data
+        JObject message = UdpController.inst.GetLatestMessage("/infared/aruco_id");
+        if (message.HasValues){ //using HasValues() to check for update.
+            arucoText.text = $"IR: {(int)message["Data"]}";
         }
-        message = UdpController.inst.GetLatestMessage("/tower/aruco_id")
-        if (message.HasValues()){
+        message = UdpController.inst.GetLatestMessage("/tower/aruco_id");
+        if (message.HasValues){
             towerText.text = $"Tower: {(int)message["Data"]}";
         }
-        message = UdpController.inst.GetLatestMessage("/gripper/aruco_id")
-        if (message.HasValues()){
+        message = UdpController.inst.GetLatestMessage("/gripper/aruco_id");
+        if (message.HasValues){
             gripperText.text = $"Gripper: {(int)message["Data"]}";
         }
 

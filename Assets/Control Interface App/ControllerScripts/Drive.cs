@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using ROS2;
 using TMPro;
 using UnityEngine.InputSystem;
 using System.Collections;
@@ -33,12 +32,6 @@ public class ControllerManager : MonoBehaviour
     private Color selectedColor = Color.green;
     private Color unselectedColor = Color.red;
 
-    private ROS2UnityComponent ros2Unity;
-    private ROS2Node ros2Node;
-    private IPublisher<sensor_msgs.msg.Joy> joy_pub;
-    private IPublisher<sensor_msgs.msg.Joy> joy2_pub;
-
-    private IPublisher<std_msgs.msg.UInt8> light_pub;
     
     private publishJointAngles jointPublisher;
 
@@ -56,12 +49,16 @@ public class ControllerManager : MonoBehaviour
 
     [SerializeField] private TextAsset joyMessageJson;
 
+    [SerializeField] private TextAsset joy2MessageJson;
+
 
     private JObject driveMessage;
 
     private JObject tiltMessage;
 
     private JObject joyMessage;
+
+    private JObject joy2Message;
 
     void Awake()
     {
@@ -74,29 +71,18 @@ public class ControllerManager : MonoBehaviour
             Application.platform == RuntimePlatform.WindowsEditor) {
             return;
         }
-
-        ROS2UnityCore ros2UnityCore = new ROS2UnityCore();
-        if (ros2UnityCore.Ok())
-        {
-            ros2Node = ros2UnityCore.CreateNode("ROS2UnityListenerNode");
-            joy_pub = ros2Node.CreatePublisher<sensor_msgs.msg.Joy>("joy");
-            joy2_pub = ros2Node.CreatePublisher<sensor_msgs.msg.Joy>("joy2");
-            light_pub = ros2Node.CreatePublisher<std_msgs.msg.UInt8>("/tower/light/control");
-
-        }
     }
 
     void Start()
     {
         debugText = debugTextObject.GetComponent<TextMeshProUGUI>();
         UpdateButtonColors();
-        ros2Unity = GetComponent<ROS2UnityComponent>();
         foreach (Slider i in driveSpeedSlider) {
             i.value = 0.5f;
             i.minValue = 0f;
             i.maxValue = 1f;
         }
-
+        
         foreach (Slider i in armSpeedSlider) {
             i.value = 0.5f;
             i.minValue = 0f;
@@ -221,16 +207,23 @@ public class ControllerManager : MonoBehaviour
             int[] buttons = new int[]{
                 0,0,0,0,0,0,0,0,0,0,0
             };
-            sensor_msgs.msg.Joy msg = new sensor_msgs.msg.Joy();
-            msg.Axes = axes;
-            msg.Buttons = buttons;
-            joy2_pub.Publish(msg);
+
+            joy2Message = JObject.Parse(joy2MessageJson.text);
+            joy2Message["topic"] = "joy";
+            joy2Message["data"]["axes"] = new JArray(axes);
+            joy2Message["data"]["buttons"] = new JArray(buttons);
+
+            string msg = joy2Message.ToString();
+            UdpController.inst.PublishMessage(msg);
+
+            // i dunno why this happens? TODO: ask someone why there are two button publishes
             buttons = new int[]{
                 0,0,0,0,0,0,0,0,1,0,0
             };
-            msg.Buttons = buttons;
-            joy2_pub.Publish(msg);
-
+            joy2Message["topic"] = "joy2";
+            joy2Message["data"]["buttons"] = new JArray(buttons);
+            msg = joy2Message.ToString();
+            UdpController.inst.PublishMessage(msg);
         }
 
         string log = $@"
@@ -282,12 +275,14 @@ D-Pad:
     }
 
 
-    void HandleDrive(Vector2 leftJoy, Vector2 rightJoy,
-    float triggerWest, float triggerEast,
-    float buttonSouth, float buttonEast, float buttonWest, float buttonNorth,
-    float dpadEast, float dpadWest, float dpadNorth, float dpadSouth,
-    float start, float select,
-    float shoulderWest, float shoulderEast)
+    void HandleDrive(
+        Vector2 leftJoy, Vector2 rightJoy,
+        float triggerWest, float triggerEast,
+        float buttonSouth, float buttonEast, float buttonWest, float buttonNorth,
+        float dpadEast, float dpadWest, float dpadNorth, float dpadSouth,
+        float start, float select,
+        float shoulderWest, float shoulderEast
+    )
     {   
         foreach (Slider i in driveSpeedSlider) {
             i.value += (triggerWest - triggerEast) * 0.025f;
@@ -360,16 +355,22 @@ D-Pad:
             
             
         }
-        std_msgs.msg.UInt8 light_msg = new std_msgs.msg.UInt8();
+        
         if (dpadNorth == 1)
         {
-            light_msg.Data = 2;
-            light_pub.Publish(light_msg);
+            JObject msg = new JObject();
+            msg["topic"] = "/tower/light/control";
+            msg["msgType"] = "std_msgs/msg/UInt8";
+            msg["data"]["data"] = 2;
+            UdpController.inst.PublishMessage(msg.ToString());
         }
         else if (dpadSouth == 1)
         {
-            light_msg.Data = 0;
-            light_pub.Publish(light_msg);
+            JObject msg = new JObject();
+            msg["topic"] = "/tower/light/control";
+            msg["msgType"] = "std_msgs/msg/UInt8";
+            msg["data"]["data"] = 0;
+            UdpController.inst.PublishMessage(msg.ToString());
         }
         
 
@@ -434,7 +435,6 @@ D-Pad:
 
             string msg = joyMessage.ToString();
             UdpController.inst.PublishMessage(msg);
-            
         }
     }
 

@@ -12,32 +12,29 @@ using System.Globalization;
 /// </summary>
 public class clearCanError : MonoBehaviour
 {
-
-    public IEnumerator clearCan(int canNum)
+    // ✅ NEW METHODS FOR BUTTON CALLS
+    public async Task CallClearCan0()
     {
         JObject msg = new JObject();
-        if(canNum == 0)
-            msg["service"] = "/can0_clear_can";
-        else
-            msg["service"] = "/can_arm_clear_can";
+        msg["service"] = "/can0_clear_can";
+        
+        msg["srvType"] = "/std_srvs/src/SetBool";
+        msg["request"]["data"] = true;
+
+        JObject response = await UdpController.inst.PublishClientReq(msg.ToString());
+        Debug.Log($"[Sync] Got answer: success = {response["response"]["success"]}, message = {response["response"]["message"]}");
+    }
+
+    public async Task CallClearCan1()
+    {
+        JObject msg = new JObject();
+        msg["service"] = "/can_arm_clear_can";
 
         msg["srvType"] = "/std_srvs/src/SetBool";
         msg["request"]["data"] = true;
 
         JObject response = await UdpController.inst.PublishClientReq(msg.ToString());
-
-        Debug.Log($"[Sync] Got answer: success = {response["response"]["success"]}, message = {response["response"][message]}");
-    }
-
-    // ✅ NEW METHODS FOR BUTTON CALLS
-    public void CallClearCan0()
-    {
-        StartCoroutine(clearCan(0));
-    }
-
-    public void CallClearCan1()
-    {
-        StartCoroutine(clearCan(1));
+        Debug.Log($"[Sync] Got answer: success = {response["response"]["success"]}, message = {response["response"]["message"]}");
     }
 
     void Start()
