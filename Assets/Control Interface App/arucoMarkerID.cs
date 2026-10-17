@@ -37,6 +37,7 @@ public class arucoMarkerID : MonoBehaviour
         towerText = towerTextObject?.GetComponent<TextMeshProUGUI>();
         gripperText = gripperTextObject?.GetComponent<TextMeshProUGUI>();
 
+        //startup all subscriptions. 
         UdpController.inst.ConfigureSubscription("/infared/aruco_id","int32");
         UdpController.inst.ConfigureSubscription("/tower/aruco_id","int32");
         UdpController.inst.ConfigureSubscription("/gripper/aruco_id","int32");
@@ -45,12 +46,10 @@ public class arucoMarkerID : MonoBehaviour
 
     void Update()
     {
-        
-        JObject msg;
-
+        //create a jobject for each topic data
         JObject message = UdpController.inst.GetLatestMessage("/infared/aruco_id")
         if (message.HasValues()){ //using HasValues() to check for update.
-            arucoText.text = $"IR: {(int)message["Data"]}";
+            arucoText.text = $"IR: {(int)message["Data"]}"; //Format string and insert data
         }
         message = UdpController.inst.GetLatestMessage("/tower/aruco_id")
         if (message.HasValues()){
