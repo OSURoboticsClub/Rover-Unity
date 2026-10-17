@@ -5,6 +5,7 @@ using UnityEngine;
 using Newtonsoft.Json.Linq;
 
 using Unity.VisualScripting;
+using System.Globalization;
 
 /// <summary>
 /// An example class for calling SetBool service from Unity via ROS2
@@ -14,7 +15,7 @@ public class clearCanError : MonoBehaviour
 
     public IEnumerator clearCan(int canNum)
     {
-        JObject msg;
+        JObject msg = new JObject();
         if(canNum == 0)
             msg["service"] = "/can0_clear_can";
         else

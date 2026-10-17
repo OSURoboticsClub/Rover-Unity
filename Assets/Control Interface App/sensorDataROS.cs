@@ -2,15 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using ROS2;
 using System;
-using example_interfaces.msg;
 using TMPro;
 
 public class sensorDataROS : MonoBehaviour
 {
-    private ISubscription<std_msgs.msg.Float32MultiArray> sensor_sub;
-
     public GameObject hydrogenTextObject;
     public GameObject ozoneTextObject;
     public GameObject geigerTextObject;
@@ -25,9 +21,6 @@ public class sensorDataROS : MonoBehaviour
     private TextMeshProUGUI longtitudeText;
 
 
-    private ROS2UnityComponent ros2Unity;
-    private ROS2Node sensor_node;
-
     // Shared sensor data, updated by ROS2 callback
     private float hydrogen = 0f;
     private float ozone = 0f;
@@ -41,25 +34,15 @@ public class sensorDataROS : MonoBehaviour
     {
         gpsLocation = FindObjectOfType<RoverIconController>();
 
-        ros2Unity = GetComponent<ROS2UnityComponent>();
-        if (ros2Unity == null)
-        {
-            Debug.LogError("ROS2UnityComponent not found!");
-            return;
-        }
-
         hydrogenText = hydrogenTextObject?.GetComponent<TextMeshProUGUI>();
         ozoneText = ozoneTextObject?.GetComponent<TextMeshProUGUI>();
         geigerText = geigerTextObject?.GetComponent<TextMeshProUGUI>();
         latitudeText = latitudeTextObject?.GetComponent<TextMeshProUGUI>();
         longtitudeText = longitudeTextObject?.GetComponent<TextMeshProUGUI>();
-
     }
 
     void Update()
     {
-        
-
         if (newDataAvailable)
         {
             if (hydrogenText != null) hydrogenText.text = $"H2: {hydrogen:F2}";
