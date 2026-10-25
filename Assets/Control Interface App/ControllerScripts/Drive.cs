@@ -49,7 +49,7 @@ public class ControllerManager : MonoBehaviour
 
     [SerializeField] private TextAsset joyMessageJson;
 
-    [SerializeField] private TextAsset joy2MessageJson;
+    [SerializeField] private TextAsset uint8MessageJson;
 
 
     private JObject driveMessage;
@@ -208,7 +208,7 @@ public class ControllerManager : MonoBehaviour
                 0,0,0,0,0,0,0,0,0,0,0
             };
 
-            joy2Message = JObject.Parse(joy2MessageJson.text);
+            joy2Message = JObject.Parse(joyMessageJson.text);
             joy2Message["topic"] = "joy";
             joy2Message["data"]["axes"] = new JArray(axes);
             joy2Message["data"]["buttons"] = new JArray(buttons);
@@ -358,7 +358,7 @@ D-Pad:
         
         if (dpadNorth == 1)
         {
-            JObject msg = new JObject();
+            JObject msg = JObject.Parse(uint8MessageJson.text);
             msg["topic"] = "/tower/light/control";
             msg["msgType"] = "std_msgs/msg/UInt8";
             msg["data"]["data"] = 2;
@@ -366,7 +366,7 @@ D-Pad:
         }
         else if (dpadSouth == 1)
         {
-            JObject msg = new JObject();
+            JObject msg = JObject.Parse(uint8MessageJson.text);
             msg["topic"] = "/tower/light/control";
             msg["msgType"] = "std_msgs/msg/UInt8";
             msg["data"]["data"] = 0;
