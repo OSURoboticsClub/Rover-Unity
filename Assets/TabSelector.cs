@@ -18,8 +18,8 @@ public class TabSelector : MonoBehaviour
         }
 
         if(buttons.Count != pages.Count) {
-            Debug.LogError("[TabSelector] number of tabs and pages don't match");
-            return;
+             Debug.LogError("[TabSelector] number of tabs and pages don't match " + name);
+             return;
         }
 
         currentPageIndex = GetWhichPageIsOpenAtStart();
@@ -45,6 +45,7 @@ public class TabSelector : MonoBehaviour
     }
 
     public void ClickTab(int index) {
+        print(index);
         if (index == currentPageIndex) return;
 
         for (int i = 0; i < buttons.Count; i++) {
