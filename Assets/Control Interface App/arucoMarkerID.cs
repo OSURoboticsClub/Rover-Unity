@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using ROS2;
 using System;
-using example_interfaces.msg;
+using Newtonsoft.Json.Linq;
 using TMPro;
 
 public class arucoMarkerID : MonoBehaviour
 {
-    private ISubscription<std_msgs.msg.Int32> aruco_sub_ir;
-    private ISubscription<std_msgs.msg.Int32> aruco_sub_tower;
-    private ISubscription<std_msgs.msg.Int32> aruco_sub_gripper;
-
     public GameObject arucoTextObject;
     public GameObject towerTextObject;
     public GameObject gripperTextObject;
@@ -20,9 +15,6 @@ public class arucoMarkerID : MonoBehaviour
     private TextMeshProUGUI arucoText;
     private TextMeshProUGUI towerText;
     private TextMeshProUGUI gripperText;
-
-    private ROS2UnityComponent ros2Unity;
-    private ROS2Node aruco_node;
 
     // Values and update flags
     private int aruco_val_ir = -1;
@@ -35,20 +27,39 @@ public class arucoMarkerID : MonoBehaviour
 
     void Start()
     {
-        ros2Unity = GetComponent<ROS2UnityComponent>();
-        if (ros2Unity == null)
-        {
-            Debug.LogError("ROS2UnityComponent not found!");
-            return;
-        }
 
         arucoText = arucoTextObject?.GetComponent<TextMeshProUGUI>();
         towerText = towerTextObject?.GetComponent<TextMeshProUGUI>();
         gripperText = gripperTextObject?.GetComponent<TextMeshProUGUI>();
+
+        //startup all subscriptions. 
+        UdpController.inst.ConfigureSubscription("/infared/aruco_id","int32");
+        UdpController.inst.ConfigureSubscription("/tower/aruco_id","int32");
+        UdpController.inst.ConfigureSubscription("/gripper/aruco_id","int32");
     }
+
 
     void Update()
     {
+        JObject message = UdpController.inst.GetLatestMessage("/infared/aruco_id");
+        if (message.HasValues){ //using HasValues() to check for update.
+            arucoText.text = $"IR: {(int)message["Data"]}";
+        }
+        message = UdpController.inst.GetLatestMessage("/tower/aruco_id");
+        if (message.HasValues){
+            towerText.text = $"Tower: {(int)message["Data"]}";
+        }
+        message = UdpController.inst.GetLatestMessage("/gripper/aruco_id");
+        if (message.HasValues){
+            gripperText.text = $"Gripper: {(int)message["Data"]}";
+        }
+
+        /*
+        Old system using ros2 for unity.
+        I left it here because there is a 33.333% chance I messed up.
+        If you know both systems better than my dumbass, please review it.
+        */
+        /*
         if (aruco_node == null && ros2Unity.Ok())
         {
             aruco_node = ros2Unity.CreateNode("unity_aruco_sub");
@@ -95,5 +106,6 @@ public class arucoMarkerID : MonoBehaviour
             gripperText.text = $"Gripper: {aruco_val_gripper}";
             newDataGripper = false;
         }
+        */
     }
 }
