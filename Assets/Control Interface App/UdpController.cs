@@ -7,16 +7,20 @@ using System.Text;
 using Newtonsoft.Json.Linq;
 using System;
 using Cysharp.Threading.Tasks;
+using System.Diagnostics;
 
 public class UdpController : MonoBehaviour
 {
     public static UdpController inst;
-    private UdpClient udpClient;           // for sending
-    private UdpClient udpReceiveClient;    // for receiving
+    private UdpClient udpSendClient;
+    private UdpClient udpReceiveClient;
     private UdpClient configClient;
 
     private UdpClient srvClient;
     private UdpClient srvServer;
+
+    private UdpClient actionSend;
+    private UdpClient actionReceive;
 
     
     private IPEndPoint serverEndPoint;
@@ -27,6 +31,9 @@ public class UdpController : MonoBehaviour
     private IPEndPoint srvEndPoint;
 
     private IPEndPoint srvServerPoint;
+
+    private IPEndPoint actionSendEndPoint;
+    private IPEndPoint actionReceiveEndPoint;
 
 
     private bool isConnected;
@@ -43,6 +50,9 @@ public class UdpController : MonoBehaviour
 
     private int UDPServerPort = 65438;
 
+    private int UDPActionSendPort = 65439;
+    private int UDPActionRecievePort = 64440;
+
     
 
     [Header("Connection Status")]
@@ -53,6 +63,9 @@ public class UdpController : MonoBehaviour
     
     // Store latest service responses per service key
     private Dictionary<string, JObject> latestServiceResponses = new Dictionary<string, JObject>();
+
+    // Store the latest feedback and reponses per action name
+    private Dictionary<string, JObject> latestActionFeedback = new Dictionary<string, JObject>();
 
     public void Reconnect()
     {
@@ -66,7 +79,7 @@ public class UdpController : MonoBehaviour
         try
         {
             // Main send client
-            udpClient = new UdpClient();
+            udpSendClient = new UdpClient();
             serverEndPoint = new IPEndPoint(IPAddress.Parse(serverIP), UDPSendPort);
 
             // Receive client
@@ -83,6 +96,13 @@ public class UdpController : MonoBehaviour
             srvServer = new UdpClient(UDPServerPort);
             srvServerPoint = new IPEndPoint(IPAddress.Any, 0);
 
+            // Actions
+            actionSend = new UdpClient();
+            actionSendEndPoint = new IPEndPoint(IPAddress.Parse(serverIP), UDPActionSendPort);
+
+            actionReceive = new UdpClient(UDPActionRecievePort);
+            actionReceiveEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
             isConnected = true;
             disconnected = false;
 
@@ -96,9 +116,6 @@ public class UdpController : MonoBehaviour
             isConnected = false;
         }
     }
-
-
-
 
     void Update()
     {
@@ -149,19 +166,45 @@ public class UdpController : MonoBehaviour
             {
                 Debug.LogWarning($"Failed to receive or parse service UDP message: {e.Message}");
             }
-        } 
-    }
+        }
 
+        // Continuously check for action feedback and/or response messages
+        while(actionReceive != null && actionReceive.Available > 0)
+        {
+            try
+            {
+                byte[] data = actionReceive.Receive(ref actionReceiveEndPoint);
+                string jsonString = Encoding.UTF8.GetString(data);
+                JObject message = JObject.Parse(jsonString);
+
+                // update latest action feedback dictionary
+                string actionName = message["action"]?.ToString();
+                Debug.Log(message);
+                Debug.Log(actionName);
+                if(!string.IsNullOrEmpty(actionName))
+                {
+                    latestActionFeedback[actionName] = message;
+                    if(showDebugLogs)
+                        Debug.Log($"Updated action response for action: {actionName}");
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.LogWarning($"Failed to receive or parse action UDP message: {e.Message}");
+            }
+        }
+    }
 
     // Wait for a service response with a specific key
     public async UniTask<JObject> WaitForServiceResponse(string serviceKey, int maxAttempts = 50, float delayBetweenAttempts = 0.1f)
     {
         for (int i = 0; i < maxAttempts; i++)
         {   
-foreach (var key in latestServiceResponses.Keys)
-{
-    Debug.Log("Key: " + key);
-}            // Check if the response has been received
+            foreach (var key in latestServiceResponses.Keys)
+            {
+                Debug.Log("Key: " + key);
+            }
+            // Check if the response has been received
             if (latestServiceResponses.TryGetValue(serviceKey, out JObject response))
             {
                 // Remove from dictionary after reading (optional, depending on your use case)
@@ -178,7 +221,6 @@ foreach (var key in latestServiceResponses.Keys)
         Debug.LogWarning($"WaitForServiceResponse timed out for key: {serviceKey}");
         return new JObject();
     }
-
 
     public void ConfigureSubscription(string topic, string msgType)
     {
@@ -212,18 +254,16 @@ foreach (var key in latestServiceResponses.Keys)
         }
     }
 
-
-
     public void PublishMessage(string message)
     {
         if (showDebugLogs)
             Debug.Log($"Sending UDP Message: {message}");
 
-        if (!isConnected || udpClient == null)
+        if (!isConnected || udpSendClient == null)
         {
             Debug.LogWarning("UDP connection is not established. Attempting reconnect.");
             Start();
-            if (!isConnected || udpClient == null)
+            if (!isConnected || udpSendClient == null)
             {
                 Debug.LogWarning("UDP reconnect failed. Canceling publish.");
                 return;
@@ -233,7 +273,7 @@ foreach (var key in latestServiceResponses.Keys)
         try
         {
             byte[] dataToSend = Encoding.UTF8.GetBytes(message);
-            udpClient.Send(dataToSend, dataToSend.Length, serverEndPoint);
+            udpSendClient.Send(dataToSend, dataToSend.Length, serverEndPoint);
 
             disconnected = false;
         }
@@ -267,12 +307,9 @@ foreach (var key in latestServiceResponses.Keys)
         {
             // If no service key provided, try to extract from message or generate one
             if (string.IsNullOrEmpty(serviceKey))
-            {
-              
+            { 
                 JObject msgObj = JObject.Parse(message);
                 serviceKey = msgObj["service"].ToString();
-                
-           
             }
             
             byte[] dataToSend = Encoding.UTF8.GetBytes(message);
@@ -291,6 +328,35 @@ foreach (var key in latestServiceResponses.Keys)
             isConnected = false;
             return SrvReturn;
         }
+    }
+
+    public void PublishActionReq(string message, string actionName = null)
+    {
+        if (showDebugLogs)
+            Debug.Log($"Sending UDP Action Req: {message}");
+        
+        JObject ActionReturn = new JObject();
+
+        if (!isConnected || actionSend == null)
+        {
+            Debug.Log("UDP connection is not established. Attempting reconnect.");
+            Start();
+            if (!isConnected || actionSend == null)
+            {
+                Debug.Log("UDP reconnect failed. Canceling publish.");
+                return ActionReturn;
+            }
+        }
+
+        // If no service key provided, try to extract from message or generate one
+        if (string.IsNullOrEmpty(actionName))
+        {
+            JObject msgObj = JObject.Parse(message);
+            actionName = msgObj["action"].ToString();
+        }
+            
+        byte[] dataToSend = Encoding.UTF8.GetBytes(message);
+        actionSend.Send(dataToSend, dataToSend.Length, actionSendEndPoint);
     }
 
     // Fire-and-forget service call: sends the request on the service request socket
@@ -331,7 +397,6 @@ foreach (var key in latestServiceResponses.Keys)
     public JObject GetLatestMessage(string topic)
     {
         latestMessages.TryGetValue(topic, out JObject msg);
-        
         return msg;
     }
     
@@ -342,14 +407,21 @@ foreach (var key in latestServiceResponses.Keys)
         return msg;
     }
 
+    // Get the latest action feedback/response 
+    public JObject GetLatestActionFeedback(string actionName)
+    {
+        latestActionFeedback.TryGetValue(actionName, out JObject msg);
+        return msg;
+    }
+
     void OnDestroy()
     {
         isConnected = false;
 
-        if (udpClient != null)
+        if (udpSendClient != null)
         {
-            try { udpClient.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing UDP client: {e.Message}"); }
-            udpClient = null;
+            try { udpSendClient.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing UDP client: {e.Message}"); }
+            udpSendClient = null;
         }
 
         if (udpReceiveClient != null)
@@ -368,6 +440,18 @@ foreach (var key in latestServiceResponses.Keys)
         {
             try { srvServer.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing service server: {e.Message}"); }
             srvServer = null;
+        }
+
+        if(actionSend != null)
+        {
+            try { actionSend.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing action sender: {e.Message}"); }
+            actionSend = null;
+        }
+
+        if(actionReceive != null)
+        {
+            try { actionReceive.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing action receiver: {e.Message}"); }
+            actionReceive = null;
         }
 
         if (showDebugLogs)
