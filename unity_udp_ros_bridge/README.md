@@ -32,11 +32,13 @@ The launch file starts all three nodes:
 
 The current bridge implementation uses these UDP ports on `127.0.0.1`:
 
-- `65434` — input for `udp_bridge_pub` (Unity -> ROS publish)
-- `65435` — output from `udp_bridge_sub` (ROS topic -> Unity)
-- `65436` — input for `udp_bridge_sub` configuration (Unity -> ROS subscribe setup)
-- `65437` — input for `udp_bridge_srv` (Unity -> ROS service request)
-- `65438` — output from `udp_bridge_srv` (ROS service response -> Unity)
+- `65434` - input for `udp_bridge_pub` (Unity -> ROS publish)
+- `65435` - output from `udp_bridge_sub` (ROS topic -> Unity)
+- `65436` - input for `udp_bridge_sub` configuration (Unity -> ROS subscribe setup)
+- `65437` - input for `udp_bridge_srv` (Unity -> ROS service request)
+- `65438` - output from `udp_bridge_srv` (ROS service response -> Unity)
+- `65439` - input for `udp_bridge_action` (Unity -> ROS action)
+- `65440` - output from `udp_bridge_action` (ROS action responses & feedback -> Unity)
 
 > Important: the code binds these sockets to `127.0.0.1`. That means the bridge is currently loopback-only unless the source code is changed to use a non-loopback host.
 

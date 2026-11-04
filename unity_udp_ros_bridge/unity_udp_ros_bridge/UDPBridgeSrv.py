@@ -35,7 +35,7 @@ class UDPBridgeSrv(Node):
         self.udp_thread.daemon = True
         self.udp_thread.start()
         
-        self.get_logger().info("UDPServiceBridge node initialized on port 65435")
+        self.get_logger().info("UDPServiceBridge node initialized on port 65437")
     
     def set_fields_from_dict(self, msg_obj, data_dict):
         """Recursively set message fields from a nested dictionary"""
