@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:GroupBox style="flex-direction: row;">
+            <ui:Button text="Drive" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Drive" />
+            <ui:Button text="Arm Operator" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ArmOperator" />
+            <ui:Button text="Task Tools" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TaskTools" />
+            <ui:Button text="Science" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Science" />
+            <ui:Button text="Autonomy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Autonomy" />
+            <ui:Button text="System Health" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SystemHealth" />
+            <ui:Button text="Tower" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tower" />
+        </ui:GroupBox>
+    </ui:VisualElement>
+</ui:UXML>
