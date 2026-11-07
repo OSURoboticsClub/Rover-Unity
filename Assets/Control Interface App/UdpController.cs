@@ -51,7 +51,7 @@ public class UdpController : MonoBehaviour
     private int UDPServerPort = 65438;
 
     private int UDPActionSendPort = 65439;
-    private int UDPActionRecievePort = 64440;
+    private int UDPActionRecievePort = 65440;
 
     
 
