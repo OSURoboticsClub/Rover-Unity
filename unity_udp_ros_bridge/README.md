@@ -329,6 +329,45 @@ Returned by the ROS bridge and observed via `WaitForServiceResponse(...)` or `Ge
 }
 ```
 
+#### Action request payload
+
+```json
+{
+  "action": "fibonacci",
+  "actionType": "action/Fibonacci",
+  "request": {
+    "order": 4
+  }
+}
+```
+
+Important fields:
+- `action`: ROS action name.
+- `actionType`: ROS action type.
+- `request`: payload that matches the request schema for that service.
+
+#### Action result payload
+
+```json
+{
+  "action": "fibonacci",
+  "result": {
+    "sequence": [1, 1, 2, 3]
+  }
+}
+```
+
+#### Action feedback payload
+
+```json
+{
+  "action": "fibonacci",
+  "feedback": {
+    "partial_sequence": [1, 1]
+  }
+}
+```
+
 #### Notes about field structure
 
 - `topic` and `msgType` are always present in publish/update messages.
