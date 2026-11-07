@@ -58,9 +58,7 @@ class UDPBridgeAction(Node):
         for field in msg_obj.__slots__:
             if field == "_goal_id" or field == "_check_fields":
                 continue
-            print(field)
             value = getattr(msg_obj, field)
-            print(value)
             if hasattr(value, '__slots__'):
                 result[field] = self.dict_from_message(value)
             elif isinstance(value, array):
