@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/prefabs/Tabs.uss?fileID=7433441132597879392&amp;guid=1277746cb54d08af3bb6a9d447976b7a&amp;type=3#Tabs" />
     <ui:VisualElement style="flex-grow: 1;">
-        <ui:GroupBox style="flex-direction: row;">
+        <ui:GroupBox name="ButtonsTop" style="flex-direction: row; padding-top: 0; padding-bottom: 0; align-items: flex-start; height: 4%; margin-right: 4px; margin-top: 2px; padding-left: 0; margin-bottom: 0;">
             <ui:Button text="Drive" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Drive" />
             <ui:Button text="Arm Operator" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ArmOperator" />
             <ui:Button text="Task Tools" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TaskTools" />
@@ -9,5 +10,6 @@
             <ui:Button text="System Health" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SystemHealth" />
             <ui:Button text="Tower" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tower" />
         </ui:GroupBox>
+        <ui:VisualElement name="ui-content-slot" style="flex-grow: 1; padding-right: 4px; padding-bottom: 4px; padding-left: 4px;" />
     </ui:VisualElement>
 </ui:UXML>

@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/prefabs/Background.uss?fileID=7433441132597879392&amp;guid=3f63607de85140b4cb611e05f7fc3f88&amp;type=3#Background" />
+    <ui:VisualElement name="bkg" style="flex-grow: 1;">
+        <ui:GroupBox name="Feeds" style="flex-direction: row; height: 50%; width: 100%;" />
+    </ui:VisualElement>
+</ui:UXML>
