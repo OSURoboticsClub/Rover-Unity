@@ -8,7 +8,7 @@ from threading import Thread, Lock
 
 import json
 import socket
-from numpy import ndarray
+from array import array
 
 class UDPBridgeAction(Node):
     """ROS2 Node for handling action calls via UDP"""
@@ -56,10 +56,14 @@ class UDPBridgeAction(Node):
         """Convert a ROS message to a dictionary"""
         result = {}
         for field in msg_obj.__slots__:
+            if field == "_goal_id" or field == "_check_fields":
+                continue
+            print(field)
             value = getattr(msg_obj, field)
+            print(value)
             if hasattr(value, '__slots__'):
                 result[field] = self.dict_from_message(value)
-            elif isinstance(value, ndarray):
+            elif isinstance(value, array):
                 result[field] = [
                     self.dict_from_message(item) if hasattr(item, '__slots__') else item
                     for item in value
