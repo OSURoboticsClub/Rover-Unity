@@ -8,6 +8,7 @@ from threading import Thread, Lock
 
 import json
 import socket
+from array import array
 
 class UDPBridgeAction(Node):
     """ROS2 Node for handling action calls via UDP"""
@@ -58,7 +59,7 @@ class UDPBridgeAction(Node):
             value = getattr(msg_obj, field)
             if hasattr(value, '__slots__'):
                 result[field] = self.dict_from_message(value)
-            elif isinstance(value, list):
+            elif isinstance(value, array):
                 result[field] = [
                     self.dict_from_message(item) if hasattr(item, '__slots__') else item
                     for item in value
@@ -103,7 +104,7 @@ class UDPBridgeAction(Node):
             if client_key not in self.client_cache:
                 self.client_cache[client_key] = ActionClient(self, action_class, action_name)
                 self.get_logger().info(
-                    f"Created action client for {action_type} with type {action_type}"
+                    f"Created action client for {action_name} with type {action_type}"
                 )
 
             client = self.client_cache[client_key]
