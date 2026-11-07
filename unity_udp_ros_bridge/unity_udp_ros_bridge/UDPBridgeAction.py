@@ -166,7 +166,7 @@ class UDPBridgeAction(Node):
 
         try:
             result = future.result()
-            result_dict = self.dict_from_message(result)
+            result_dict = self.dict_from_message(result.result)
 
             payload = {
                 "action": action_name,
@@ -191,7 +191,7 @@ class UDPBridgeAction(Node):
             _, addr = self.pending_requests[action_name]
 
         try:
-            feedback_dict = self.dict_from_message(msg)
+            feedback_dict = self.dict_from_message(msg.feedback)
 
             payload = {
                 "action": action_name,
