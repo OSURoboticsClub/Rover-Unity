@@ -107,11 +107,11 @@ public class UdpController : MonoBehaviour
             disconnected = false;
 
             if (showDebugLogs)
-                Debug.Log($"UDP Controller initialized: send:{serverIP}:{UDPSendPort}, receive:{UDPReceivePort}, client:{UDPConfigPort}");
+                UnityEngine.Debug.Log($"UDP Controller initialized: send:{serverIP}:{UDPSendPort}, receive:{UDPReceivePort}, client:{UDPConfigPort}");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Could not initialize UDP Controller: {e.Message}");
+            UnityEngine.Debug.LogError($"Could not initialize UDP Controller: {e.Message}");
             disconnected = true;
             isConnected = false;
         }
@@ -138,7 +138,7 @@ public class UdpController : MonoBehaviour
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"Failed to receive or parse UDP message: {e.Message}");
+                UnityEngine.Debug.LogWarning($"Failed to receive or parse UDP message: {e.Message}");
             }
         }
         
@@ -153,18 +153,18 @@ public class UdpController : MonoBehaviour
 
                 // Update latest service responses dictionary
                 string serviceKey = message["service"]?.ToString();
-                Debug.Log(message);
-                Debug.Log(serviceKey);
+                UnityEngine.Debug.Log(message);
+                UnityEngine.Debug.Log(serviceKey);
                 if (!string.IsNullOrEmpty(serviceKey))
                 {
                     latestServiceResponses[serviceKey] = message;
                     if (showDebugLogs)
-                        Debug.Log($"Updated service response for key: {serviceKey}");
+                        UnityEngine.Debug.Log($"Updated service response for key: {serviceKey}");
                 }
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"Failed to receive or parse service UDP message: {e.Message}");
+                UnityEngine.Debug.LogWarning($"Failed to receive or parse service UDP message: {e.Message}");
             }
         }
 
@@ -179,18 +179,18 @@ public class UdpController : MonoBehaviour
 
                 // update latest action feedback dictionary
                 string actionName = message["action"]?.ToString();
-                Debug.Log(message);
-                Debug.Log(actionName);
+                UnityEngine.Debug.Log(message);
+                UnityEngine.Debug.Log(actionName);
                 if(!string.IsNullOrEmpty(actionName))
                 {
                     latestActionFeedback[actionName] = message;
                     if(showDebugLogs)
-                        Debug.Log($"Updated action response for action: {actionName}");
+                        UnityEngine.Debug.Log($"Updated action response for action: {actionName}");
                 }
             }
             catch(Exception e)
             {
-                Debug.LogWarning($"Failed to receive or parse action UDP message: {e.Message}");
+                UnityEngine.Debug.LogWarning($"Failed to receive or parse action UDP message: {e.Message}");
             }
         }
     }
@@ -202,7 +202,7 @@ public class UdpController : MonoBehaviour
         {   
             foreach (var key in latestServiceResponses.Keys)
             {
-                Debug.Log("Key: " + key);
+                UnityEngine.Debug.Log("Key: " + key);
             }
             // Check if the response has been received
             if (latestServiceResponses.TryGetValue(serviceKey, out JObject response))
@@ -210,7 +210,7 @@ public class UdpController : MonoBehaviour
                 // Remove from dictionary after reading (optional, depending on your use case)
                 latestServiceResponses.Remove(serviceKey);
                 if (showDebugLogs)
-                    Debug.Log($"Service response found for key: {serviceKey}");
+                    UnityEngine.Debug.Log($"Service response found for key: {serviceKey}");
                 
                 return response;
             }
@@ -218,7 +218,7 @@ public class UdpController : MonoBehaviour
             await UniTask.Delay(TimeSpan.FromSeconds(delayBetweenAttempts));
         }
 
-        Debug.LogWarning($"WaitForServiceResponse timed out for key: {serviceKey}");
+        UnityEngine.Debug.LogWarning($"WaitForServiceResponse timed out for key: {serviceKey}");
         return new JObject();
     }
 
@@ -226,15 +226,15 @@ public class UdpController : MonoBehaviour
     {
         string message = topic + ";" + msgType;
         if (showDebugLogs)
-            Debug.Log($"Sending config UDP Message: {message}");
+            UnityEngine.Debug.Log($"Sending config UDP Message: {message}");
 
         if (!isConnected || configClient == null)
         {
-            Debug.LogWarning("UDP config connection is not established. Attempting reconnect.");
+            UnityEngine.Debug.LogWarning("UDP config connection is not established. Attempting reconnect.");
             Start();
             if (!isConnected || configClient == null)
             {
-                Debug.LogWarning("UDP config reconnect failed. Canceling publish.");
+                UnityEngine.Debug.LogWarning("UDP config reconnect failed. Canceling publish.");
                 return;
             }
         }
@@ -248,7 +248,7 @@ public class UdpController : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogWarning($"Error while sending UDP config data: {e.Message}");
+            UnityEngine.Debug.LogWarning($"Error while sending UDP config data: {e.Message}");
             disconnected = true;
             isConnected = false;
         }
@@ -257,15 +257,15 @@ public class UdpController : MonoBehaviour
     public void PublishMessage(string message)
     {
         if (showDebugLogs)
-            Debug.Log($"Sending UDP Message: {message}");
+            UnityEngine.Debug.Log($"Sending UDP Message: {message}");
 
         if (!isConnected || udpSendClient == null)
         {
-            Debug.LogWarning("UDP connection is not established. Attempting reconnect.");
+            UnityEngine.Debug.LogWarning("UDP connection is not established. Attempting reconnect.");
             Start();
             if (!isConnected || udpSendClient == null)
             {
-                Debug.LogWarning("UDP reconnect failed. Canceling publish.");
+                UnityEngine.Debug.LogWarning("UDP reconnect failed. Canceling publish.");
                 return;
             } 
         }
@@ -279,7 +279,7 @@ public class UdpController : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogWarning($"Error while sending UDP control data: {e.Message}");
+            UnityEngine.Debug.LogWarning($"Error while sending UDP control data: {e.Message}");
             disconnected = true;
             isConnected = false;
         }
@@ -288,17 +288,17 @@ public class UdpController : MonoBehaviour
     public async UniTask<JObject> PublishClientReq(string message, string serviceKey = null)
     {
         if (showDebugLogs)
-            Debug.Log($"Sending UDP Client Req: {message}");
+            UnityEngine.Debug.Log($"Sending UDP Client Req: {message}");
         
         JObject SrvReturn = new JObject();
 
         if (!isConnected || srvClient == null)
         {
-            Debug.Log("UDP connection is not established. Attempting reconnect.");
+            UnityEngine.Debug.Log("UDP connection is not established. Attempting reconnect.");
             Start();
             if (!isConnected || srvClient == null)
             {
-                Debug.Log("UDP reconnect failed. Canceling publish.");
+                UnityEngine.Debug.Log("UDP reconnect failed. Canceling publish.");
                 return SrvReturn;
             }
         }
@@ -323,7 +323,7 @@ public class UdpController : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogWarning($"Error while sending UDP client req: {e.Message}");
+            UnityEngine.Debug.LogWarning($"Error while sending UDP client req: {e.Message}");
             disconnected = true;
             isConnected = false;
             return SrvReturn;
@@ -333,18 +333,16 @@ public class UdpController : MonoBehaviour
     public void PublishActionReq(string message, string actionName = null)
     {
         if (showDebugLogs)
-            Debug.Log($"Sending UDP Action Req: {message}");
+            UnityEngine.Debug.Log($"Sending UDP Action Req: {message}");
         
-        JObject ActionReturn = new JObject();
-
         if (!isConnected || actionSend == null)
         {
-            Debug.Log("UDP connection is not established. Attempting reconnect.");
+            UnityEngine.Debug.Log("UDP connection is not established. Attempting reconnect.");
             Start();
             if (!isConnected || actionSend == null)
             {
-                Debug.Log("UDP reconnect failed. Canceling publish.");
-                return ActionReturn;
+                UnityEngine.Debug.Log("UDP reconnect failed. Canceling action request.");
+                return;
             }
         }
 
@@ -365,15 +363,15 @@ public class UdpController : MonoBehaviour
     public void SendClientReq(string message)
     {
         if (showDebugLogs)
-            Debug.Log($"Sending UDP Client Req (no wait): {message}");
+            UnityEngine.Debug.Log($"Sending UDP Client Req (no wait): {message}");
 
         if (!isConnected || srvClient == null)
         {
-            Debug.Log("UDP connection is not established. Attempting reconnect.");
+            UnityEngine.Debug.Log("UDP connection is not established. Attempting reconnect.");
             Start();
             if (!isConnected || srvClient == null)
             {
-                Debug.Log("UDP reconnect failed. Canceling send.");
+                UnityEngine.Debug.Log("UDP reconnect failed. Canceling send.");
                 return;
             }
         }
@@ -386,7 +384,7 @@ public class UdpController : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogWarning($"Error while sending UDP client req: {e.Message}");
+            UnityEngine.Debug.LogWarning($"Error while sending UDP client req: {e.Message}");
             disconnected = true;
             isConnected = false;
         }
@@ -420,42 +418,42 @@ public class UdpController : MonoBehaviour
 
         if (udpSendClient != null)
         {
-            try { udpSendClient.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing UDP client: {e.Message}"); }
+            try { udpSendClient.Close(); } catch (Exception e) { UnityEngine.Debug.LogWarning($"Error closing UDP client: {e.Message}"); }
             udpSendClient = null;
         }
 
         if (udpReceiveClient != null)
         {
-            try { udpReceiveClient.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing UDP receive client: {e.Message}"); }
+            try { udpReceiveClient.Close(); } catch (Exception e) { UnityEngine.Debug.LogWarning($"Error closing UDP receive client: {e.Message}"); }
             udpReceiveClient = null;
         }
         
         if (srvClient != null)
         {
-            try { srvClient.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing service client: {e.Message}"); }
+            try { srvClient.Close(); } catch (Exception e) { UnityEngine.Debug.LogWarning($"Error closing service client: {e.Message}"); }
             srvClient = null;
         }
         
         if (srvServer != null)
         {
-            try { srvServer.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing service server: {e.Message}"); }
+            try { srvServer.Close(); } catch (Exception e) { UnityEngine.Debug.LogWarning($"Error closing service server: {e.Message}"); }
             srvServer = null;
         }
 
         if(actionSend != null)
         {
-            try { actionSend.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing action sender: {e.Message}"); }
+            try { actionSend.Close(); } catch (Exception e) { UnityEngine.Debug.LogWarning($"Error closing action sender: {e.Message}"); }
             actionSend = null;
         }
 
         if(actionReceive != null)
         {
-            try { actionReceive.Close(); } catch (Exception e) { Debug.LogWarning($"Error closing action receiver: {e.Message}"); }
+            try { actionReceive.Close(); } catch (Exception e) { UnityEngine.Debug.LogWarning($"Error closing action receiver: {e.Message}"); }
             actionReceive = null;
         }
 
         if (showDebugLogs)
-            Debug.Log("UDP Control Controller closed.");
+            UnityEngine.Debug.Log("UDP Control Controller closed.");
     }
 
     void OnApplicationPause(bool pauseStatus)
