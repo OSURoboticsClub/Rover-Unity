@@ -5,6 +5,7 @@
 #   ROS package sources under ros2_ws/src/ and unity_udp_ros_bridge/
 
 .vscode/
+.venv/
 
 # Unity generated folders
 /[Ll]ibrary/
