@@ -1,0 +1,14 @@
+{
+    "topic": "",
+    "msgType": "gs_tower_interfaces/msg/AntennaControlStatus",
+    "data": {
+        "operating_mode": 0,
+        "current_pan_deg": 0.0,
+        "current_elevation_deg": 0.0,
+        "current_pan_deg_sec": 0.0,
+        "current_elevation_deg_sec": 0.0,
+        "current_pan_setpoint": 0.0,
+        "current_elevation_setpoint": 0.0,
+        "errors": 0
+    }
+}

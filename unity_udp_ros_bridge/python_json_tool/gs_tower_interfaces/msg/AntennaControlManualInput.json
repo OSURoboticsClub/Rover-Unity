@@ -1,0 +1,8 @@
+{
+    "topic": "",
+    "msgType": "gs_tower_interfaces/msg/AntennaControlManualInput",
+    "data": {
+        "elevation_deg": 0.0,
+        "pan_deg": 0.0
+    }
+}
