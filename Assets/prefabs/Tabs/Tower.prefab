@@ -448,7 +448,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1221.4, y: -421.6}
+  m_AnchoredPosition: {x: 787, y: -429}
   m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8993673281221585084
@@ -581,7 +581,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1000.5, y: -331.8}
+  m_AnchoredPosition: {x: 566.1, y: -339.19998}
   m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9219571447972202344
@@ -982,7 +982,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1000.50006, y: -422.33514}
+  m_AnchoredPosition: {x: 566.1001, y: -429.73514}
   m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1124831570381193773
@@ -1115,7 +1115,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1221.6, y: -331.2}
+  m_AnchoredPosition: {x: 787.19995, y: -338.6}
   m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2039901621244317840
@@ -1325,10 +1325,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68856ff621bacf0d599e2ab06e242aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manualButtonText: {fileID: 5312275316776572214}
-  automaticButtonText: {fileID: 3759107012514362905}
-  homingButtonText: {fileID: 5432189520356358725}
-  disabledButtonText: {fileID: 596826987801493102}
+  antennaControlServiceJson: {fileID: 0}
+  buttons: []
 --- !u!1 &6835814544619034427
 GameObject:
   m_ObjectHideFlags: 0
