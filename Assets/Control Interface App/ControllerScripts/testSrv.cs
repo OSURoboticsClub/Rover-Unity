@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json.Linq;
+using System.Threading;
+using System.Diagnostics;
 
 public class TestSender : MonoBehaviour
 {
@@ -22,7 +24,17 @@ public class TestSender : MonoBehaviour
         string msg = testService.ToString();
         response = await UdpController.inst.PublishClientReq(msg);
 
+        JObject testAction = JObject.Parse("{\"action\": \"fibonacci\", \"actionType\": \"action_tutorials_interfaces/action/Fibonacci\", \"request\": {\"order\": 4}}");
+        UdpController.inst.PublishActionReq(testAction.ToString());
+    }
 
+    void Update()
+    {
+        JObject msg = UdpController.inst.GetLatestActionFeedback("fibonacci");
+        if(msg != null)
+        {
+            UnityEngine.Debug.Log(msg.ToString());
+        }
     }
     
     IEnumerator RunAtInterval()
