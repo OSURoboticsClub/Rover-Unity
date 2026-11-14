@@ -49,7 +49,7 @@ public class Towermodeswitcher : MonoBehaviour
         if(towerSubscriber.debug)
         {
             towerSubscriber.currentStatus.operating_mode = (TowerControlMode) mode;
-            Debug.Log("Tower control mode: " + mode);
+            //Debug.Log("Tower control mode: " + mode);
             towerSubscriber.onAntennaControlStatusUpdate.Invoke(towerSubscriber.currentStatus);
 
         }
@@ -60,7 +60,6 @@ public class Towermodeswitcher : MonoBehaviour
     }
     public void antennaControlStatusUpdate(AntennaControlStatus newStatus)
     {
-        Debug.Log("antennaControlStatusUpdate");
         for(int i = 0; i < buttons.Count; i++)
         {
             if(i == (int)newStatus.operating_mode)
