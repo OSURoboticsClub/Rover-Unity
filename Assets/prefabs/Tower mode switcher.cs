@@ -16,8 +16,25 @@ public enum TowerControlMode
 }
 public class Towermodeswitcher : MonoBehaviour
 {
+    [SerializeField] private TowerSubscriber towerSubscriber;
     [SerializeField] private TextAsset antennaControlServiceJson;
     [SerializeField] private List<Button> buttons;
+    [Header("Colors")]
+    [SerializeField] private Color defaultColor;
+    [SerializeField] private Color selectedColor;
+
+    public void Start()
+    {
+        towerSubscriber.onAntennaControlStatusUpdate.AddListener(antennaControlStatusUpdate);
+        for(int i = 0; i < buttons.Count; i++)
+        {
+            int j = i;
+            buttons[i].image.color = defaultColor;
+            buttons[i].onClick.AddListener(() => switch_tower_mode(j));
+        }
+        buttons[0].image.color = selectedColor;
+
+    }
     private async Task AntennaControlServiceCall(int mode)
     {
         JObject msg = JObject.Parse(antennaControlServiceJson.text);
@@ -29,11 +46,29 @@ public class Towermodeswitcher : MonoBehaviour
     }
     public void switch_tower_mode(int mode)
     {
-        _ = AntennaControlServiceCall(mode);
-        
+        if(towerSubscriber.debug)
+        {
+            towerSubscriber.currentStatus.operating_mode = (TowerControlMode) mode;
+            Debug.Log("Tower control mode: " + mode);
+            towerSubscriber.onAntennaControlStatusUpdate.Invoke(towerSubscriber.currentStatus);
+
+        }
+        else
+        {
+            _ = AntennaControlServiceCall(mode);
+        }
     }
-    public void Update()
+    public void antennaControlStatusUpdate(AntennaControlStatus newStatus)
     {
-        
+        Debug.Log("antennaControlStatusUpdate");
+        for(int i = 0; i < buttons.Count; i++)
+        {
+            if(i == (int)newStatus.operating_mode)
+            {
+                buttons[i].image.color = selectedColor;
+                continue;
+            }
+            buttons[i].image.color = defaultColor;
+        }
     }
 }
