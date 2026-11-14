@@ -1,0 +1,11 @@
+{
+    "service": "",
+    "srvType": "gs_tower_interfaces/srv/AntennaControlService",
+    "request": {
+        "mode": 0
+    },
+    "response": {
+        "success": false,
+        "msg": []
+    }
+}
