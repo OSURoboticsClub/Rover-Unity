@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 public class ManuallySetLocation : MonoBehaviour
@@ -23,8 +24,10 @@ public class ManuallySetLocation : MonoBehaviour
             btnText.text = "Set Location";
             RoverTrail.inst.ResetTrail();
             var latlon = MapController.instance.GetLatLonFromWorldPosition(worldPos);
-            string msg = "autonomous/manually_set_position;" + latlon[0] + ";" + latlon[1];
-            TcpController.inst.Publish(msg);
+            // "autonomous/manually_set_position;" + latlon[0] + ";" + latlon[1];
+            JObject msg = new JObject();
+            msg["action"] = "autonomous/manually_set_position";
+            UdpController.inst.PublishActionReq(msg.ToString());
         }
     }
 }
