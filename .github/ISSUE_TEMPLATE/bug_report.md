@@ -1,9 +1,10 @@
 ---
 name: Bug report
 about: Report a problem which needs resovled
-title: ''
-labels: ''
+title: "[BUG REPORT]"
+labels: End-User
 assignees: ''
+type: Bug
 
 ---
 
