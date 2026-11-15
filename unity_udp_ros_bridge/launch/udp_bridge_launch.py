@@ -18,4 +18,9 @@ def generate_launch_description():
             executable='udp_bridge_srv',
             name='udp_bridge_srv'
         ),
+        Node(
+            package='unity_udp_ros_bridge',
+            executable='udp_bridge_action',
+            name='udp_bridge_action'
+        )
     ])

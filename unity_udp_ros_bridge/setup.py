@@ -24,7 +24,7 @@ setup(
             'udp_bridge_pub = unity_udp_ros_bridge.UDPBridgePub:main',
             'udp_bridge_sub = unity_udp_ros_bridge.UDPBridgeSub:main',
             'udp_bridge_srv = unity_udp_ros_bridge.UDPBridgeSrv:main',
-
+            'udp_bridge_action = unity_udp_ros_bridge.UDPBridgeAction:main'
         ],
     },
 )
