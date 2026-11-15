@@ -72,6 +72,9 @@ public class UdpController : MonoBehaviour
         Start();
     }
 
+    /**
+     * Initializes the UDP clients used to communicate with ROS
+     */
     void Start()
     {
         inst = this;
@@ -117,6 +120,9 @@ public class UdpController : MonoBehaviour
         }
     }
 
+    /**
+     * Checks for data sent from ROS and stores it in the appropriate dictionary
+     */
     void Update()
     {
         // Continuously check for topic messages
@@ -195,7 +201,14 @@ public class UdpController : MonoBehaviour
         }
     }
 
-    // Wait for a service response with a specific key
+    /**
+     * Waits for a service to respond to a previously made request
+     *
+     * @param serviceKey the key for the service the request was made to
+     * @param maxAttempts the maximum number of attempts made to try and get the response
+     * @param delayBetweenAttempts how long (in seconds) to wait between each attempt
+     * @return a JObject representing the response if recieved, or an empty JObject if the function times out
+     */
     public async UniTask<JObject> WaitForServiceResponse(string serviceKey, int maxAttempts = 50, float delayBetweenAttempts = 0.1f)
     {
         for (int i = 0; i < maxAttempts; i++)
@@ -222,6 +235,12 @@ public class UdpController : MonoBehaviour
         return new JObject();
     }
 
+    /**
+     * Creates a subscription to a ROS topic
+     *
+     * @param topic the topic to subscribe to
+     * @param msgType a ROS interface string describing the type of data that will be received
+     */
     public void ConfigureSubscription(string topic, string msgType)
     {
         string message = topic + ";" + msgType;
@@ -254,6 +273,11 @@ public class UdpController : MonoBehaviour
         }
     }
 
+    /**
+     * Publishes to a ROS topic
+     *
+     * @param message a string containing the JSON to be sent to ROS, in the format specified in README.md
+     */
     public void PublishMessage(string message)
     {
         if (showDebugLogs)
@@ -285,6 +309,13 @@ public class UdpController : MonoBehaviour
         }
     }
 
+    /**
+     * Makes a request to a ROS service and waits for a response
+     *
+     * @param message a string containing the JSON to be sent to ROS, in the format specified in README.md
+     * @param serviceKey an optional parameter containing the key for the service the request is being made to
+     * @return a JObject representing the response if recieved, or an empty JObject if the function times out
+     */
     public async UniTask<JObject> PublishClientReq(string message, string serviceKey = null)
     {
         if (showDebugLogs)
@@ -330,6 +361,12 @@ public class UdpController : MonoBehaviour
         }
     }
 
+    /**
+     * Requests ROS to start an action
+     *
+     * @param message a string containing the JSON to be sent to ROS, in the format specified in README.md
+     * @param actionName an optional parameter containing the name for the action the request is being made to
+     */
     public void PublishActionReq(string message, string actionName = null)
     {
         if (showDebugLogs)
@@ -357,9 +394,11 @@ public class UdpController : MonoBehaviour
         actionSend.Send(dataToSend, dataToSend.Length, actionSendEndPoint);
     }
 
-    // Fire-and-forget service call: sends the request on the service request socket
-    // without waiting for (or decoding) a response. Use when the caller does not need
-    // the result, e.g. toggling a camera on.
+    /**
+     * Makes a request to a ROS service and does not wait for a response
+     *
+     * @param message a string containing the JSON to be sent to ROS, in the format specified in README.md
+     */
     public void SendClientReq(string message)
     {
         if (showDebugLogs)
@@ -391,21 +430,36 @@ public class UdpController : MonoBehaviour
     }
 
 
-    // Get the latest message for a topic
+    /**
+     * Gets the latest message for a ROS topic
+     *
+     * @param topic the ROS topic
+     * @return a JObject representing the latest message if any have been recieved, or an empty JObject otherwise
+     */
     public JObject GetLatestMessage(string topic)
     {
         latestMessages.TryGetValue(topic, out JObject msg);
         return msg;
     }
     
-    // Get the latest service response (without removing it)
+    /**
+     * Gets the latest response from a service request
+     *
+     * @param serviceKey the key for the service
+     * @return a JObject representing the latest response if any have been recieved, or an empty JObject otherwise
+     */
     public JObject GetLatestServiceResponse(string serviceKey)
     {
         latestServiceResponses.TryGetValue(serviceKey, out JObject msg);
         return msg;
     }
 
-    // Get the latest action feedback/response 
+    /**
+     * Gets the latest feedback or results for a ROS action
+     *
+     * @param actionName the name of the action
+     * @return a JObject representing the latest feedback or result if either have been recieved, or an empty JObject otherwise
+     */
     public JObject GetLatestActionFeedback(string actionName)
     {
         latestActionFeedback.TryGetValue(actionName, out JObject msg);
