@@ -12,7 +12,7 @@ public class AntennaControlStatus
     public float current_elevation_deg_sec = 0.0f;
     public float current_pan_setpoint = 0.0f;
     public float current_elevation_setpoint = 0.0f;
-    public int errors = 0;
+    public uint errors = 3;
 
     public void updateFromControlStatusJson(JObject control_status)
     {
