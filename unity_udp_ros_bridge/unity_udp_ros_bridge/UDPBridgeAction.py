@@ -58,16 +58,17 @@ class UDPBridgeAction(Node):
         for field in msg_obj.__slots__:
             if field == "_goal_id" or field == "_check_fields":
                 continue
+            fieldName = str(field)[1:]
             value = getattr(msg_obj, field)
             if hasattr(value, '__slots__'):
-                result[field] = self.dict_from_message(value)
+                result[fieldName] = self.dict_from_message(value)
             elif isinstance(value, array):
-                result[field] = [
+                result[fieldName] = [
                     self.dict_from_message(item) if hasattr(item, '__slots__') else item
                     for item in value
                 ]
             else:
-                result[field] = value
+                result[fieldName] = value
         return result
 
     def process_udp_message(self, data, addr):
