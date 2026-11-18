@@ -262,7 +262,7 @@ class Processes:
             ros_json = {
                 "action": "",
                 "actionType": srv,
-                "goal": goal_msg,
+                "request": goal_msg,
                 "result": result_msg,
                 "feedback": feedback_msg
             }
