@@ -1,0 +1,6 @@
+# We whitelist only the files used by python_json_tool to prevent generated payloads from being added to the git tree
+*
+!.gitignore
+!jsonGenGUI.py
+!processes.py
+!requirements.txt
