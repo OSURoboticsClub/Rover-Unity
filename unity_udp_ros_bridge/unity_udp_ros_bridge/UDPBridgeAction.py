@@ -58,16 +58,19 @@ class UDPBridgeAction(Node):
         for field in msg_obj.__slots__:
             if field == "_goal_id" or field == "_check_fields":
                 continue
+            fieldName = str(field)
+            if fieldName.startswith("_"):
+                fieldName = fieldName[1:]
             value = getattr(msg_obj, field)
             if hasattr(value, '__slots__'):
-                result[field] = self.dict_from_message(value)
+                result[fieldName] = self.dict_from_message(value)
             elif isinstance(value, array):
-                result[field] = [
+                result[fieldName] = [
                     self.dict_from_message(item) if hasattr(item, '__slots__') else item
                     for item in value
                 ]
             else:
-                result[field] = value
+                result[fieldName] = value
         return result
 
     def process_udp_message(self, data, addr):
@@ -78,7 +81,7 @@ class UDPBridgeAction(Node):
         {
             "action": "move_forward",
             "actionType: "actions/Action",
-            "request": {},
+            "goal": {},
             "result": {},
             "feedback": {}
         }
@@ -89,7 +92,7 @@ class UDPBridgeAction(Node):
 
             action_name = payload.get("action")
             action_type = payload.get("actionType")
-            request_data = payload.get("request", {})
+            goal_data = payload.get("goal", {})
 
             if not action_name or not action_type:
                 self.get_logger().error(
@@ -117,7 +120,7 @@ class UDPBridgeAction(Node):
                 return
 
             goal = action_class.Goal()
-            self.set_fields_from_dict(goal, request_data)
+            self.set_fields_from_dict(goal, goal_data)
 
             future = client.send_goal_async(
                 goal,
