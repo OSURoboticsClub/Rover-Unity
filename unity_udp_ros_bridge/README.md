@@ -91,7 +91,7 @@ The response JSON will be in the following format
 {
   "action": "fibonacci",
   "actionType": "action/Fibonacci",
-  "request": {
+  "goal": {
     "order": 6
   }
 }

@@ -109,3 +109,5 @@ Science_Python_UI/build
 Science_Python_UI/log
 Science_Python_UI/install
 
+.venv/
+.idea/

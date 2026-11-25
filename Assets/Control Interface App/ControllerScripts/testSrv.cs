@@ -19,32 +19,32 @@ public class TestSender : MonoBehaviour
         StartCoroutine(RunAtInterval());
         testService = JObject.Parse(testServiceJson.text);
 
-        testService["service"]="test_srv";
-        testService["request"]["data"]=true;
+        testService["service"] = "test_srv";
+        testService["request"]["data"] = true;
         string msg = testService.ToString();
         response = await UdpController.inst.PublishClientReq(msg);
 
-        JObject testAction = JObject.Parse("{\"action\": \"fibonacci\", \"actionType\": \"action_tutorials_interfaces/action/Fibonacci\", \"request\": {\"order\": 4}}");
+        JObject testAction = JObject.Parse("{\"action\": \"fibonacci\", \"actionType\": \"action_tutorials_interfaces/action/Fibonacci\", \"goal\": {\"order\": 4}}");
         UdpController.inst.PublishActionReq(testAction.ToString());
     }
 
     void Update()
     {
         JObject msg = UdpController.inst.GetLatestActionFeedback("fibonacci");
-        if(msg != null)
+        if (msg != null)
         {
             UnityEngine.Debug.Log(msg.ToString());
         }
     }
-    
+
     IEnumerator RunAtInterval()
     {
-        
+
         while (true) // Or some condition
         {
-            
+
             yield return new WaitForSeconds(1f); // Wait 1 second
         }
-        
+
     }
 }

@@ -79,7 +79,7 @@ class UDPBridgeAction(Node):
         {
             "action": "move_forward",
             "actionType: "actions/Action",
-            "request": {},
+            "goal": {},
             "result": {},
             "feedback": {}
         }
@@ -90,7 +90,7 @@ class UDPBridgeAction(Node):
 
             action_name = payload.get("action")
             action_type = payload.get("actionType")
-            request_data = payload.get("request", {})
+            goal_data = payload.get("goal", {})
 
             if not action_name or not action_type:
                 self.get_logger().error(
@@ -118,7 +118,7 @@ class UDPBridgeAction(Node):
                 return
 
             goal = action_class.Goal()
-            self.set_fields_from_dict(goal, request_data)
+            self.set_fields_from_dict(goal, goal_data)
 
             future = client.send_goal_async(
                 goal,
